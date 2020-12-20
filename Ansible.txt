@@ -1,0 +1,274 @@
+
+To fethc file from remote :
+---
+- hosts: all
+  gather_facts: no
+ 
+  tasks:
+  - name: ansible copy file from remote to local.
+    fetch:
+     src: /root/devops/target.txt
+     dest: /root/jboss/
+
+---
+- hosts: all
+  gather_facts: no
+ 
+  tasks:
+  - name: ansible copy file locally.
+    copy:
+     src: /root/devops.txt
+     dest: /root/abcd/devops/
+    delegate_to: localhost
+ 
+ 
+
+If you mention delegate_to: localhost the task will be executed in locally, So in this way we can copy the files in locally.
+- name: If follow=yes, /path/to/file will be overwritten by contents of foo.conf
+  copy:
+    src: /etc/foo.conf
+    dest: /path/to/link  # link to /path/to/file
+    follow: yes
+
+- name: If follow=no, /path/to/link will become a file and be overwritten by contents of foo.conf
+  copy:
+    src: /etc/foo.conf
+    dest: /path/to/link  # link to /path/to/file
+    follow: no
+
+- name: Copy file with owner and permissions
+  copy:
+    src: /srv/myfiles/foo.conf
+    dest: /etc/foo.conf
+    owner: foo
+    group: foo
+    mode: '0644'
+
+- name: Add the newly created EC2 instance(s) to the local host group
+  local_action: lineinfile 
+                path=hosts
+                regexp={{ item.public_ip }} 
+                insertafter="[crunchify]" line={{ item.public_ip }}
+  with_items: '{{ec2_crunchify.instances}}'
+
+
+To add multiple lines you can use blockfile:
+
+- name: Add mappings to /etc/hosts
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      '10.10.10.10  server.example.com'
+      '10.10.10.11  server1.example.com'
+
+
+- name: add lines
+  lineinfile: 
+    dest: fruits.txt
+    line: '{{ item }}'
+  with_items:
+    - 'Orange'
+    - 'Apple'
+    - 'Banana' 
+
+- blockinfile: |
+    dest=/etc/network/interfaces backup=yes
+    content="iface eth0 inet static
+        address 192.168.0.1
+        netmask 255.255.255.0"
+
+# Before Ansible 2.3, option 'dest' or 'name' was used instead of 'path'
+- name: Insert/Update "Match User" configuration block in /etc/ssh/sshd_config
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    block: |
+      Match User ansible-agent
+      PasswordAuthentication no
+
+- name: Insert/Update eth0 configuration stanza in /etc/network/interfaces
+        (it might be better to copy files into /etc/network/interfaces.d/)
+  blockinfile:
+    path: /etc/network/interfaces
+    block: |
+      iface eth0 inet static
+          address 192.0.2.23
+          netmask 255.255.255.0
+
+- name: Insert/Update configuration using a local file and validate it
+  blockinfile:
+    block: "{{ lookup('file', './local/sshd_config') }}"
+    dest: /etc/ssh/sshd_config
+    backup: yes
+    validate: /usr/sbin/sshd -T -f %s
+
+
+---
+- name: Display all Environment Variables
+  debug:
+    var: environment
+- name: Display all group names
+  debug:
+    var: group_names
+- name: Display all groups
+  debug:
+    var: groups
+- name: Display all variables/facts known for a host
+  debug:
+    var: hostvars[inventory_hostname]
+
+***************  Postgress DB operation **********************************
+  tasks:
+  - name: ensure apt cache is up to date
+    apt: update_cache=yes
+  - name: ensure packages are installed
+    apt: name={{item}}
+    with_items:
+        - postgresql
+        - libpq-dev
+        - python-psycopg2
+
+- hosts: webservers
+  become: yes
+  become_user: postgres
+  gather_facts: no
+
+  vars:
+    dbname: myapp
+    dbuser: django
+    dbpassword: mysupersecretpassword
+
+  tasks:
+  - name: ensure database is created
+    postgresql_db: name={{dbname}}
+
+  - name: ensure user has access to database
+    postgresql_user: db={{dbname}} name={{dbuser}} password={{dbpassword}} priv=ALL
+
+  - name: ensure user does not have unnecessary privilege
+    postgresql_user: name={{dbuser}} role_attr_flags=NOSUPERUSER,NOCREATEDB
+  
+  - name: ensure no other user can access the database
+postgresql_privs: db={{dbname}} role=PUBLIC type=database priv=ALL state=absent
+
+- name: Select query to db acme with positional arguments and non-default credentials
+  postgresql_query:
+    db: acme
+    login_user: django
+    login_password: mysecretpass
+    query: SELECT * FROM acme WHERE id = %s AND story = %s
+    positional_args:
+    - 1
+    - test
+
+********************************************************************
+ssh-copy-id root@172.16.1.155 
+***************************************************************AWX  *******************************
+
+Approval Flow
+
+his means we'll be adding some new APIs. Specifically:
+
+/api/v2/workflow_approval_templates/
+/api/v2/workflow_approval_templates/N
+
+These endpoints will allow you to create and edit new approval templates. As we progress in feature development, we'll hang specific features/attributes off of these endpoints, such as "the notification templates for this approval template" or "who can approve".
+
+/api/v2/workflow_approvals/
+/api/v2/workflow_approvals/N/
+POST /api/v2/workflow_approvals/N/approve/
+POST /api/v2/workflow_approvals/N/reject/
+
+@mabashian I expect these endpoints will be useful for "fetching a list of pending approvals" i.e.,
+
+/api/v2/workflow_approvals/?status=pending
+
+AWX LOGS
+
+Tower server errors are logged in /var/log/tower. Supervisors logs can be found in /var/log/supervisor/. Nginx web server errors are logged in the httpd error log. Configure other Tower logging needs in /etc/tower/conf.d/.
+
+
+--------------------- for using a json in body with variable , use body_format -----------
+- name: REST POST Example
+  uri:
+    url: "{{ webapp_url }}/api/orgs"
+    method: POST
+    return_content: yes
+    body: "{ \"name\": \"{{ project_name }}\" }"
+    body_format: json
+    validate_certs: no
+    user: "{{ user }}"
+    password: "{{ password }}"
+    force_basic_auth: yes
+-----------------------------------
+Forks and Serial
+
+https://medium.com/devops-srilanka/difference-between-forks-and-serial-in-ansible-48677ebe3f36
+
+vars  vs Set_fact 
+vars are evaluated each time they are used ( like if date command var, new date each time this var  is used
+set_fact   gives value fixed what ever at thhe time of assignment, no reevaluated at the time of usage.
+
+----------------------------------------------------
+Vauts :  you can encrypt any file with Vault ansible-vault encrypt . and that var file can be used , ansible asks for password to open, can be prompted for with --ask-vault-pass  or read froma file by --vault-password-file .
+You can also encrypt few vaiables value and store in  vault file name parallel to vars files. Vars file will have plain text  and vault file will have encrypted vars.
+
+vipin@vipin:learning$ ansible-vault encrypt_string --vault-id dev@prompt 'Gupta' --name varad >>vars3
+New vault password (dev): 
+Confirm new vault password (dev): 
+vipin@vipin:learning$ cat vars3
+vipin: !vault |
+          $ANSIBLE_VAULT;1.2;AES256;dev
+          62353763343434333135633337653535373231623336366230316561376634663737383865323238
+          3362633163326139333731363262323638643464313739320a646666396265666630363235666339
+          65663433386639663638623062336663363462353065343465656433356233373732326336386661
+          3361396461323035640a383535303836373361393432366536356233633061666265326138373739
+          6430
+varad: !vault |
+          $ANSIBLE_VAULT;1.2;AES256;dev
+          64616163333538656535393735343664336439316435363730373961356235626336646333346631
+          3632386136376236373766613937653731363463326139660a346136653633363666373762363261
+          33303432386432376537316132316535613638653339393133343530343033666166346536396231
+          6136343937333132360a626534363264626164396336393866306531623763373836343337336163
+          6331
+
+ansible-playbook testvault.yml --ask-vault-pass
+
+vipin@vipin:learning$ cat testvault.yml 
+---
+ - name: valut testig
+   hosts: localhost
+   vars_files:
+     - vars3
+     
+   tasks:
+     - name: print vars
+       debug:
+          var : varad
+#            - vipin3
+     - name: print vars
+       debug:
+          var : vipin 
+-----------------------------------------------------------
+In inventory file   for ansible  , path for inventory can be mention in ansible.cfg file  or can be given as runtime -i <inventory>
+All files in invemtory folders are read.
+
+
+Generate a hashed passwd for user module 
+ansible all -i localhost, -m debug -a "msg={{ 'mypassword' | password_hash('sha512', 'mysecretsalt') }}"
+
+*********************************************************************
+
+To change default ssh port on ansible 
+
+1. You can change in ansible.cfg  as remote_port=2222  , it will be set for all hosts
+2. you can change in invnentory file and in variable for each host 
+     a)   inline   :   192.168.122.51  ansible_port=2222
+     b)  variables:   [centos:vars]
+                        ansible_port=2222
+
+
+
+
+
+
+

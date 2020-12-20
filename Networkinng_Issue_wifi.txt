@@ -1,0 +1,462 @@
+wifi not working , no network shown 
+
+vipin@vipin:if-up.d$ lshw -c Network
+WARNING: you should run this program as super-user.
+  *-network DISABLED        
+       description: Wireless interface
+       product: Wireless 7265
+       vendor: Intel Corporation
+       physical id: 0
+       bus info: pci@0000:02:00.0
+       logical name: wlp2s0
+       version: 61
+       serial: 9c:da:3e:a8:5d:13
+       width: 64 bits
+       clock: 33MHz
+       capabilities: bus_master cap_list ethernet physical wireless
+       configuration: broadcast=yes driver=iwlwifi driverversion=4.13.0-16-generic firmware=29.610311.0 latency=0 link=no multicast=yes wireless=IEEE 802.11
+       resources: irq:49 memory:c1200000-c1201fff
+  *-network
+
+
+SOLUTION: 
+
+vipin@vipin:if-up.d$ sudo modprobe -r acer_wmi
+vipin@vipin:if-up.d$ sudo rfkill unblock all
+
+vipin@vipin:if-up.d$ systemctl restart NetworkManager
+vipin@vipin:if-up.d$ lshw -c Network
+WARNING: you should run this program as super-user.
+  *-network                 
+       description: Wireless interface
+       product: Wireless 7265
+       vendor: Intel Corporation
+       physical id: 0
+       bus info: pci@0000:02:00.0
+       logical name: wlp2s0
+       version: 61
+       serial: 9c:da:3e:a8:5d:13
+       width: 64 bits
+       clock: 33MHz
+       capabilities: bus_master cap_list ethernet physical wireless
+       configuration: broadcast=yes driver=iwlwifi driverversion=4.13.0-16-generic firmware=29.610311.0 latency=0 link=no multicast=yes wireless=IEEE 802.11
+       resources: irq:49 memory:c1200000-c1201fff
+  *-network
+       description: Ethernet interface
+**********************************************************************************************************************
+ip route add 172.16.5.0/24 via 10.0.0.101 dev eth0
+******************************************************************************
+************************** TCPDUMP in ASCII ******************************
+
+Open a new terminal tab and run the tcpdump command with the following options to intercept the traffic on port 80:
+
+-i eth0 intercepts traffic on the main interface.
+
+-A strips the headers and prints the packets in ASCII format.
+
+-n disables DNS resolution.
+
+port 80 is the port of the application.
+
+Optionally, the grep command allows you to filter on JavaScript resources.
+
+Start by retrieving the name of the main interface whose IP is 172.25.250.9.
+
+[student@workstation ~]$ ip a | grep 172.25.250.9
+inet 172.25.250.9/24 brd 172.25.250.255 scope global noprefixroute eth0
+[student@workstation ~]$ sudo tcpdump -i eth0 -A \
+>    -n port 80 | grep js
+*************************************************************************
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/virtualization/sect-virtualization-network_configuration-bridged_networking_with_libvirt
+
+*Disable NetworkManager
+
+NetworkManager does not support bridging. Running NetworkManager will overwrite any manual bridge configuration. Because of this, NetworkManager should be disabled in order to use networking via the network scripts (located in the /etc/sysconfig/network-scripts/ directory):
+
+# chkconfig NetworkManager off
+# chkconfig network on
+# service NetworkManager stop
+# service network start
+
+Note
+As an alternative to turning off NetworkManager, add "NM_CONTROLLED=no" to the ifcfg-* scripts used in the examples. If you do not either set this parameter or disable NetworkManager entirely, any bridge configuration will be overwritten and lost when NetworkManager next starts. ********************************************************************************************
+IPSEC 
+
+good tutorial
+https://www.youtube.com/watch?v=2IdV4CgHo3w
+
+*****************************************************************
+
+persisitence routing in Ubuntu 
+http://www.networkinghowtos.com/howto/adding-persistent-static-routes-on-ubuntu/
+
+*****************************************************************
+nmcli d s  -->> shows all device on machine
+nmcli c s  --> shows all connection settings  on machine 
+
+****************************
+some times ping is not in allowed in Windows , disable Firewall .
+
+ethtool  <if>   - gives info on link, interface ,if it is enables at h/w level
+
+nc -zv <ip>  -- if telnet not available
+***********************************************
+
+
+to make a bridge :
+
+make a file ifcof-br0  in /etc/syysconfig/network-scripts 
+
+following content:  restart networking 
+
+DEVICE=br0
+TYPE=Bridge
+IPADDR=192.168.1.1
+NETMASK=255.255.255.0
+ONBOOT=yes
+BOOTPROTO=none
+NM_CONTROLLED=no
+DELAY=0
+
+
+
+for adding an interface to this bridge"
+NAME=eth0
+DEVICE=eth0
+ONBOOT=yes
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+BRIDGE=br0
+
+bridge can be defined without any ip   with brctl command as well
+ xmk config files are stored at following lcoation , which we can also check by 
+virsh net-list --all
+
+ls /etc/libvirt/qemu/networks/  (ubuntu)
+autostart  default.xml  vip_int.xml  vipnet3.xml  vipnet_eth0.xml
+
+ifconfig  reads from files 
+/proc/net/socket
+       /proc/net/dev
+       /proc/net/if_inet6
+
+******************************************* libvirt ********************
+https://wiki.libvirt.org/page/VirtualNetworking  - how VM in libvirt work and configured
+
+https://libvirt.org/formatnetwork.html#elementsAddress
+
+all bridges and interface have config in /sys/class/net/br0/
+***********************************************************
+
+XML file slooks like:
+
+root@vipin:/var/www/html/openvpn# virsh net-dumpxml vipnet3
+<network>
+  <name>vipnet3</name>
+  <uuid>b93a8be7-026b-47e2-bd51-6bad03218fea</uuid>
+  <forward dev='enp3s0' mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+    <interface dev='enp3s0'/>
+  </forward>
+  <bridge name='virbr3' stp='on' delay='0'/>
+  <mac address='52:54:00:f5:b9:98'/>
+  <domain name='vipnet3'/>
+  <ip address='192.168.200.1' netmask='255.255.255.0'>
+    <dhcp>
+      <range start='192.168.200.128' end='192.168.200.254'/>
+    </dhcp>
+  </ip>
+</network>
+
+*******************************************
+to configure   bridge on ubuntu :
+auto br0
+iface br0 inet static
+   address 192.168.1.90
+   netmask 255.255.255.0
+   gateway 192.168.1.1
+   bridge_ports enp3s0
+   bridge_stp off
+   bridge_fd 0
+   bridge_maxwait 0
+
+
+for VM.
+1
+**************************************************************
+UBUNTU  changing Metric  of a route /interface
+
+For changing Metrics of a interface . lower metric is higher preference.
+
+The easiest and right way to do this is by editing /etc/network/interfaces.
+
+Here is a simple example of /etc/network/interfaces:
+
+auto lo eth0
+iface lo inet loopback
+
+allow-hotplug eth0
+iface eth0 inet dhcp
+    metric 700
+
+******************************************************************************
+NAT   Tutorial 
+https://www.karlrupp.net/en/computer/nat_tutorial
+
+******************************* DNS   Servers
+
+  Client goes to Resolver -> root server ( 13 in world) ->  TLD ( Top level domain eg.  .com)  ->> Name server
+if resolver had teh name -ip mapping it will responsd else go through above flow and keeps in cache for next time.
+
+UBUNTU: 
+root@vipin:~# hostnamectl
+   Static hostname: vipin
+         Icon name: computer-laptop
+           Chassis: laptop
+        Machine ID: f5e7a2ed15e64dee91dcfb4f27b1c1c3
+           Boot ID: 3ca302a1bb594db683f102c668865464
+  Operating System: Ubuntu 17.10
+            Kernel: Linux 4.13.0-46-generic
+      Architecture: x86-64
+
+***************************************** IPERF
+ 
+install iperf3 , sudo apt install iperf3 
+
+on server side   >>   iperf3 -s -f m    ( -f format . m =mega)
+    default port is 5201  , if it is not free , then add -p <portnumber>   to run on that port .
+on client side   >>   iperf3 -c <server ip address> -f m   ( k= kilo , m= mega) 
+
+
+root@vipin:/sys/class/net/br0/bridge# bridge vlan show
+port	vlan ids
+enp3s0	 1 PVID Egress Untagged
+
+virbr0	 1 PVID Egress Untagged
+
+virbr0-nic	 1 PVID Egress Untagged
+
+virbr3	 1 PVID Egress Untagged
+
+virbr3-nic	 1 PVID Egress Untagged
+
+br0	 1 PVID Egress Untagged
+
+br1	 1 PVID Egress Untagged
+
+br5	 1 PVID Egress Untagged
+root@vipin:/sys/class/net/br0/bridge# ifconfig -s
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+enp3s0    1500       10      0      0 0             0      0      0      0 BMU
+enp3s0.1  1500        0      0      0 0             0      0      0      0 BMU
+enp3s0.5  1500        0      0      0 0             0      0      0      0 BMU
+lo       65536      567      0      0 0           567      0      0      0 LRU
+virbr0    1500        0      0      0 0             0      0      0      0 BMU
+virbr3    1500        0      0      0 0             0      0      0      0 BMU
+wlp2s0    1500   668466      0      0 0        298431      0      0      0 BMRU
+******************************************** create VLAN  ***********************
+
+https://www.linuxjournal.com/article/10821
+
+# ip link add link eth0 name eth0.100 type vlan id 100
+To see the VLAN ID on an interface, in case you used an unconventional name:
+
+# ip -d link show eth0.100
+The -d flag shows full details on an interface:
+
+# ip -d addr show
+4: eno1.100@eno1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default 
+   link/ether 96:4a:9c:84:36:51 brd ff:ff:ff:ff:ff:ff promiscuity 0 
+   vlan protocol 802.1Q id 100 <REORDER_HDR> 
+   inet6 fe80::944a:9cff:fe84:3651/64 scope link 
+      valid_lft forever preferred_lft forever
+
+root@vipin:/sys/class/net/br0/bridge# ip rule
+0:	from all lookup local 
+32766:	from all lookup main 
+32767:	from all lookup default 
+root@vipin:/sys/class/net/br0/bridge# ip route list table main
+default via 192.168.1.1 dev wlp2s0 proto static metric 600 
+192.168.1.0/24 dev wlp2s0 proto kernel scope link src 192.168.1.7 metric 600 
+192.168.122.0/24 dev virbr0 proto kernel scope link src 192.168.122.1 linkdown 
+192.168.200.0/24 dev virbr3 proto kernel scope link src 192.168.200.1 linkdown 
+root@vipin:/sys/class/net/br0/bridge# ip route list table default
+root@vipin:/sys/class/net/br0/bridge# ip route list table local
+broadcast 127.0.0.0 dev lo proto kernel scope link src 127.0.0.1 
+local 127.0.0.0/8 dev lo proto kernel scope host src 127.0.0.1 
+local 127.0.0.1 dev lo proto kernel scope host src 127.0.0.1 
+broadcast 127.255.255.255 dev lo proto kernel scope link src 127.0.0.1 
+broadcast 192.168.1.0 dev wlp2s0 proto kernel scope link src 192.168.1.7 
+local 192.168.1.7 dev wlp2s0 proto kernel scope host src 192.168.1.7 
+local 192.168.1.90 dev br0 proto kernel scope host src 192.168.1.90 
+broadcast 192.168.1.255 dev wlp2s0 proto kernel scope link src 192.168.1.7 
+broadcast 192.168.122.0 dev virbr0 proto kernel scope link src 192.168.122.1 linkdown
+
+
+blkid
+root@keenable:/var/lib/libvirt# blkid
+/dev/loop0: TYPE="squashfs"
+/dev/loop1: TYPE="squashfs"
+/dev/loop3: TYPE="squashfs"
+/dev/loop4: TYPE="squashfs"
+/dev/sda1: UUID="861a6c7d-567b-4f4e-9b06-e89eebebda90" TYPE="ext4" PARTUUID="0004841e-01"
+/dev/sda2: UUID="4ac0335b-a115-4ca0-943f-344cf809a6b0" TYPE="ext4" PARTUUID="0004841e-02"
+/dev/sda3: UUID="9910cb97-ea7d-4d1d-8ef5-728ce118ac13" TYPE="swap" PARTUUID="0004841e-03"
+/dev/sda5: UUID="c6ae7ca7-c44f-4056-a5c0-56a881274eb5" TYPE="ext4" PARTUUID="0004841e-05"
+/dev/sda6: UUID="06bb6740-512f-4c81-9656-cffd5b55aa43" TYPE="ext4" PARTUUID="0004841e-06"
+/dev/sda7: UUID="066c09aa-0fd6-4ee7-8602-853067c9f915" TYPE="ext4" PARTUUID="0004841e-07"
+
+/etc/fstab
+root@keenable:/var/lib/libvirt# cat /etc/fstab
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda7 during installation
+
+
+/dev/sda7: UUID="066c09aa-0fd6-4ee7-8602-853067c9f915" TYPE="ext4" PARTUUID="0004841e-07"
+root@keenable:/var/lib/libvirt# lsblk
+NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+sda      8:0    0 232.9G  0 disk 
+├─sda1   8:1    0   512M  0 part 
+├─sda2   8:2    0   9.8G  0 part 
+├─sda3   8:3    0     4G  0 part [SWAP]
+├─sda4   8:4    0     1K  0 part 
+├─sda5   8:5    0  1000M  0 part 
+├─sda6   8:6    0 108.8G  0 part /sda6
+└─sda7   8:7    0 108.8G  0 part /
+loop0    7:0    0  89.1M  1 loop /snap/core/8213
+loop1    7:1    0 144.6M  1 loop /snap/postman/96
+loop3    7:3    0 144.8M  1 loop /snap/postman/97
+loop4    7:4    0  89.1M  1 loop /snap/core/8268
+
+
+UUID=066c09aa-0fd6-4ee7-8602-853067c9f915 /               ext4    errors=remount-ro 0       1
+# swap was on /dev/sda3 during installation
+UUID=9910cb97-ea7d-4d1d-8ef5-728ce118ac13 none            swap    sw              0       0
+UUID=06bb6740-512f-4c81-9656-cffd5b55aa43   /sda6 ext4 
+
+root@keenable:/var/lib/libvirt# mount -av
+/                        : ignored
+none                     : ignored
+/sda6                    : successfully mounted
+
+root$$  virt-manager
+
+
+**************************************************************
+sudo lshw -C network
+
+************************************VLAN *********************
+
+it is on Rthernet frame and L2 layer. 802.1Q 
+
+VLAN  has 4096 values possible , (12 bits)  vID
+VxLAN  has 24 bits  - 16000000  distinct values VNID
+
+VLAN is in ethernet
+
+VXLAN id is over IP traffice, then excapsulate in UDP and then outer IP and then outer Ethernet.
+
+https://www.linuxtechi.com/vlan-tagged-nic-ethernet-card-centos-rhel-servers/
+
+ip link add link enp0s3 name enp0s3.200 type vlan id 200
+
+ip link set dev enp0s3.200 up
+
+************************************************* namespaces *************************************
+
+ 1932  lsns
+ 1933  ovs-vsctl
+ 1934  ip netns 
+ 1935  ip netns add red
+ 1936  ip netns add green
+ 1937  ip netns 
+ 1938  ls /var/run/netns
+ 1939  ip netns exec red ip link
+ 1940  ip link
+ 1941  ip netns exec red ip link
+ 1942  ip netns exec green ip link
+ 1943  ovs-vsctl add-br OVS1
+ 1945  ovs-vsctl show
+ 1946  ip link add eth0-r type veth peer name veth-r
+ 1947  ip link 
+ 1948  
+ 1950  ip link set eth0-r netns red
+ 1951  ip link
+ 1952  ip  netns red exec ip link
+ 1953  ip  netns exec red ip link
+ 1954  ovs-vsctl add-port OVS1 veth-r
+ 1955  ovs-vsctl show
+ 1956  ip link add eth0-g type veth peer name veth-g
+ 1957  ip link set eth0-g netns green
+ 1958  ovs-vsctl add-port OVS1 veth-g
+ 1959  ovs-vsctl show
+ 1960  ip link set veth-r up
+ 1961  ip netns exec red ip link lo up
+ 1962  ip netns exec red ip link set dev lo up
+ 1963  ip netns exec green  ip link set dev lo up
+ 1964  ip netns exec green  ip link 
+ 1965  ip netns exec red ip address add 10.0.0.1/24 dev eth0-r
+ 1966  ip netns exec red ip link
+ 1967  ip netns exec red ip link set dev eth0-r up
+ 1968  ip netns exec red ip link
+ 1969* ip netns exec red ip address add 10.0.0.1/24 dev eth0- up
+ 1970  ip netns exec red ip address add 10.0.0.1/24 dev eth0-r
+ 1971  ip netns exec red ip a
+ 1972  ip netns exec red ip r
+ 1973  ip netns exec green ip link set dev eth0-g up
+ 1974  ip netns exec green bash
+ 1975  ip netns
+ 1976  ip a
+ 1977  ip link dev veth0-g up
+ 1978  ip link set dev veth0-g up
+ 1979  ip link set dev veth-g up
+ 1980  ip a
+ 1981  ip netns exec green ping 10.0.0.2
+ 1982  ip netns exec green ping 10.0.0.1
+ 1983  ovs-vsctl set port veth-r tag=100
+ 1984  ovs-vsctl set port veth-g tag=200
+ 1985  ip netns exec red ip address del 10.0.0.1/24 dev eth0-r
+ 1986  ip netns exec green ip address del 10.0.0.2/24 dev eth0-g
+ 1987  ip netns add dhcp-r
+ 1988  ip netns add dhcp-g
+ 1989  ovs-vsctl add-port OVS1 tap-r
+ 1990  ovs-vsctl show
+ 1991  ovs-vsctl set interface tap-r type=internal
+ 1992  ovs-vsctl show
+ 1993  ovs-vsctl set port tap-r tag=100
+ 1994  ovs-vsctl set interface tap-g type=internal
+ 1995  ovs-vsctl add-port OVS1 tap-g
+ 1996  ovs-vsctl set interface tap-g type=internal
+ 1997  ovs-vsctl set port tap-g tag=200
+ 1998  ovs-vsctl show
+ 1999  ip a
+ 2000  ip link set tap-r netns dhcp-r
+ 2001  ip link set tap-g netns dhcp-g
+ 2002  ip link
+ 2003  ovs-vsctl show
+ 2004  ip netns exec dhcp-r bash
+ 2005  ip netns exec dhcp-g bash
+ 2006  ovs-vsctl show
+ 2007  ip netns exec dhcp-r dnsmasq --interface=tap-r --dhcp-range=10.50.50.10,10.50.50.100,255.255.255.0
+ 2008  ip netns exec dhcp-g dnsmasq --interface=tap-g --dhcp-range=10.50.50.10,10.50.50.100,255.255.255.0
+ 2009  ps -ef|grep dns
+ 2010  ip netns identify 4086
+ 2011  ip netns identify 4096
+ 2012  ip netns exec red dhclient eth0-r
+ 2013  ip netns exec red ip a
+ 2014  ip netns exec green dhclient eth0-g
+ 2015  ip netns exec green ip a
+ 2016  ip netns exec green ping 10.50.50.52
+ 2017* 
+ 2018  ip link
+ 2019  ip netns exec green ping 10.50.50.52
+ 2020  ip netns exec green ping 10.50.50.2
+

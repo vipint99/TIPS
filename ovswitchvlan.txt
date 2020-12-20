@@ -1,0 +1,338 @@
+vipin@vipin:NETWORK$ sudo -i
+root@vipin:~# ovs-vsctl add-br sw1
+root@vipin:~# ip link add port100_1 type veth peer name lan100_1
+root@vipin:~# ip link add port100_2 type veth peer name lan100_2
+root@vipin:~# ip netns add netns100_1
+root@vipin:~# ip netns add netns100_2
+root@vipin:~# ip link set lan100_1 netns netns100_1
+root@vipin:~# ip link set lan100_2 netns netns100_2
+root@vipin:~# ip netns exec netns100_1  ip link
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+47: lan100_1@if48: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 6e:2a:3b:16:73:32 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+
+root@vipin:~# ip netns exec netns100_1  ip link set lan100_1 up
+
+root@vipin:~# ip netns exec netns100_1  ip  address add 10.10.100.2/24 dev lan100_1 
+root@vipin:~# ip netns exec netns100_1  ip link
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+47: lan100_1@if48: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state LOWERLAYERDOWN mode DEFAULT group default qlen 1000
+    link/ether 6e:2a:3b:16:73:32 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+
+root@vipin:~# ip netns exec netns100_2  ip link
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+root@vipin:~# ip netns exec netns100_2  ip address add 10.10.100.20/24 dev lan100_2
+root@vipin:~# ip netns exec netns100_2  ip link
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+root@vipin:~# ip netns exec netns100_2  ip link set dev lan100_2 up
+root@vipin:~# ip netns exec netns100_2  ip link
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state LOWERLAYERDOWN mode DEFAULT group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+root@vipin:~# ovs-vsctl add-port sw1 port100_1 tag=100
+root@vipin:~# ovs-vsctl add-port sw1 port100_2 tag=100
+root@vipin:~# ovs-vsctl show
+d64dfd35-df3d-4625-a3f9-359f969df2e7
+    Bridge "sw1"
+        Port "port100_2"
+            tag: 100
+            Interface "port100_2"
+        Port "sw1"
+            Interface "sw1"
+                type: internal
+        Port "port100_1"
+            tag: 100
+            Interface "port100_1"
+    ovs_version: "2.8.1"
+root@vipin:~# ip netns exec netns100_2  ip link 
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state LOWERLAYERDOWN mode DEFAULT group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+root@vipin:~# ip link set port100_1 up
+root@vipin:~# ip link set port100_2 up
+root@vipin:~# ip netns exec netns100_2  ip link 
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP mode DEFAULT group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+root@vipin:~# ip netns exec netns100_2  ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.100.20/24 scope global lan100_2
+       valid_lft forever preferred_lft forever
+    inet6 fe80::d4f9:9cff:fe03:5561/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns100_2  ping 10.10.100.2
+PING 10.10.100.2 (10.10.100.2) 56(84) bytes of data.
+64 bytes from 10.10.100.2: icmp_seq=1 ttl=64 time=0.371 ms
+64 bytes from 10.10.100.2: icmp_seq=2 ttl=64 time=0.082 ms
+^C
+--- 10.10.100.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1006ms
+rtt min/avg/max/mdev = 0.082/0.226/0.371/0.145 ms
+root@vipin:~# ip netns exec netns100_2  ping 10.10.100.1
+PING 10.10.100.1 (10.10.100.1) 56(84) bytes of data.
+^C
+--- 10.10.100.1 ping statistics ---
+4 packets transmitted, 0 received, 100% packet loss, time 3066ms
+
+root@vipin:~# ip netns exec netns100_1  ping 10.10.100.1
+PING 10.10.100.1 (10.10.100.1) 56(84) bytes of data.
+^C
+--- 10.10.100.1 ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2043ms
+
+root@vipin:~# ip link set port100_1 up
+root@vipin:~# ip netns exec netns100_1  ping 10.10.100.1
+PING 10.10.100.1 (10.10.100.1) 56(84) bytes of data.
+^C
+--- 10.10.100.1 ping statistics ---
+4 packets transmitted, 0 received, 100% packet loss, time 3066ms
+
+root@vipin:~# ip netns exec netns100_1  ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+47: lan100_1@if48: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 6e:2a:3b:16:73:32 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.100.2/24 scope global lan100_1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::6c2a:3bff:fe16:7332/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns100_1  ping 10.10.100.20
+PING 10.10.100.20 (10.10.100.20) 56(84) bytes of data.
+64 bytes from 10.10.100.20: icmp_seq=1 ttl=64 time=0.563 ms
+64 bytes from 10.10.100.20: icmp_seq=2 ttl=64 time=0.100 ms
+^C
+--- 10.10.100.20 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1021ms
+rtt min/avg/max/mdev = 0.100/0.331/0.563/0.232 ms
+root@vipin:~# ip netns exec netns100_2  ping 10.10.100.20
+PING 10.10.100.20 (10.10.100.20) 56(84) bytes of data.
+^C
+--- 10.10.100.20 ping statistics ---
+5 packets transmitted, 0 received, 100% packet loss, time 4081ms
+
+root@vipin:~# ip netns exec netns100_2  ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+49: lan100_2@if50: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether d6:f9:9c:03:55:61 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.100.20/24 scope global lan100_2
+       valid_lft forever preferred_lft forever
+    inet6 fe80::d4f9:9cff:fe03:5561/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns100_2  ping 10.10.100.2
+PING 10.10.100.2 (10.10.100.2) 56(84) bytes of data.
+64 bytes from 10.10.100.2: icmp_seq=1 ttl=64 time=0.501 ms
+^C
+--- 10.10.100.2 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.501/0.501/0.501/0.000 ms
+root@vipin:~# ip netns exec netns100_2  ping 10.10.100.20
+PING 10.10.100.20 (10.10.100.20) 56(84) bytes of data.
+^C
+--- 10.10.100.20 ping statistics ---
+6 packets transmitted, 0 received, 100% packet loss, time 5122ms
+
+root@vipin:~# ip netns exec netns100_2  ping 10.10.100.2
+PING 10.10.100.2 (10.10.100.2) 56(84) bytes of data.
+64 bytes from 10.10.100.2: icmp_seq=1 ttl=64 time=0.461 ms
+64 bytes from 10.10.100.2: icmp_seq=2 ttl=64 time=0.080 ms
+64 bytes from 10.10.100.2: icmp_seq=3 ttl=64 time=0.075 ms
+
+root@vipin:~# 
+root@vipin:~# ip link add port200_1 type veth peer name lan200_1
+root@vipin:~# ip link add port200_2 type veth peer name lan200_2
+root@vipin:~# ovs-vsctl add-port sw1 port200_2 tag=200
+root@vipin:~# ovs-vsctl add-port sw1 port200_1 tag=100   [[  for testing it is set to 100 ]]
+root@vipin:~# ip link set port200_1 up
+root@vipin:~# ip link set port200_2 up
+root@vipin:~# ip netns add netns200_1
+root@vipin:~# ip netns add netns200_2
+
+root@vipin:~# ip link set lan200_1 netns netns200_1
+root@vipin:~# ip link set lan200_2 netns netns200_2
+root@vipin:~# ip netns exec netns200_1 ip address add 10.10.200.2/24 dev lan200_1
+root@vipin:~# ip netns exec netns200_2 ip address add 10.10.200.20/24 dev lan200_2
+root@vipin:~# ip netns exec netns200_1 ip link set lan200_1 up
+
+root@vipin:~# ip netns exec netns200_2 ip link set lan200_2 up
+root@vipin:~# ip netns exec netns200_2 ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+53: lan200_2@if54: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 8a:d6:95:7f:b9:79 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.200.20/24 scope global lan200_2
+       valid_lft forever preferred_lft forever
+    inet6 fe80::88d6:95ff:fe7f:b979/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns200_1 ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+51: lan200_1@if52: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether f6:11:71:38:9c:44 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.200.2/24 scope global lan200_1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::f411:71ff:fe38:9c44/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns200_2 ping 10.10.200.20
+PING 10.10.200.20 (10.10.200.20) 56(84) bytes of data.
+^C
+--- 10.10.200.20 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1006ms
+
+root@vipin:~# ip netns exec netns200_2 ping 10.10.200.2
+PING 10.10.200.2 (10.10.200.2) 56(84) bytes of data.
+^C
+--- 10.10.200.2 ping statistics ---
+3 packets transmitted, 0 received, 100% packet loss, time 2046ms
+
+root@vipin:~# ip netns exec netns200_1 ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+51: lan200_1@if52: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether f6:11:71:38:9c:44 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.200.2/24 scope global lan200_1
+       valid_lft forever preferred_lft forever
+    inet6 fe80::f411:71ff:fe38:9c44/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns200_2 ip a
+1: lo: <LOOPBACK> mtu 65536 qdisc noop state DOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+53: lan200_2@if54: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+    link/ether 8a:d6:95:7f:b9:79 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.10.200.20/24 scope global lan200_2
+       valid_lft forever preferred_lft forever
+    inet6 fe80::88d6:95ff:fe7f:b979/64 scope link 
+       valid_lft forever preferred_lft forever
+root@vipin:~# ip netns exec netns200_2 ping 10.10.200.20
+PING 10.10.200.20 (10.10.200.20) 56(84) bytes of data.
+^C
+--- 10.10.200.20 ping statistics ---
+1 packets transmitted, 0 received, 100% packet loss, time 0ms
+
+root@vipin:~# ip netns exec netns200_2 ping 10.10.200.2
+PING 10.10.200.2 (10.10.200.2) 56(84) bytes of data.
+^C
+--- 10.10.200.2 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1031ms
+
+root@vipin:~# ip netns exec netns200_1 ping 10.10.100.20
+connect: Network is unreachable
+root@vipin:~# ip netns exec netns100_1 ping 10.10.100.20
+PING 10.10.100.20 (10.10.100.20) 56(84) bytes of data.
+64 bytes from 10.10.100.20: icmp_seq=1 ttl=64 time=0.248 ms
+64 bytes from 10.10.100.20: icmp_seq=2 ttl=64 time=0.105 ms
+^X64 bytes from 10.10.100.20: icmp_seq=3 ttl=64 time=0.046 ms
+^C
+--- 10.10.100.20 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2030ms
+rtt min/avg/max/mdev = 0.046/0.133/0.248/0.084 ms
+root@vipin:~# ip netns exec netns100_1 ping 10.10.100.2
+PING 10.10.100.2 (10.10.100.2) 56(84) bytes of data.
+^C
+--- 10.10.100.2 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1002ms
+******************************************** set 200 tag to 200 LAN
+root@vipin:~# ovs-vsctl del-port sw1 port200_1  
+root@vipin:~# ovs-vsctl add-port sw1 port200_1 tag=200 
+root@vipin:~# ip netns exec netns200_2 ping 10.10.200.2
+PING 10.10.200.2 (10.10.200.2) 56(84) bytes of data.
+64 bytes from 10.10.200.2: icmp_seq=1 ttl=64 time=0.510 ms
+64 bytes from 10.10.200.2: icmp_seq=2 ttl=64 time=0.087 ms
+^C
+--- 10.10.200.2 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1027ms
+rtt min/avg/max/mdev = 0.087/0.298/0.510/0.212 ms
+root@vipin:~# ip netns exec netns200_2 ping 10.10.200.20
+PING 10.10.200.20 (10.10.200.20) 56(84) bytes of data.
+^C
+--- 10.10.200.20 ping statistics ---
+2 packets transmitted, 0 received, 100% packet loss, time 1014ms
+
+root@vipin:~# ip netns exec netns200_1 ping 10.10.200.20
+PING 10.10.200.20 (10.10.200.20) 56(84) bytes of data.
+64 bytes from 10.10.200.20: icmp_seq=1 ttl=64 time=0.275 ms
+64 bytes from 10.10.200.20: icmp_seq=2 ttl=64 time=0.107 ms
+^C
+--- 10.10.200.20 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1010ms
+rtt min/avg/max/mdev = 0.107/0.191/0.275/0.084 ms
+**********************************************************************
+
+root@vipin:~# ovs-vsctl show
+d64dfd35-df3d-4625-a3f9-359f969df2e7
+    Bridge "sw1"
+        Port "port200_1"
+            tag: 200
+            Interface "port200_1"
+        Port "port100_2"
+            tag: 100
+            Interface "port100_2"
+        Port "port200_2"
+            tag: 200
+            Interface "port200_2"
+        Port "sw1"
+            Interface "sw1"
+                type: internal
+        Port "port100_1"
+            tag: 100
+            Interface "port100_1"
+    ovs_version: "2.8.1
+
+*******************************************************
+How do I configure a port as an access port?
+
+    A. Add tag=VLAN to your ovs-vsctl add-port command. For example, the following commands configure br0 with eth0 as a trunk port (the default) and tap0 as an access port for VLAN 9:
+
+    $ ovs-vsctl add-br br0
+    $ ovs-vsctl add-port br0 eth0
+    $ ovs-vsctl add-port br0 tap0 tag=9
+
+    If you want to configure an already added port as an access port, use ovs-vsctl set, e.g.:
+
+    $ ovs-vsctl set port tap0 tag=9
+
+**********************************************************
+
+ip link add trunk_1 type veth peer name trunk_2
+2092  ip link add trunk_1 typr veth peer name trunk_2
+ 2093  ip link add trunk_1 type veth peer name trunk_2
+ 2094  ovs-vsctl add-port sw1 trunk_1
+ 2095* ip link set trunk_1 up1
+ 2096  ip adddress add 10.10.100.100 dev trunk_2
+ 2097  ip address add 10.10.100.100/24 dev trunk_2
+ 2098  ip a
+ 2099  ip link set trunk_2 up
+ 2100  ip a
+ 2101  route -n
+ 2102  tcpdump -ni trunk_2
+ 2103  ip netns exec netns200_1 ping 10.10.200.20
+ 2104  ip netns exec netns200_1 ping 10.10.200.25  ---- Now traffic of vlan 200 will be visible on trunk_2
+
+***************************************************
+
+OPEDDAYLIGHT
+
+good tutorial
+
+https://viveksubbarao.wordpress.com/2015/11/17/how-to-setup-a-sdn-using-openvswitch-and-odl-controller/
+https://www.brianlinkletter.com/using-the-opendaylight-sdn-controller-with-the-mininet-network-emulator/
+http://docs.openvswitch.org/en/latest/faq/openflow/
+
+
+sudo mn  --mac --controller=remote,ip=192.168.122.129,port=6633 --switch ovs,protocols=OpenFlow13
+
+

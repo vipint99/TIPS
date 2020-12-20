@@ -1,0 +1,9 @@
+To see a property file in Karaf Shell 
+>config:proplist --pid com.smartcity
+
+to see route details
+
+>route-list
+>route-show <name/id of route>
+
+

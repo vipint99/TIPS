@@ -1,0 +1,64 @@
+https://kubernetes.io/docs/tasks/tools/install-minikube/
+https://www.mirantis.com/blog/how-install-kubernetes-kubeadm/
+ 
+https://docs.bitnami.com/kubernetes/get-started-kubernetes/
+
+kubectl apply -f ./nginx-deployment.yaml 
+
+to ssh a vm instance from cloud console shell
+gcloud compute ssh --project [PROJECT_ID] --zone [ZONE] [INSTANCE_NAME]
+
+
+
+kubeadm init -pod-network-cidr=10.244.0.0/16
+
+To start using your cluster, you need to run (as a regular user):
+
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/admin.conf
+export KUBECONFIG=$HOME/admin.conf
+
+Also run following command to create flannel pods
+$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.10.0/Documentation/kube-flannel.yml
+
+for dashboard :
+
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+or 
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
+
+Now join  nodesby kubeadm join --token ...... node1
+now on master >kubectl get nodes  will give all nodes.
+
+very good inter pod connectivity video , explains basic and flannel. using only network namespace.
+https://www.youtube.com/watch?v=6v_BDHIgOY8
+
+socat - great utility to make connectivity from any where to any where.
+***************************************************************kubeadm *******************************************
+
+kubeadm init --pod-network-cidr=10.244.0.0/16
+sudo cp /etc/kubernetes/admin.conf $HOME/
+sudo chown $(id -u):$(id -g) $HOME/admin.conf
+export KUBECONFIG=$HOME/admin.conf
+
+root@instance-3:~# kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+
+kubeadm join 10.160.0.4:6443 --token m9rhqa.a7ppozg5jomodj7z \
+    --discovery-token-ca-cert-hash sha256:369f4b38885d6629ebb7a3c72d2f9c4f522ddac401663726d0795ed30a259675
+*******************************************************************************************************************
+GOOd doc for ansible - kubernetes control
+https://docs.ansible.com/ansible/latest/modules/k8s_module.html
+
+***************************************************************************
+
+To switch to a namespace to avoid fiving -n <namespace> for all commands
+kubectl config set-context --current --namespace=test30
+
+ To delete a deployment which has multiple replica sets 
+ kubectl delete deployment podtest30
+
+************************************************
+
+
+************************************************

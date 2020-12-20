@@ -1,0 +1,10 @@
+
+To add a policy :
+oc policy add-role-to-user edit system:serviceaccount:vipint-99-ci-cd:jenkins -n vipint-99-simple-pipeline
+
+to check a policy 
+oc describe rolebinding.rbac
+oc login -u <user> -p <passwd> <server API>  -->>  these can also be configured in client local machine ~/.kube/config  , define server ( API userl and name) , define context - to attach a user automatically to server defined, define users to configure predefines tokens and avoid giving password in command line
+
+So oc login -u admin   -->>> will work picking default server from contect admin and password from user definition
+

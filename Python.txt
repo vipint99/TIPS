@@ -1,0 +1,111 @@
+
+**********************************
+from xlrd import open_workbook
+
+book = open_workbook('simple.xls',on_demand=True)
+for name in book.sheet_names():
+    if name.endswith('2'):
+        sheet = book.sheet_by_name(name)
+
+        # Attempt to find a matching row (search the first column for 'john')
+        rowIndex = -1
+        for cell in sheet.col(0): # 
+            if 'john' in cell.value:
+                break
+
+        # If we found the row, print it
+        if row != -1:
+            cells = sheet.row(row)
+            for cell in cells:
+                print cell.value
+
+        book.unload_sheet(name) 
+
+************************multiple csv in one xls *************************
+import pandas as pd
+import sys
+import os
+
+writer = pd.ExcelWriter('SiteStatus.xlsx') # Arbitrary output name
+for csvfilename in sys.argv[1:]:
+    df = pd.read_csv(csvfilename)
+    df.to_excel(writer,sheet_name=os.path.splitext(csvfilename)[0])
+writer.save()
+*****************************************************
+https://www.geeksforgeeks.org/python-adjusting-rows-and-columns-of-an-excel-file-using-openpyxl-module/
+https://stackoverflow.com/questions/3239207/how-can-i-open-an-excel-file-in-python
+
+
+# import openpyxl module 
+import openpyxl 
+  
+# Call a Workbook() function of openpyxl  
+# to create a new blank Workbook object 
+wb = openpyxl.Workbook() 
+  
+# Get workbook active sheet   
+# from the active attribute.  
+sheet = wb.active 
+  
+# writing to the specified cell 
+sheet.cell(row = 1, column = 1).value = ' hello '
+  
+sheet.cell(row = 2, column = 2).value = ' everyone '
+  
+# set the height of the row 
+sheet.row_dimensions[1].height = 70
+  
+# set the width of the column 
+sheet.column_dimensions['B'].width = 20
+  
+# save the file 
+wb.save('dimension.xlsx') 
+************************************************
+##############################################################################
+#
+# An example of converting a Pandas dataframe to an xlsx file
+# with column formats using Pandas and XlsxWriter.
+#
+# Copyright 2013-2020, John McNamara, jmcnamara@cpan.org
+#
+
+import pandas as pd
+
+# Create a Pandas dataframe from some data.
+df = pd.DataFrame({'Numbers':    [1010, 2020, 3030, 2020, 1515, 3030, 4545],
+                   'Percentage': [.1,   .2,   .33,  .25,  .5,   .75,  .45 ],
+})
+
+# Create a Pandas Excel writer using XlsxWriter as the engine.
+writer = pd.ExcelWriter("pandas_column_formats.xlsx", engine='xlsxwriter')
+
+# Convert the dataframe to an XlsxWriter Excel object.
+df.to_excel(writer, sheet_name='Sheet1')
+
+# Get the xlsxwriter workbook and worksheet objects.
+workbook  = writer.book
+worksheet = writer.sheets['Sheet1']
+
+# Add some cell formats.
+format1 = workbook.add_format({'num_format': '#,##0.00'})
+format2 = workbook.add_format({'num_format': '0%'})
+
+# Note: It isn't possible to format any cells that already have a format such
+# as the index or headers or any cells that contain dates or datetimes.
+
+# Set the column width and format.
+worksheet.set_column('B:B', 18, format1)
+
+# Set the format but not the column width.
+worksheet.set_column('C:C', None, format2)
+
+# Close the Pandas Excel writer and output the Excel file.
+writer.save()
+
+***************************************************************************************
+https://pbpython.com/improve-pandas-excel-output.html
+
+https://xlsxwriter.readthedocs.io/worksheet.html
+
+
+

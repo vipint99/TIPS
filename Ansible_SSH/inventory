@@ -1,0 +1,9 @@
+[Andhra]
+10.249.33.11
+10.249.33.5
+10.249.36.246
+
+[all:vars]
+ansible_connection=ssh
+ansible_ssh_user=root
+ansible_ssh_pass=redhat@123

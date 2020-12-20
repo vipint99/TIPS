@@ -1,0 +1,54 @@
+SSH_ANSIBLE    
+
+Fisrt install Ansible: 
+    sudo apt-get update
+    sudo apt-get install software-properties-common
+sudo apt-add-repository ppa:ansible/ansible
+    sudo apt-get update
+    sudo apt-get install ansible
+
+In Ansible 
+Local Folder eCourts
+Always make a copy of ansible.cfg  to local folder from where you will run ansible. This makes sure that local ansible.cfg is read first and /etc/ansible/ansible.conf is read if no local found.
+
+Put entries in some file <inventory> in local folder regarding which all servers to install or ansible
+in ansible.cfg  change name of inventory file to point to this inventory of our own.
+Add followingin inventory files
+
+[all:vars]
+ansible_connection=ssh 
+ansible_ssh_user=vagrant 
+ansible_ssh_pass=vagrant
+
+Go to local folder where ansible.conf is stored and run follwoing
+ > ansible -m ping all
+ > ansible -m setup all 
+ > ansible -m Andhra
+
+
+change lines in ansible.conf
+
+[ssh_connect]
+
+# uncomment this to disable SSH key host checking
+host_key_checking = False
+
+
+SSH
+
+to make a no password ssh login, include clients ~/.ssh/rsa_id.pub  to remote ~/.ssh/authentication_key ( cat rsa_id.pub >>authentication_key) 
+
+> to enable Jump to a middle server add Jump :  in ~/.ssh/config file
+ to connect to remote server via jump server add more config
+
+
+Initial fingerprint for y/n  is actually generated from pub key of host /etc/ssh/ 
+
+sshkeygen -lf <pubfile rsa path>
+
+ssh-keygen  -F -H <ip >
+
+vi /etc/ssh/ssh_config   
+
+chnage Hashknowhost :   true or false  to save .known_hosts  entry in hashed form or plain form (ip address) 
+

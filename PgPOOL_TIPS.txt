@@ -1,0 +1,89 @@
+PGPOOL
+
+Could you the fowwling command to start pgpool?
+
+  $ pgpool -n -d > /var/log/pgpool/pgpool.log 2>&1 &
+
+The -d option enables debug messages to be generated.
+The log messages can be written to log file /var/log/pgpool/pgpool.log.
+
+Logging
+http://www.pgpool.net/docs/latest/en/html/runtime-config-logging.html
+sample config:
+ http://www.pgpool.net/pgpool-web/contrib_docs/simple_sr_setting_3.1/pgpool.conf
+PGPool load balance
+https://severalnines.com/blog/guide-pgpool-postgresql-part-one
+PGPOOL tutorial beginer
+http://www.pgpool.net/docs/pgpool-II-3.0.13/doc/tutorial-en.html#install
+Good DOC
+http://www.pgpool.net/docs/pgpool-II-3.5.4/doc/pgpool-en.html#config
+
+To divert SELECT queries to SLAVE
+http://www.pgpool.net/docs/latest/en/html/runtime-config-load-balancing.html
+
+num_init_children
+
+    The number of preforked pgpool-II server processes. Default is 32. num_init_children is also the concurrent connections limit to pgpool-II from clients. If more than num_init_children clients try to connect to pgpool-II, they are blocked (not rejected) until a connection to any pgpool-II process is closed. Up to listen_backlog_multiplier*num_init_children can be queued.
+
+    The queued is inside the kernel called "listen queue". The length of the listen queue is called "backlog". There is an upper limit of the backlog in some systems, and if num_init_children*listen_backlog_multiplier exceeds the number, you need to set the backlong higher. Otherwise, following problems may occur in heavy loaded systems: 1) connecting to pgpool-II fails 2) connecting to pgpool-II is getting slow because of retries in the kernel. You can check if the listen queue is actually overflowed by using "netstat -s" command. If you find something like: 
+
+max_pool   - is number of connectionn pool used for same user/db  and it is per Child. It is only activated when  cached_connection is on ( by default).
+Total db conenctions are  
+max_pool*num_init_children <= (max_connections - superuser_reserved_connections) (no query canceling needed)
+max_pool*num_init_children*2 <= (max_connections - superuser_reserved_connections) (query canceling needed)
+
+
+listen_backlog_multiplier V3.4 -
+
+    Controls the length of connection queue from frontend to pgpool-II. The default is 2. The queue length (actually "backlog" parameter of listen system call) is defined as listen_backlog_multiplier * num_init_children. If the queue length is not long enough, you should increase the parameter. Some systems have upper limit of the backlog parameter of listen system call. See num_init_children for more details.
+
+    This parameter can only be set at server start.
+serialize_accept V3.5 -
+
+    Whether to serialize accept() call for incoming client connections. Default is off, which means no serializing (same behavior as pgpool-II 3.4 or before). If this is off, the kernel wakes up all of pgpool-II child process to execute accept() and one of them actually accepts the incoming connection. Problem here is, because so my child process wake up at a same time, heavy context switching occurred and the performance is affected. This phenomena is a classic problem called "the thundering herd problem". By enabling serialize_accept, only one of pgpool-II child process is woken up and executes accept() and the problem can be avoided. When you should turn on serialize_accept? For large number of num_init_children, it is recommended to turn on serialize_accept. For small number of num_init_children, it may not enhance the performance rather, it may degrade the performance because of serializing overhead. How large is actually large is depending on the environment. It is recommended to do a bench mark test to make the decision. Here is a example pgbench run:
+
+    		    pgbench -n -S -p 9999 -c 32 -C -S -T 300 test
+    		  
+
+    Here, -C tells pgbench to connect to database each time a transaction gets executed. -c 32 specifies the concurrent sessions to pgpool-II. You should change this according to your system's requirement. When pgbench finishes, you want to check the number from "including connections establishing".
+
+    Please note that if child_life_time is enabled, serialize_accept has no effect. Make sure that you set child_life_time to 0 if you want to turn on serialize_accept. If you are care about pgpool-II process memory leak or whatever potential issue, you could use child_max_connections instead. This is purely an implementation limitation and maybe removed in the future.
+
+    This parameter can only be set at server start.
+child_life_time
+
+    A pgpool-II child process' life time in seconds. When a child is idle for that many seconds, it is terminated and a new child is created. This parameter is a measure to prevent memory leaks and other unexpected errors. Default value is 300 (5 minutes). 0 disables this feature. Note that this doesn't apply for processes that have not accepted any connection yet.
+
+    Note: if this parameter is non 0, serialize_accept has no effect.
+
+    You need to reload pgpool.conf if you change this value.
+child_max_connections
+
+    A pgpool-II child process will be terminated after this many connections from clients. This parameter is useful on a server if it is so busy that child_life_time and connection_life_time are never triggered. Thus this is also useful to prevent PostgreSQL servers from getting too big.
+
+    You need to reload pgpool.conf if you change this value.
+client_idle_limit
+
+    Disconnect a client if it has been idle for client_idle_limit seconds after the last query has completed. This is useful to prevent pgpool childs from being occupied by a lazy client or a broken TCP/IP connection between client and pgpool. The default value for client_idle_limit is 0, which means the feature is turned off. this value. This parameter is ignored in the second stage of online recovery.
+
+    You need to reload pgpool.conf if you change client_idle_limit.
+
+connection_cache
+
+    Caches connections to backends when set to on. Default is true. However, connections to template0, template1, postgres and regression databases are not cached even if connection_cache is on.
+
+    You need to restart pgpool-II if you change this value.
+
+ Following options are required to be specified for master/slave mode.
+
+master_slave_mode (boolean)
+
+    Setting to on enables the master/slave mode. Default is off. 
+
+Value	Description
+'slony'	Suitable for Slony-I
+'stream'	Suitable for PostgreSQL's built-in replication system (Streaming Replication)
+'logical'	Suitable for PostgreSQL's built-in replication system (Logical Replication)
+
+Default is 'slony'. 
+

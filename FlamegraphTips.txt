@@ -1,0 +1,64 @@
+Links:
+https://medium.com/netflix-techblog/netflix-flamescope-a57ca19d47bb
+https://medium.com/netflix-techblog/java-in-flames-e763b3d32166
+
+
+$ git clone https://github.com/Netflix/flamescope
+$ cd flamescope
+$ pip install -r requirements.txt
+$ python run.py
+
+Then also install  perf utility for correct kernel version 
+
+Linux perf_events
+
+This is the standard Linux profiler, aka “perf” after its front end, and is included in the Linux source (tools/perf). Try running perf help to see if it is installed; if not, your distro may suggest how to get it, usually by adding a perf-tools-common package.
+
+Java 8 update 60 build 19 (or newer)
+
+This includes the frame pointer patch fix (JDK-8072465), which is necessary for Java stack profiling. It is currently released as early access (built from OpenJDK).
+
+perf-map-agent
+
+This is a JVMTI agent that provides Java symbol translation for perf_events is on github. Steps to build this typically involve:
+
+apt-get install cmake
+export JAVA_HOME=/path-to-your-new-jdk8
+git clone --depth=1 https://github.com/jrudolph/perf-map-agent
+cd perf-map-agent
+cmake .
+make
+
+
+Java needs to be running with the -XX:+PreserveFramePointer option, so that perf_events can perform frame pointer stack walks. As mentioned earlier, this can cost some performance, between 0 and 3% depending on the workload.
+
+
+Generate perf.data file , convert to script and open  http://localhost:5000   and select that script file. Script file to be stored in example directory under flamegraph folder.
+
+
+Alternatively there is a perl version to generate graphs 
+
+git clone --depth=1 https://github.com/brendangregg/FlameGraph
+
+sudo perf record -F 99 -a -g -- sleep 30
+java -cp attach-main.jar:$JAVA_HOME/lib/tools.jar net.virtualvoid.perf.AttachOnce 1690    # run as same user as java
+sudo chown root /tmp/perf-*.map
+sudo perf script | stackcollapse-perf.pl | \
+    flamegraph.pl --color=java --hash > flamegraph.svg
+
+JAVA  profiling has to be done with same user as Java process owner ,  but since perf.data is generated as root. 
+The attach-main.jar file is from perf-map-agent, and stackcollapse-perf.pl and flamegraph.pl are from FlameGraph. Specify their full paths unless they are in the current directory.
+
+These steps address some quirky behavior involving user permissions: sudo perf script only reads symbol files the current user (root) owns, and, perf-map-agent creates files with the same user ownership as the Java process, which for us is usually non-root. This means we have to change the ownership to root for the symbol file, and then run perf script.
+
+USING JMAPS for generating java symbol file
+get Jmap
+https://github.com/brendangregg/Misc/blob/master/java/jmaps
+
+
+sudo perf record -F 99 -a -g -- sleep 30; sudo jmaps
+sudo perf script | stackcollapse-perf.pl | \
+    flamegraph.pl --color=java --hash > flamegraph.svg
+
+jmaps creates symbol files for all Java processes, with root ownership. You may want to write a similar “jmaps” helper for your environment (our jmaps example is unsupported). Remember to clean up the /tmp symbol files when you no longer need them!
+

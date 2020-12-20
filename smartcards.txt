@@ -1,0 +1,29 @@
+
+
+Mobile native Wearable native
+
+Related Info
+
+    SmartCard Tutorial
+    SmartCard API for Mobile Native
+    SmartCard API for Wearable Native
+
+SmartCard
+
+Tizen enables you to use smart card functionalities, such as accessing a secure element (SE). Before using the SmartCard API, make sure you have a secure element on the device. The smart card service allow you to open a session on an SE, open a channel to the applet in the SE, send a command to the channel, and finally receive a response to the command.
+
+The main components of the SmartCard API include:
+
+    SE service
+
+    The SE Service API (in mobile and wearable applications) allows you to initialize and deinitialize the smart card features, and get the available readers. The SE service functions as a connector to the SE framework system.
+    Reader
+
+    The Reader API (in mobile and wearable applications) allows you to access the SE connected with the selected reader. You can get the reader name and open and close sessions.
+    Session
+
+    A session is an open connection between an application on the device and a SE. The Session API (in mobile and wearable applications) allows you to open and close basic and logical channels, and get ATR (answer to reset).
+    Channel
+
+    A channel is an open connection between an application on the device and an applet on the SE. The Channel API (in mobile and wearable applications) allows you to close channels and transmit application protocol data units (APDU).
+

@@ -1,0 +1,316 @@
+RHLTips
+
+$date--date='@12232323'toconvertepochtimetocurrentdate
+command history
+$history
+run last commend with string !cmd
+
+Ctrl+a Jumptothebeginningofthecommandline.
+Ctrl+e Jumptotheendofthecommandline.
+Ctrl+u  Clearfromthecursortothebeginningofthecommandline.
+Ctrl+k Clearfromthecursortotheendofthecommandline.
+Ctrl+LeftArrow Jumptothebeginningofthepreviouswordonthecommandline.
+Ctrl+RightArrow Jumptothebeginningofthenextwordonthecommandline.
+Ctrl+r Searchthehistorylistofcommandsforapattern.
+
+Bootable USB
+df -h   [ we might need to umount the usb for running following command]
+
+sudo mkfs.ext4 /dev/sdc
+df -h 
+Make sure to specify the output as the device name (for example, /dev/sda), 
+not as a name of a partition on the device (for example, /dev/sda1). 
+********************************* service .service  location
+all .service and .socket are stored in following
+
+if the iso is a hybrid  iso then we need to do :
+
+
+
+===Issue => Systems do not boot with this USB, whereas the same command works for 64 bit downloaded CentOS Image
+
+==========================================
+Reason - the 32 bit ISO image of CentOS is not a hybrid iso image
+
+Solution : Make it a hybrid ISO
+
+Steps :
+a) Install syslinux-utils (on debian).. On fedora etc, we can find out (yum whatprovides isohybrid)
+b) Execute  the isohybrid command on the iso =>
+$isohybrid /home/vbg/scratch/isos/CentOS-7-i386-Everything-1810.iso
+c) Now create the USB
+$dd if=/home/vbg/scratch/isos/CentOS-7-i386-Everything-1810.iso of=/dev/sdb bs=1M;sync
+
+d) Boot a system and test..
+
+=====================================
+
+
+
+/etc/systemd/system
+
+/usr/lib/systemd/system
+
+/lib/systemd/system
+
+*********************************************
+to check Loaded libraries.
+
+
+You can do both with lsof. To see what processes have a library open or mapped do:
+
+lsof /path/to/lib.so
+
+and to see what files (including shared libraries) a process has open and/or mapped, do:
+
+lsof -p <pid>
+
+*******************************************
+Package names can contain an architecture (x86_64,i686,...) after the name:
+Raw
+
+# yum install glibc.i686
+
+Note: The version of the package is not need and the above command will install the latest version. (i686 is 32-bit). The 32-bit libraries must be the same version as the 64-bit version and this multi-lib requirement is normally enforced.
+Installing 32-bit packages when kickstarting
+
+
+[vipin@localhost system]$ sudo yum install glibc.i686
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-manager
+rhel-7-server-devtools-rpms                                                    | 4.0 kB  00:00:00     
+Package glibc-2.17-260.el7_6.6.i686 already installed and latest version
+Nothing to do
+____________________________________
+
+open GUI from remote ssh machine to local 
+ssh <remote> -X 
+
+
+******************************** VIRTUAL MACHINE on RHEL7 ***************
+
+
+https://www.dedoimedo.com/computers/kvm-bridged.html
+
+https://www.linux.com/tutorials/creating-virtual-machines-kvm-part-2-networking/
+
+********************************************* create a http server on one machine and share files
+
+5
+
+You Can simply run an simpleHTTP server in the linux machine and access the same on the other machine.
+
+Steps :
+
+    first start the terminal from the folder to be shared.
+    run in terminal - python -m SimpleHTTPServer
+    check your ip using ifconfig.
+    enter in the browser of the other machine the ip address:8000 (e.g.: if your ip is 127.3.4.123 then in browser you type 127.3.4.123:8000)
+
+*******************************************************mount a remote folder to locLA MACHINE
+https://askubuntu.com/questions/15782/how-do-i-share-a-folder-with-another-linux-machine-on-the-same-home-network
+
+
+********************************************************
+making local repository in yum for RHEL also installing epel
+
+a ISO of the RHEL can be made into a local repository and can be used by yum
+mount -o loop <path to iso file> /mnt
+
+then make a file in /etc/yum.repos.d/local.repo
+"
+[LocalRepo]
+name=rhel
+baseurl=file:///mnt
+gpgcheck=0
+
+"
+yum install epel-release
+   61   yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+   62  yum clean all
+   63  yum repolist all
+
+******************************************
+XINETD 
+https://linuxconfig.org/how-to-install-xinetd-service-in-redhat-8
+
+This is a very good Linux utility for binding any service a particular port/IP. If starts listening on that port and if anything arrives takes action as per sript in /etc/xinetd.d/script  .  Name of the service to be entered in /etc/services with port number .
+
+xinetd, the eXtended InterNET Daemon, is an open-source daemon which runs on many Linux and Unix systems and manages Internet-based connectivity. It offers a more secure extension to or version of inetd, the Internet daemon. xinetd performs the same function as inetd: it starts programs that provide Internet services.
+
+How to remove Swap File
+
+    First, deactivate the swap by typing: sudo swapoff -v /swapfile.
+    Remove the swap file entry /swapfile swap swap defaults 0 0 from the /etc/fstab file.
+    Finally, delete the actuaSServerAliveInterval 120erverAliveInterval 120l swapfile file using the rm command: sudo rm /swapfile.
+
+***********************************************************************
+To  Keep SSH session alive for longer duration  edit 
+/etc/ssh/ssh_config  file  add ServerAliveInterval 120 at the end
+
+
+*****************************************************************
+
+Knowing which port to which service 
+ sudo netstat -plnt
+******************************************************************
+To generate ssh-keygen without prompts 
+https://stackoverflow.com/questions/43235179/how-to-execute-ssh-keygen-without-prompt/43235320
+
+Just use a void pass using -N flag:
+
+ssh-keygen -t rsa -N ''
+To overwrite the key file (in this example id_rsa):
+
+ ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa 2>/dev/null <<< y >/dev/null
+**************************************************************
+
+TO increase   RAM  on a linux system
+
+mkdir /ramdisk
+mount -t tmpfs -o size=500G tmpfs /ramdisk
+cp from_disk /ramdisk
+
+To stop ram usage
+delete the file from /ramdisk folder
+
+Another one 
+mkdir -p /media/ramdisk
+#allocate some Gigabyte your Ram instead of 1024M
+mount -t tmpfs -o size=1024M tmpfs /media/ramdisk/
+# and fill it with large file
+cat /dev/zero > /media/ramdisk/large
+
+
+TO increase CPU on a linux system
+
+yes > /dev/null &    -- as root
+
+run it as many times as CPU count
+to stop : 
+killall yes    --as root
+
+
+***************************************************
+
+TIME ZONE and time settings
+
+1. Chronyd is the time sync daemon on RHEL7  , RHEL6 it was ntpd
+2. systemctl status schronyd.service
+3. cat /etc/chrony.conf  
+
+  server  0.rhel.pool.ntp.org iburst
+  server  1.rhel.ntp.org iburst
+
+4. timedatectl   to know all details
+5. timedatectl list-timezones 
+
+6. chronyc tracking
+7. chronyc sources
+
+DNS:
+  cat /etc/resolv.conf   keeps all the DNS server list compiled from all interface managed by NetworkManager and thus overwritten by Network manager
+ define DNS details in config interface files to make it preservers
+
+cat /etc/sysconfig/network-scripts/ifconfig-eth0  
+   DNS1=<IPADDRESS>
+
+*****************************
+
+FILE permissions 
+
+special user and Group permission are set by chmod u+s  or  g+s , these give permission to run as if owner is running , if these files are executable "s" will be present at x position of u or g , if not executable "S" will be present
+
+chmod u=rx,g=rx,o=w  vipin1 
+chmod u+x,g+w,o-w  vipin1
+chmod u-x,g+x,g+s  vipin1
+
+sticky bit  ==  it prevents a user changing file of other user in a directory set at the directory level only in other permission part  -  "T"  at the position of others x ,  if x is also there then it is "t"
+
+ apart from usual 0DDD   which sets user-group-other permissions  , 0XDDD part ( 4 octets) actually 
+X has three bits  b1,b2,b3  and  b1 = u+s, b2=g+s and b3 = +t or o+t 
+
+so 1555 = _r_xr_x_r_t     , 3555 = _r_xr_sr_t
+
+*********************************************
+*
+sed with variables : to chage a whole line with value of a varCRONiable
+sed -i "/TEXT_TO_BE_REPLACED/c $REPLACEMENT_TEXT_STRING" 
+******************************************F
+CRON:  
+  Time zone in ubuntu is what it takes while starting , we can write TZ=UTC or CRON_TZ=UTC in any file in /etc/cron.d/file   but those only affect the timezone passwd to the process started by Cron , it down not affect the time when CRON run in whihc timezone.
+So to fool cron while starting to take a new TZ  
+First, we need wrap the cron executable in a shell that sets the TZ variable. Here's how:
+
+cd /usr/sFawkbin
+mv cron cron.real
+
+Then, create a new /usr/sbin/cron file. I used vim, but you can use any editor you want, just make the file look like this:
+
+#!/bin/bash
+export TZ=UTC
+/usr/sbin/cron.real
+
+Make the new cron file executable:F
+
+chmod ugo+rx cron
+
+Now, restart the cron daemon:
+
+service cron restart
+******************************************************************
+You can also use the usermod command to add a user to a group:
+
+sudo usermod –a –G group_name user_name
+
+get all groups
+getent group | awk -F: '{ print $1}'
+
+get all passwd file
+getent passwd
+********************************************************
+To know SElinux   policy on a port
+yum install selinux_policy_devel
+sepolicy network -p <portnumber>
+to add new type
+semanage port -a -t sshd_t -p 2222
+semanage port -l 
+
+----------------------To change  SSH port on server--------------------
+
+https://www.cyberciti.biz/faq/howto-change-ssh-port-on-linux-or-unix-server/
+
+/etc/ssh/sshd_config   --- change port number 
+in selinux settings put sshd_t to new port
+semanage port -a -t sshd_t -p 2222
+check with 
+semanage port -l 
+
+No open new port in firewall as well
+$ sudo firewall-cmd --permanent --zone=public --add-port=2222/tcp
+$ sudo firewall-cmd --reload
+
+Restart the sshd service to start listening on new port
+$ sudo firewall-cmd --permanent --zone=public --add-port=2222/tcp
+$ sudo firewall-cmd --reload
+
+To use  new sshd port on client side
+ssh -p {port} user@server
+sftp -P {port} openssh-server
+scp -P {port} source target
+scp -P {port} /path/to/foo user@server:/dest/
+
+
+To  change same on client side:
+~/.ssh/config 
+
+Host centos
+    HostName 192.168.122.51
+    Port 2222
+
+
+Libvirt-Qemu-KvM  tutorial
+https://www.youtube.com/watch?v=HfNKpT2jo7U&t=6s
+
+
+
+

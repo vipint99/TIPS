@@ -1,0 +1,60 @@
+How to add new IP address to interface :
+
+vi /etc/network/interfaces
+
+Add new config :
+#added below lines to add anothe ip address:
+auto wlp2s0:0
+iface wlp2s0:0 inet static
+name Ethernet alias
+address 192.168.1.40
+netmask 255.255.255.0
+network 192.168.1.0
+
+Restart network
+/etc/init.d/networking restart
+
+Other way
+vipin@vipin:/etc/network$ sudo ip addr add 192.168.1.104/24 dev wlp2s0
+vipin@vipin:/etc/network$ sudo ip address show wlp2s0
+
+
+To make Virtualbox  workinhg for internet , guest RHEL7.
+
+in adaptor1-  hostonly
+in adaptor2 - bridged 
+
+in /etc/sysconfig/network-scripts/  add  a file ifcfg-enp0s8 having following entry
+cat /etc/sysconfig/network-scripts/ifcfg-enp0s8
+TYPE=Ethernet
+PROXY_METHOD=none
+BROWSER_ONLY=no
+ONBOOT=yes
+BOOTPROTO=dhcp
+NM_CONTROLLED=no
+
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp0s8
+DEVICE=enp0s8
+******************************************** RHEL7.6  registration
+[vipin@localhost TCS]$ subscription-manager register 
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
+Registering to: subscription.rhsm.redhat.com:443/subscription
+Username: vipint_99
+Password: 
+The system has been registered with ID: e8b8c5a6-2d1a-444d-9b12-c011a4f0e48b
+The registered system name is: localhost.localdomain
+
+
+
+
+

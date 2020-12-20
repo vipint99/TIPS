@@ -1,0 +1,98 @@
+GIT  working 
+
+create a local repository and central repository in github.
+
+git init  --- will create a local repository 
+git clone ---  clone a central repository .
+
+after git init we do add to some remote git master.
+
+git remote add origin "https://github.com/vbg/kons.git"   
+
+git pull origin master   -- get  remote master files locally, it will ask user/password if private git account.
+
+git add <file name>    -- to add it in git local 
+git commit  -m "comments"   -- will commit it to local 
+
+git add -A   --  all files will be added ot index
+git commit -a  -m "comment"   -- all files in index willb ecommitted, 
+
+git branch branch1   -- create a new branch from master
+git checkout branch1   -- to go to branch1 contents
+
+git pull  --  is get the new code from master and also merge.
+
+
+git add images
+ 2048  git status
+ 2049  git commit -m "images added"
+ 2050  git status
+ 2051  git add KONS_Requirement.md
+ 2052  git status
+ 2053  git commit -m "images added"
+ 2054  git status
+ 2055  git commit -a -m "images added"
+ 2056  git push
+ 2057  git log
+ 2058  git status
+ 2059  ls ~/.ssh/
+ 2060  cat ~/.ssh/id_rsa
+ 2061  cat ~/.ssh/id_rsa.pub
+ 2062  ssh-keygen
+ 2063  cat /home/vipin/.ssh/id_rsagit.pub.
+ 2064  cat /home/vipin/.ssh/id_rsagit.pub
+ 2065  ssh-keygen
+ 2066  cat /home/vipin/.ssh/id_rsagit.pub
+ 2067  git push origin master
+
+ 2077  git push origin master
+ 2078  git commit -a -m "images added"
+ 2079  git push origin master
+ 2080  git commit -a -m "revied Kons.md"
+ 2081  git push origin master
+ 2082  git commit -a -m "revied Kons.md"
+ 2083  git push origin master
+
+********************************************************************
+
+Create a new repository
+
+git clone http://gitlab.uidai.demo/root/manageiq_automation.git
+cd manageiq_automation
+touch README.md
+git add README.md
+git commit -m "add README"
+git push -u origin master
+
+Push an existing folder
+
+cd existing_folder
+git init
+git remote add origin http://gitlab.uidai.demo/root/manageiq_automation.git
+git add .
+git commit -m "Initial commit"
+git push -u origin master
+
+Push an existing Git repository
+
+cd existing_repo
+git remote rename origin old-origin
+git remote add origin http://gitlab.uidai.demo/root/manageiq_automation.git
+git push -u origin --all
+git push -u origin --tags
+
+GIT PUSH with a Password 
+19
+
+I used below format
+
+ git push https://username:password@myrepository.biz/file.git --all 
+
+and if your password or username contain @ replace it with %40
+
+TO  override all local files in a git pull 
+
+git  fetch all branches
+
+
+

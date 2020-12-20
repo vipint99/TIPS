@@ -1,0 +1,48 @@
+Basic Syntax
+https://www.markdownguide.org/basic-syntax/
+
+Pandoc - md  files
+md->pdf  cuts the long lines 
+
+solution is 
+% Contents of listings-setup.tex
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily,
+    numbers=left,
+    numberstyle=\footnotesize,
+    stepnumber=2,
+    numbersep=5pt,
+    backgroundcolor=\color{black!10},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=true,
+    breakautoindent=true,
+    linewidth=\textwidth
+}
+
+Then run ppandoc as 
+Then save this file as listings-setup.tex. It is all there is to do. Now compile your file with:
+
+pandoc --listings -H listings-setup.tex --toc -V geometry:"left=1cm, top=1cm, right=1cm, bottom=2cm" -V fontsize=12pt test.md -o test.pdf
+********************************************************************
+
+Page breaks
+https://stackoverflow.com/questions/22601053/pagebreak-in-markdown-while-creating-pdf
+Since the original specification Markdown was designed for HTML output (which doesn't have the concept of pages) there is no support for page breaks.
+
+Doxygen uses LaTeX to generate its PDFs. It doesn't seem to support inline LaTeX¹, but you should be able to modify the intermediate .tex file and then use pdflatex to generate your PDF:
+
+    Use Doxygen to generate a .tex file
+    Edit the .tex file manually add \newpage wherever you want page breaks
+    Run pdflatex documentation.tex
+    Examine documentation.pdf
+
+This question may be a useful reference for step 3 above.
+
+¹Doxygen does support inline LaTeX formulas, but I wasn't able to find any mention of arbitrary inline LaTeX commands like \newpage that operate in the text environment.

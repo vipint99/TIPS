@@ -1,0 +1,54 @@
+POSTGRESS"
+sudo -u postgres psql   --> direct on psql prompt
+
+postgres=# \password miquser    --> change password of a created user
+
+\?  -- help
+\l   --- list of databases
+\dt -- listof tables
+\du  or \dg  - for all users
+
+
+
+sudo -u postgress    --> on psql shell 
+
+>createdb  <dbname>
+>createuser <username> 
+
+GRANT CONNECT ON DATABASE miquser_db TO miquser;      --> grant access to a user to database
+
+
+>
+Set the PGPASSWORD environment variable inside the script before calling psql
+
+PGPASSWORD=pass1234 psql -U MyUsername myDatabaseName
+
+psql "postgresql://$DB_USER:$DB_PWD@$DB_SERVER/$DB_NAME"
+
+[root@miqdb1 data]# export PGPASSWORD="wipro123";psql -h localhost -U miquser -d miquser_db  
+
+                                                             ^
+miquser_db=>  create table miq_ipmi_service ( ipmi_ip inet PRIMARY KEY, lan1_mac macaddr, hostname varchar(50),service varchar(50) );
+
+miquser_db=> insert into miq_ipmi_service ( ipmi_ip,lan1_mac,hostname,service) values ('172.16.1.134','F0:D4:E2:E7:7D:CC',"slave2.uidai.demo","mysql_slave");
+ERROR:  column "slave2.uidai.demo" does not exist
+LINE 1: ...rvice) values ('172.16.1.134','F0:D4:E2:E7:7D:CC',"slave2.ui...
+                                                             ^
+miquser_db=> insert into miq_ipmi_service ( ipmi_ip,lan1_mac,hostname,service) values ('172.16.1.134','F0:D4:E2:E7:7D:CC','slave2.uidai.demo','mysql_slave');
+
+
+INSERT INTO link (url, name)
+VALUES
+ ('http://www.google.com','Google'),
+ ('http://www.yahoo.com','Yahoo'),
+ ('http://www.bing.com','Bing');
+
+INSERT INTO products (product_no, name) VALUES (1, 'Cheese');
+INSERT INTO products VALUES (1, 'Cheese');
+
+The second form is a PostgreSQL extension. It fills the columns from the left with as many values as are given, and the rest will be defaulted.
+
+For clarity, you can also request default values explicitly, for individual columns or for the entire row:
+
+******************************************************
+

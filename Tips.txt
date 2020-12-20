@@ -1,0 +1,348 @@
+Cronjob expression <second> <minute> <hour> <day-of-month> <month> <day-of-week> <year> <commands> 
+* (all) – it is used to specify that event should happen for every time unit. For example, “*” in the <minute> field – means “for every minute”
+? (any)  –  it is utilized in the <day-of-month> and <day-of -week> fields to denote the arbitrary value – neglect the field value. For example, if we want to fire a script at “5th of every month” irrespective of what the day of the week falls on that date, then we specify a “?” in the <day-of-week> field
+– (range) – it is used to determine the value range. For example, “10-11” in <hour> field means “10th and 11th hours”
+, (values) – it is used to specify multiple values. For example, “MON, WED, FRI” in <day-of-week> field means on the days “Monday, Wednesday, and Friday”
+/ (increments) – it is used to specify the incremental values. For example, a “5/15” in the <minute> field, means at “5, 20, 35 and 50 minutes of an hour”
+L (last) – it has different meanings when used in various fields. For example, if it’s applied in the <day-of-month> field, then it means last day of the month, i.e. “31st for January” and so on as per the calendar month. It can be used with an offset value, like “L-3“, which denotes the “third to last day of the calendar month”. In the <day-of-week>, it specifies the “last day of a week”. It can also be used with another value in <day-of-week>, like “6L“, which denotes the “last Friday”
+W (weekday) – it is used to specify the weekday (Monday to Friday) nearest to a given day of the month. For example, if we specify “10W” in the <day-of-month> field, then it means the “weekday near to 10th of that month”. So if “10th” is a Saturday, then the job will be triggered on “9th”, and if “10th” is a Sunday, then it will trigger on “11th”. If you specify “1W” in the <day-of-month> and if “1st” is Saturday, then the job will be triggered on “3rd” which is Monday, and it will not jump back to the previous month # – it is used to specify the “N-th” occurrence of a weekday of the month, for example, “3rd Friday of the month” can be indicated as “6#3
+
+0 0 12 * * ?
+Fire at 12:00 PM (noon) every day
+0 15 10 ? * *
+Fire at 10:15 AM every day
+0 15 10 * * ?
+Fire at 10:15 AM every day
+0 15 10 * * ? *
+Fire at 10:15 AM every day
+0 15 10 * * ? 2005
+Fire at 10:15 AM every day during the year 2005
+0 * 14 * * ?
+Fire every minute starting at 2:00 PM and ending at 2:59 PM, every day
+0 0/5 14 * * ?
+Fire every 5 minutes starting at 2:00 PM and ending at 2:55 PM, every day
+0 0/5 14,18 * * ?
+Fire every 5 minutes starting at 2:00 PM and ending at 2:55 PM, AND fire every 5 minutes starting at 6:00 PM and ending at 6:55 PM, every day
+0 0-5 14 * * ?
+Fire every minute starting at 2:00 PM and ending at 2:05 PM, every day
+0 10,44 14 ? 3 WED
+Fire at 2:10 PM and at 2:44 PM every Wednesday in the month of March
+0 15 10 ? * MON-FRI
+Fire at 10:15 AM every Monday, Tuesday, Wednesday, Thursday and Friday
+0 15 10 15 * ?
+Fire at 10:15 AM on the 15th day of every month
+0 15 10 L * ?
+Fire at 10:15 AM on the last day of every month
+0 15 10 ? * 6L
+Fire at 10:15 AM on the last Friday of every month
+0 15 10 ? * 6L
+Fire at 10:15 AM on the last Friday of every month
+0 15 10 ? * 6L 2002-2005
+Fire at 10:15 AM on every last friday of every month during the years 2002, 2003, 2004, and 2005
+0 15 10 ? * 6#3
+Fire at 10:15 AM on the third Friday of every month
+0 0 12 1/5 * ?
+Fire at 12 PM (noon) every 5 days every month, starting on the first day of the month
+0 11 11 11 11 ?
+Fire every November 11 at 11:11 AM
+
+To connect to FUSE console : localhost:8181  admin/admin
+
+The OSGi Alliance, formerly known as the Open Services Gateway initiative, is an open standards organization founded in March 1999 that originally specified and continues to maintain the OSGi standard.
+
+Apache CXF is a web service development framework that can be utilized to develop SOAP and Rest web services. CXF is fully compliant with JAX-RS and JAX-Ws standard.
+
+JAX-RS: Java API for RESTful Web Services (JAX-RS) is a Java programming language API spec that provides support in creating web services according to the Representational State Transfer (REST) architectural pattern. 
+
+
+SAMBA user = VIPIN /redhat
+mount -t cifs -o username=VIPN,password=vipin@123 //laptop-ejec2ss/c/ /c-drive/
+
+
+Command for IP connectivity performance  ->  iperf , mtr
+
+for RAM and system data  -> dmidecode  [-t n]
+		Keyword 
+		Types 
+		bios 
+		system 
+		1, 12, 15, 23, 32 
+		baseboard 
+		2, 10, 41 
+		chassis 
+		3 
+		processor 
+		4 
+		memory 
+		5, 6, 16, 17 
+		cache 
+		7 
+		connector 
+		8 
+		slot 
+		9
+		Keywords are matched case-insensitively. The following command lines are equivalent: 
+		dmidecode --type 0 --type 13 
+
+For  performance at port level on card  -> smokeping
+For rotating logs  --> logrotate  command, can be run from cron.daily  in a script, /etc/logrotate.conf  has some settings, also /etc/logrotate.d/* can have config files like 
+   
+
+		[root@srvdc1esbha2 logrotate.d]# cat nagioslog
+		/var/log/nagios/*perfdata {
+			       daily
+			       rotate 15
+			       dateext
+			       dateformat -%d%m%Y
+			       copytruncate
+			       compress
+			       notifempty
+			       missingok
+			       }
+
+				[root@srvdc1esbha2 cron.hourly]# cd ../cron.daily/
+				[root@srvdc1esbha2 cron.daily]# ls
+				logrotate  man-db.cron  mlocate  rhsmd
+				[root@srvdc1esbha2 cron.daily]# cat logrotate
+				#!/bin/sh
+
+				/usr/sbin/logrotate -s /var/lib/logrotate/logrotate.status /etc/logrotate.conf
+				EXITVALUE=$?
+				if [ $EXITVALUE != 0 ]; then
+				    /usr/bin/logger -t logrotate "ALERT exited abnormally with [$EXITVALUE]"
+				fi
+				exit 0
+				[root@srvdc1esbha2 cron.daily]# cat /etc/logrotate.conf
+				# see "man logrotate" for details
+				# rotate log files weekly
+				weekly
+
+				# keep 4 weeks worth of backlogs
+				rotate 4
+
+				# create new (empty) log files after rotating old ones
+				create
+
+				# use date as a suffix of the rotated file
+				dateext
+
+				# uncomment this if you want your log files compressed
+			  #compress
+
+				# RPM packages drop log rotation information into this directory
+				include /etc/logrotate.d
+
+				# no packages own wtmp and btmp -- we'll rotate them here
+				/var/log/wtmp {
+				    monthly
+				    create 0664 root utmp
+					minsize 1M
+				    rotate 1
+				}
+
+				/var/log/btmp {
+				    missingok
+				    monthly
+				    create 0600 root utmp
+				    rotate 1
+				}
+
+				# system-specific logs may be also be configured here.
+
+JSON PARSER -jq 
+https://stedolan.github.io/jq/tutorial/
+
+UNIX TIPS
+To add a person to do commands without SUDO  add that group or user in sudo VISUDO file as 
+username ALL=(ALL) NOPASSWD: ALL
+%groupname ALL=(ALL)  ALL
+
+glances  command it installed it gives overall performance of the system
+
+awk -v a="$var1" -v b="$var2" 'BEGIN {print a,b}'
+
+To DO THREAD DUMP 
+> jcmd <PID> Thread.print > a.txt
+
+TO DO JAVA HEAP DUMP
+
+jmap -dump:format=b,file=<file_name> <pid>
+
+For example, jmap -dump:format=b,file=heap_dump.hprof 4988
+
+TO SEARCH for a text in multiple files
+grep -rnw '/path/to/somewhere/' -e 'pattern'
+
+    -r or -R is recursive,
+    -n is line number, and
+    -w stands for match the whole word.
+    -l (lower-case L) can be added to just give the file name of matching files.
+
+to trace network and ping in one command
+mtr -r -w -c 20 -o "LSDR NBAW JMXI" 202.58.125.2
+
+AWK - different field separator
+You have multiple ways to set : as separator:
+
+awk -F: '{print $1}'
+
+awk -v FS=: '{print $1}'
+
+awk '{print $1}' FS=:
+
+awk 'BEGIN{FS=":"} {print $1}'
+
+to know all groups and Users in ubuntu 
+referable to use getent passwd / getent group 
+
+ to know IP addresss  - hostname -I
+who -b  > to know last system reboot time
+
+
+PARTITION DISK increase , increase root partition
+use sudo gparted tool , after backup
+use a bootable usb to boot the system in try ubuntu  and then do gparted 
+Just extend by resize the partition , move swap if required else delete and create it again.
+After partiton is created  say /dev/sda4  mount it on machine
+sudo mkdir  /mnt/<mount name>
+ sudo mount -t auto -v /dev/sdb1 /mnt/mount_name
+chnage owner ship and permission to this folder 
+
+ip route get <IPADDRESS>  to know which interface was used to go out
+
+When you are stuck with SUDO not working use
+ pkexec vi <command>
+and correcrt the sudoers.d/file
+
+To open bz2 and xz files
+
+   To preserve the original archive, add the -k option:
+   bzip2 -dk filename.bz2
+   tar -xf code.tar.xz
+
+to preseve date and time while doing copy
+cp -ap  <dir1> <Dir2>
+
+rm -rf {kube1,work2}/lib  will be converted to 
+rm -rf kube1/lib work2/lib 
+
+SSH TIPS:
+$ ssh admin@172.17.0.2 -p 8101
+Unable to negotiate with 172.17.0.2 port 8101: no matching host key type found. Their offer: ssh-dss
+ SOLVE it by
+    $ ssh -oHostKeyAlgorithms=+ssh-dss admin@localhost -p 8101
+TO permanenty add a client to ssh server without a password.
+there is a file on ssh server side  /etc/ssh/sshd_config  .
+It has a entry for 
+
+AuthorizedKeysFile      .ssh/authorized_keys
+
+We need to append our client side generated public key into this authorized_keys file.
+ssh-keygen  will produce pvt and public keys on client side.
+
+To make a session time out higher either client ssh should keep polling in a innterval or server sshd shhould keep polling all ssh clients.
+
+On client side make  local SSH config file in ~/.ssh/config 
+
+ServerAliveInterval 120
+
+On server side  /etc/ssh/sshd_config   add following .
+
+
+
+If stil password less shh fails  and following error occured 
+
+>>>>>>>>>>>sign_and_send_pubkey: signing failed: agent refused operation
+ do following to add on client machine  
+ $ ssh-add
+confirm with $ssh-add -l
+
+
+sudo systemctl start docker
+
+CENTOS FIREWALL OPENING
+firewall-cmd --list-all
+firewall-cmd  --permanent --add-port=9000-9010/tcp
+firewall-cmd --reload
+
+
+******************** configure static IP address on Centos/RHEL ***************
+http://ask.xmodulo.com/configure-static-ip-address-centos7.html
+
+check if Network manager is running in that case ifconfig scripts in  /etc/sysconfig/network-scripts are not effective .
+
+$ systemctl status NetworkManager.service 
+To check which network interface is managed by Network Manager, run:
+ $ nmcli dev status 
+	[vipin@localhost network-scripts]$ nmcli dev status 
+	DEVICE  TYPE      STATE         CONNECTION         
+	enp0s8  ethernet  connected     Wired connection 1 
+	enp0s3  ethernet  disconnected  --                 
+	lo      loopback  unmanaged     -- 
+
+Go to the /etc/sysconfig/network-scripts directory, and locate its configuration file (ifcfg-enp0s3). Create it if not found.
+
+How to configure static ip and hpst to guest network in Virtualbox 
+https://www.tecmint.com/network-between-guest-vm-and-host-virtualbox/
+
+If inyternet does not work on Guest machin echeck route -n, default route should not be with interface of host-only network(enps03), it should be with NAT ( enps08).
+Remove any such if there. To make it permanenet , check /etc/sysconfig/network-scripts/ifcfg-enp0s3
+change DEFROUTE=no . ( it was yes)
+
+
+*****************************************sshfs remote mount
+If following error occurs 
+sshfs vipin@vmcentos:/home/vipin VMCENTOS/
+fuse: bad mount point `VMCENTOS/': Transport endpoint is not connected
+
+just do mount , check if related mount is already existing, umount <>  and then do sshfs again  
+
+************************************** prompt Change ****************
+to change prompt in bash edir .bashrc 
+Big W give only current dir    
+PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\W\[\033[00m\]\$ '
+
+small w gives Fullpath 
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+******************** vim settings  ************
+
+compare 2 files : 
+pr  -m English Spanish
+
+2016-01-18 00:34                                                  Page 1
+
+this is something                esto es algo
+hello, there                     Hola
+
+To have split window open in Vim and compare 2 files.
+
+vim -O +'windo set scrollbind' /etc/profile /etc/profile.pacnew
+
+***************************************  systemctl service *******
+
+RHEL7.0 uses  systemd and all services are controlled by this.
+files for services are stored in following directories and priority order is 
+3.  /usr/lib/systemd/system   2. /run/systemd/system 1. /etc/systemd/system
+
+
+*********************************************
+     Type at the command prompt
+
+        tar xzf file.tar.gz- to uncompress a gzip tar file (.tgz or .tar.gz) 
+        tar xjf file.tar.bz2 - to uncompress a bzip2 tar file (.tbz or .tar.bz2) to extract the contents. 
+        tar xf file.tar - to uncompressed tar file (.tar) 
+        tar xC /var/tmp -f file.tar - to uncompress tar file (.tar) to another directory 
+
+        x = eXtract, this indicated an extraction c = create to create )
+        v = verbose (optional) the files with relative locations will be displayed.
+        z = gzip-ped; j = bzip2-zipped
+        f = from/to file ... (what is next after the f is the archive file)
+        C = directory. In c and r mode, this changes the directory before adding the following files. In x mode, changes directoriy after opening the archive but before extracting entries from the archive. 
+    The files will be extracted in the current folder (most of the times in a folder with the name 'file-1.0'). 
+
+*********stucked session***************************************** Kill a Telent 
+
+To exit the telnet session, type CTRL + ] on your keyboard. This changes the command prompt to show as 'telnet>'. Back in the terminal, type in the word 'close' 
+
+

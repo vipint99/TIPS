@@ -1,0 +1,331 @@
+Docker by default store all data in /var/lib/docker   and it gets biggere over time. to move it ot different localtion
+https://www.guguweb.com/2019/02/07/how-to-move-docker-data-directory-to-another-location-on-ubuntu/
+
+stop docker daemon:
+sudo service docker stop
+
+vi /etc/docker/daemon.json
+
+add new location 
+
+{ 
+   "graph": "/path/to/your/docker" 
+}
+
+sudo rsync -aP /var/lib/docker/ /path/to/your/docker
+sudo mv /var/lib/docker /var/lib/docker.old
+sudo service docker start
+Check everything OK
+then remove .old docker and continue with new lcoation.
+
+
+********************************************************************
+To open display from VM	
+in VM xhost +SI:localuser:root
+
+https://stackoverflow.com/questions/30172605/how-to-get-into-a-docker-container
+docker attach will let you connect to your Docker container, but this isn't really the same thing as ssh. If your container is running a webserver, for example, docker attach will probably connect you to the stdout of the web server process. It won't necessarily give you a shell.
+
+To read docker logs  outside docker
+sudo journalctl -fu docker.service
+
+
+The docker exec command is probably what you are looking for; this will let you run arbitrary commands inside an existing container. For example:
+
+docker exec -it <mycontainer> bash
+o bash into a running container, type this:
+
+docker exec -t -i container_name /bin/bash
+Let's say, for reasons that are your own, you really do want to use SSH. It takes a few steps, but it can be done. Here are the commands that you would run inside the container to set it up...
+
+
+apt-get update
+apt-get install openssh-server
+
+mkdir /var/run/sshd
+chmod 0755 /var/run/sshd
+/usr/sbin/sshd
+
+useradd --create-home --shell /bin/bash --groups sudo username ## includes 'sudo'
+passwd username ## Enter a password
+
+apt-get install x11-apps ## X11 demo applications (optional)
+ifconfig | awk '/inet addr/{print substr($2,6)}' ## Display IP address (optional)
+
+Now you can even run graphical applications (if they are installed in the container) using X11 forwarding to the SSH client:
+
+ssh -X username@IPADDRESS
+xeyes ## run an X11 demo app in the client
+
+SSSH  DOCKER TO CONNECT TO ANY DOCKER
+DOCKERHUB   vipint99/Kaddu_1_ka
+
+https://github.com/jeroenpeeters/docker-ssh
+
+
+docker run -d -p 2222:22 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -e CONTAINER=my-container -e AUTH_MECHANISM=noAuth \
+  jeroenpeeters/docker-ssh
+
+to run a docker wiyth name and container and hostname 
+docker run -it -d -p <>:<> --name vip1 -v <local>:<remote in docker> -h <VIP HOST> image
+
+
+ssh localhost -p 2222
+
+VOLUMES in COntainer  sharing data from host system
+
+http://container-solutions.com/understanding-volumes-docker/
+
+To know all volumes of a container
+docker inspect -f "{{json .Mounts}}" nagios4 
+
+
+
+docker build
+
+This method allows the users to build their own Docker images.
+Syntax
+
+docker build  -t ImageName:TagName dir
+
+Options
+
+    -t − is to mention a tag to the image
+
+    ImageName − This is the name you want to give to your image.
+
+    TagName − This is the tag you want to give to your image.
+
+    Dir − The directory where the Docker File is present.
+
+NETWORK SEtting options while run a docker image
+--dns=[]           : Set custom dns servers for the container
+--network="bridge" : Connect a container to a network
+                      'bridge': create a network stack on the default Docker bridge
+                      'none': no networking
+                      'container:<name|id>': reuse another container's network stack
+                      'host': use the Docker host network stack
+                      '<network-name>|<network-id>': connect to a user-defined network
+--network-alias=[] : Add network-scoped alias for the container
+--add-host=""      : Add a line to /etc/hosts (host:IP)
+--mac-address=""   : Sets the container's Ethernet device's MAC address
+--ip=""            : Sets the container's Ethernet device's IPv4 address
+--ip6=""           : Sets the container's Ethernet device's IPv6 address
+--link-local-ip=[] : Sets one or more container's Ethernet device's link local IPv4/IPv6 addresses
+
+
+To resolve  docker hostname and ping by names rather than ip .
+
+1.  Assign a fix  IP  while runninhg docker
+https://docs.docker.com/engine/reference/commandline/network_connect/#network-implications-of-stopping-pausing-or-restarting-containers
+
+to connect a running container to another network
+docker network connect --ip 10.10.36.122 multi-host-network container2
+
+
+
+2.  Assign a network alias while running a docker
+$ docker run --net=isolated_nw -itd --name=container6 --net-alias app busybox
+8ebe6767c1e0361f27433090060b33200aac054a68476c3be87ef4005eb1df17
+
+Now let us connect container6 to the local_alias network with a different network-scoped alias.
+
+$ docker network connect --alias scoped-app local_alias container6
+container6 in this example now is aliased as app in network isolated_nw and as scoped-app in network local_alias.
+
+3.  Run a proxy server to resolve 
+Start the DNS Server
+
+$ docker run --hostname dns.mageddo --name dns-proxy-server -p 5380:5380 \
+-v /var/run/docker.sock:/var/run/docker.sock \
+-v /etc/resolv.conf:/etc/resolv.conf \
+defreitas/dns-proxy-server
+
+DoCKER NETWORK
+how to know ip address of my docker
+
+ https://stackoverflow.com/questions/43803849/my-docker-container-does-not-have-ip-address-why
+
+
+Elasticsearch  
+
+On Linux, you can increase the limits by running the following command as root:
+
+sysctl -w vm.max_map_count=262144
+
+To set this value permanently, update the vm.max_map_count setting in /etc/sysctl.conf. To verify after rebooting, run sysctl vm.max_map_count.
+
+to run multiple files from a folder .
+https://discuss.elastic.co/t/want-to-process-multiple-files-that-exist-in-one-folder/28384/10
+
+ELASTICSEARCH Commands
+https://chartio.com/resources/tutorials/how-to-delete-data-from-elasticsearch/
+
+http://localhost:9200/_cat/indices?v  to see all indexs
+localhost:9200/index/type/document , index is like database, type is like class , document is a row
+
+http://localhost:9200/vip2hm/doc/_search  --> gives all in index vip2hm, type doc
+
+
+docker compose and running swarm 
+https://docs.docker.com/get-started/part3/#take-down-the-app-and-the-swarm
+
+JBOSFUSE DOCKR
+
+to know IP address of a docker container  ( ps -aq for all ip address of images)
+ >docker inspect -f '{{.Name}} - {{.NetworkSettings.IPAddress }}' $(docker ps -q)
+output: /fuse2 - 172.17.0.3
+
+To run Docker in Cgroup or limited memory and CPU , memory-shared to be enabled in grub 
+
+
+    Log into the Ubuntu or Debian host as a user with sudo privileges.
+
+    Edit the /etc/default/grub file. Add or edit the GRUB_CMDLINE_LINUX line to add the following two key-value pairs:
+
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
+
+    Save and close the file.
+
+    Update GRUB.
+
+    $ sudo update-grub
+
+    If your GRUB configuration file has incorrect syntax, an error occurs. In this case, repeat steps 3 and 4.
+
+    The changes take effect when the system is rebooted.
+
+--cpus="1.5"  , --memory="60m" , --memory-swap="90m" 
+
+Install docker from net for non-internet machines
+https://stackoverflow.com/questions/42981114/install-docker-ce-17-03-on-rhel7
+https://download.docker.com/linux/centos/7/x86_64/stable/Packages/
+if tar , then open tar put files in /usr/bin .
+docker load -i docker_image.tar
+
+The Dockerfile EXPOSE command:
+
+EXPOSE 7000-8000
+
+or The Docker run command:
+
+docker run --expose=7000-8000
+
+Or instead you can publish a range of ports to the host machine via Docker run command:
+
+docker run -p 7000-8000:7000-8000
+
+RUN DOCKER WITH A FIXED IP 
+Easy with Docker version 1.10.1, build 9e83765.
+
+First you need to create you own docker network (mynet123)
+
+docker network create --subnet=172.18.0.0/16 mynet123
+
+than simply run the image (I'll take ubuntu as example)
+
+docker run --net mynet123 --ip 172.18.0.22 -it ubuntu bash
+
+then in ubuntu shell
+
+ip addr
+
+Additionally you could use
+
+    --hostname to specify a hostname
+    --add-host to add more entries to /etc/hosts
+
+Docker inspect only IP address
+ >> docker inspect -f '{{ .NetworkSettings.IPAddress }}' my-httpd-container
+
+To install Vim editor in docker
+apt-get update
+apt-get install vim
+
+
+To run a local registry and fetch from it 
+docker run --name registry -p 5000:5000 registry:2
+docker tag <IMAGE> localhost:5000/<IMAGE> 
+docker push  localhost:5000/<IMAGE> 
+now
+docker pull localhost:5000/<IMAGE> 
+to search
+curl -s http://localhost:5000/v2/_catalog?n=4|python -m json.tool
+
+DOCKER Daemon to start as soon as VM starts
+
+systemctl enable docker.service
+to run as particulat docker at start 
+Create the file /etc/systemd/system/docker_demo_container.service
+	
+	[Unit]
+	Wants=docker.service
+	After=docker.service
+	 
+	[Service]
+	RemainAfterExit=yes
+	ExecStart=/usr/bin/docker start my_container_name
+	ExecStop=/usr/bin/docker stop my_container_name
+	 
+	[Install]
+	WantedBy=multi-user.target
+
+	Now I can start the service
+ 
+	systemctl start docker_demo_container
+
+	And I can enable the service so it is executed at boot
+	
+	systemctl enable docker_demo_container
+
+
+Docker login fails on Ubuntu LTS18.04
+
+   sudo mv /usr/bin/docker-credential-secretservice /usr/bin/docker-credential-secretservice_X
+  docker login https://index.docker.io/v1/
+
+******************************************** CGROUPS and NAME SPACE  *********************
+https://www.youtube.com/watch?v=0Xb421-9CTo
+
+ Cgroups   list can be found  at /proc/cgroups
+  CPU cgroups allocation process 
+                            $systemd-cglc  cpu   
+  Memory   :   $systemd-cglc  memory
+
+  Linux support 6 namespace 
+ Inter Process Communications (IPC) , Mount (mnt), Network (net),Process (pid), U
+
+
+serID(user),UTS
+
+**********************************************************************************************
+To change registry of a docker in ubuntu
+
+Earlier this could be achieved using DOCKER_OPTS in the /etc/default/docker config file which worked on Ubuntu 14:04 and had some issues on Ubuntu 15:04. Not sure if this has been fixed.
+
+The below line needs to go into the file /etc/default/docker on the host which runs the docker daemon. The change points to the private registry is installed in your local network. Note: you would require to restart the docker service followed with this change.
+
+DOCKER_OPTS="--insecure-registry <priv registry hostname/ip>:<port>"
+
+DOCKER  LOGS Seeing
+
+Last 10 min 
+docker logs  --since 10m awx_task
+
+********************************************************** DO288 *************************************************
+Here is another version if you have to reference a specific docker file:
+
+A sample Docke rcompose file :
+
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    build:
+      context: ../..
+      dockerfile: ./docker/nginx/Dockerfile
+    image: my_nginx:latest
+
+

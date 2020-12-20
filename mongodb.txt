@@ -1,0 +1,7 @@
+Mongodb 
+Install mongodb server , client , 
+
+https://docs.mongodb.com/manual/reference/method/cursor.skip/
+
+
+

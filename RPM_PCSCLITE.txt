@@ -1,0 +1,2264 @@
+********************* Bilding PCSC LITE package on RHEL7
+[vipin@localhost TCS]$ yum localinstall  pcsc-lite-1.8.8-8.el7.src.rpm
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+You need to be root to perform this command.
+[vipin@localhost TCS]$ sudo yum localinstall  pcsc-lite-1.8.8-8.el7.src.rpm
+[sudo] password for vipin: 
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+This system is not registered with an entitlement server. You can use subscription-manager to register.
+Examining pcsc-lite-1.8.8-8.el7.src.rpm: pcsc-lite-1.8.8-8.el7.src
+Cannot add package pcsc-lite-1.8.8-8.el7.src.rpm to transaction. Not a compatible architecture: src
+Nothing to do
+[vipin@localhost TCS]$ sudo yum install buildrpm
+[sudo] password for vipin: 
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+This system is not registered with an entitlement server. You can use subscription-manager to register.
+There are no enabled repos.
+ Run "yum repolist all" to see the repos you have.
+ To enable Red Hat Subscription Management repositories:
+     subscription-manager repos --enable <repo>
+ To enable custom repositories:
+     yum-config-manager --enable <repo>
+[vipin@localhost TCS]$ sudo vi sudoers
+[vipin@localhost TCS]$ sudo vi /etc/sudoers
+[vipin@localhost TCS]$ ls
+pcsc-lite-1.8.8-8.el7.src.rpm  rpmbuild
+[vipin@localhost TCS]$ yum repolist all
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+repolist: 0
+[vipin@localhost TCS]$ sudo yum repolist all
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+This system is not registered with an entitlement server. You can use subscription-manager to register.
+repolist: 0
+[vipin@localhost TCS]$ subscription-manager
+subscription-manager      subscription-manager-gui  
+[vipin@localhost TCS]$ subscription-manager register 
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
+Registering to: subscription.rhsm.redhat.com:443/subscription
+Username: vipint_99
+Password: 
+The system has been registered with ID: e8b8c5a6-2d1a-444d-9b12-c011a4f0e48b
+The registered system name is: localhost.localdomain
+[vipin@localhost TCS]$  sudo yum repolist all
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+This system is registered with an entitlement server, but is not receiving updates. You can use subscription-manager to assign subscriptions.
+repolist: 0
+[vipin@localhost TCS]$ subscription-manager list -available
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
+Usage: subscription-manager list [OPTIONS]
+
+subscription-manager: error: no such option: -a
+[vipin@localhost TCS]$ subscription-manager list
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
++-------------------------------------------+
+    Installed Product Status
++-------------------------------------------+
+Product Name:   Red Hat Enterprise Linux Server
+Product ID:     69
+Version:        7.6
+Arch:           x86_64
+Status:         Not Subscribed
+Status Details: Not supported by a valid subscription.
+Starts:         
+Ends:           
+[vipin@localhost TCS]$ subscription-manager list --available
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
++-------------------------------------------+
+    Available Subscriptions
++-------------------------------------------+
+Subscription Name:   Red Hat Developer Subscription
+Provides:            dotNET on RHEL Beta (for RHEL Server)
+                     Red Hat CodeReady Linux Builder for x86_64
+                     Red Hat Enterprise Linux for SAP HANA for x86_64
+                     Red Hat Ansible Engine
+                     RHEL for SAP HANA - Update Services for SAP Solutions
+                     Red Hat Enterprise Linux Scalable File System (for RHEL
+                     Server) - Extended Update Support
+                     RHEL for SAP HANA - Extended Update Support
+                     Red Hat Container Images Beta
+                     Red Hat Enterprise Linux Atomic Host Beta
+                     Red Hat Container Images
+                     Red Hat Enterprise Linux High Availability (for RHEL
+                     Server) - Extended Update Support
+                     Red Hat Enterprise Linux Load Balancer (for RHEL Server)
+                     Red Hat Container Development Kit
+                     Red Hat Beta
+                     Red Hat EUCJP Support (for RHEL Server) - Extended Update
+                     Support
+                     RHEL for SAP (for IBM Power LE) - Update Services for SAP
+                     Solutions
+                     Red Hat Enterprise Linux High Availability for x86_64
+                     MRG Realtime
+                     Red Hat Enterprise Linux Load Balancer (for RHEL Server) -
+                     Extended Update Support
+                     dotNET on RHEL (for RHEL Server)
+                     Red Hat Enterprise Linux High Availability - Update
+                     Services for SAP Solutions
+                     Oracle Java (for RHEL Server)
+                     Red Hat Enterprise Linux Resilient Storage for x86_64
+                     Red Hat Enterprise Linux Server - Update Services for SAP
+                     Solutions
+                     Red Hat Software Collections (for RHEL Server)
+                     Red Hat Enterprise Linux for ARM 64
+                     Red Hat Enterprise Linux High Performance Networking (for
+                     RHEL Server)
+                     Red Hat Enterprise Linux Scalable File System (for RHEL
+                     Server)
+                     Red Hat Enterprise Linux for Real Time
+                     Red Hat Enterprise Linux High Performance Networking (for
+                     RHEL Server) - Extended Update Support
+                     RHEL for SAP - Update Services for SAP Solutions
+                     Oracle Java (for RHEL Server) - Extended Update Support
+                     Red Hat Enterprise Linux Atomic Host
+                     Red Hat Enterprise Linux Server - Extended Update Support
+                     Red Hat CodeReady Linux Builder for ARM 64
+                     Red Hat Developer Tools (for RHEL Server)
+                     Red Hat Software Collections Beta (for RHEL Server)
+                     Red Hat Enterprise Linux Server
+                     Red Hat Enterprise Linux for SAP Applications for x86_64
+                     Red Hat Developer Tools Beta (for RHEL Server)
+                     Red Hat Enterprise Linux for x86_64
+                     RHEL for SAP - Extended Update Support
+                     Red Hat Developer Toolset (for RHEL Server)
+                     Red Hat Enterprise Linux High Performance Networking (for
+                     RHEL Compute Node)
+                     Red Hat Enterprise Linux Resilient Storage (for RHEL
+                     Server) - Extended Update Support
+                     Red Hat S-JIS Support (for RHEL Server) - Extended Update
+                     Support
+SKU:                 RH00798
+Contract:            
+Pool ID:             8a85f98c651a8899016541eaf3f83d4d
+Provides Management: No
+Available:           16
+Suggested:           1
+Service Level:       Self-Support
+Service Type:        
+Subscription Type:   Standard
+Starts:              Thursday 16 August 2018
+Ends:                Friday 16 August 2019
+System Type:         Physical
+
+Subscription Name:   Red Hat Learning Subscription Basic
+Provides:            
+SKU:                 LS120
+Contract:            11764656
+Pool ID:             8a85f99965c8ca6e0166396ee1785e55
+Provides Management: No
+Available:           1
+Suggested:           1
+Service Level:       None
+Service Type:        None
+Subscription Type:   Standard
+Starts:              Tuesday 02 October 2018
+Ends:                Wednesday 02 October 2019
+System Type:         Physical
+
+[vipin@localhost TCS]$ subscription-manager subscribe --pool=8a85f98c651a8899016541eaf3f83d4d
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
+Successfully attached a subscription for: Red Hat Developer Subscription
+[vipin@localhost TCS]$ subscription-manager list
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
++-------------------------------------------+
+    Installed Product Status
++-------------------------------------------+
+Product Name:   Red Hat Enterprise Linux Server
+Product ID:     69
+Version:        7.6
+Arch:           x86_64
+Status:         Subscribed
+Status Details: 
+Starts:         Thursday 16 August 2018
+Ends:           Friday 16 August 2019
+
+[vipin@localhost TCS]$ ls
+pcsc-lite-1.8.8-8.el7.src.rpm  rpmbuild
+[vipin@localhost TCS]$ subscription-manager repos --list
+You are attempting to run "subscription-manager" which requires administrative
+privileges, but more information is needed in order to do so.
+Authenticating as "root"
+Password: 
++----------------------------------------------------------+
+    Available Repositories in /etc/yum.repos.d/redhat.repo
++----------------------------------------------------------+
+Repo ID:   rhel-7-server-dotnet-debug-rpms
+Repo Name: dotNET on RHEL Debug RPMs for Red Hat Enterprise Linux 7 Server
+Repo URL:  https://cdn.redhat.com/content/dist/rhel/server/7/$releasever/$basear
+           ch/dotnet/1/debug
+Enabled:   0
+
+
+
+[vipin@localhost TCS]$ sudo yum repolist
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+rhel-7-server-rpms                                       | 3.5 kB     00:00     
+(1/3): rhel-7-server-rpms/7Server/x86_64/updateinfo        | 3.2 MB   00:02     
+(2/3): rhel-7-server-rpms/7Server/x86_64/group             | 774 kB   00:02     
+(3/3): rhel-7-server-rpms/7Server/x86_64/primary_db        |  57 MB   00:17     
+repo id                           repo name                               status
+rhel-7-server-rpms/7Server/x86_64 Red Hat Enterprise Linux 7 Server (RPMs 24,344
+repolist: 24,344
+[vipin@localhost TCS]$ yum repolist
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+Repo rhel-7-server-rpms forced skip_if_unavailable=True due to: /etc/pki/entitlement/5703921630206933785-key.pem
+repo id                           repo name                               status
+rhel-7-server-rpms/7Server/x86_64 Red Hat Enterprise Linux 7 Server (RPMs 24,344
+repolist: 24,344
+[vipin@localhost TCS]$ sudo vi  /etc/yum.repos.d/redhat.repo
+[vipin@localhost TCS]$ yum repolist
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+Repo rhel-7-server-devtools-source-rpms forced skip_if_unavailable=True due to: /etc/pki/entitlement/5703921630206933785-key.pem
+Repo rhel-7-server-devtools-beta-debug-rpms forced skip_if_unavailable=True due to: /etc/pki/entitlement/5703921630206933785-key.pem
+Repo rhel-7-server-rpms forced skip_if_unavailable=True due to: /etc/pki/entitlement/5703921630206933785-key.pem
+Repo rhel-7-server-devtools-rpms forced skip_if_unavailable=True due to: /etc/pki/entitlement/5703921630206933785-key.pem
+https://cdn.redhat.com/content/beta/rhel/server/7/x86_64/devtools/1/debug/repodata/repomd.xml: [Errno 14] curl#58 - "unable to load client key: -8178 (SEC_ERROR_BAD_KEY)"
+Trying other mirror.
+https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/devtools/1/os/repodata/repomd.xml: [Errno 14] curl#58 - "unable to load client key: -8178 (SEC_ERROR_BAD_KEY)"
+Trying other mirror.
+https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/devtools/1/source/SRPMS/repodata/repomd.xml: [Errno 14] curl#58 - "unable to load client key: -8178 (SEC_ERROR_BAD_KEY)"
+Trying other mirror.
+https://cdn.redhat.com/content/dist/rhel/server/7/7Server/x86_64/os/repodata/repomd.xml: [Errno 14] curl#58 - "unable to load client key: -8178 (SEC_ERROR_BAD_KEY)"
+Trying other mirror.
+repolist: 0
+[vipin@localhost TCS]$ sudo yum repolist
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+rhel-7-server-devtools-beta-debug-rpms                   | 3.8 kB     00:00     
+rhel-7-server-devtools-rpms                              | 4.0 kB     00:00     
+rhel-7-server-devtools-source-rpms                       | 3.8 kB     00:00     
+rhel-7-server-rpms                                       | 3.5 kB     00:00     
+(1/9): rhel-7-server-devtools-beta-debug-rpms/x86_64/group |  104 B   00:01     
+(2/9): rhel-7-server-devtools-beta-debug-rpms/x86_64/updat |   93 B   00:01     
+(3/9): rhel-7-server-devtools-beta-debug-rpms/x86_64/prima |  15 kB   00:01     
+(4/9): rhel-7-server-devtools-rpms/x86_64/group            |  124 B   00:01     
+(5/9): rhel-7-server-devtools-rpms/x86_64/updateinfo       | 213 kB   00:02     
+(6/9): rhel-7-server-devtools-source-rpms/x86_64/group     |  124 B   00:01     
+(7/9): rhel-7-server-devtools-source-rpms/x86_64/updateinf |   92 B   00:01     
+(8/9): rhel-7-server-devtools-rpms/x86_64/primary_db       | 2.5 MB   00:02     
+(9/9): rhel-7-server-devtools-source-rpms/x86_64/primary_d | 395 kB   00:01     
+repo id                                       repo name                   status
+rhel-7-server-devtools-beta-debug-rpms/x86_64 Red Hat Developer Tools Bet     37
+rhel-7-server-devtools-rpms/x86_64            Red Hat Developer Tools RPM  3,365
+rhel-7-server-devtools-source-rpms/x86_64     Red Hat Developer Tools Sou    902
+rhel-7-server-rpms/7Server/x86_64             Red Hat Enterprise Linux 7  24,344
+repolist: 28,648
+[vipin@localhost TCS]$ ls
+pcsc-lite-1.8.8-8.el7.src.rpm  rpmbuild
+[vipin@localhost TCS]$ sudo yum install buildrpm
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+No package buildrpm available.
+Error: Nothing to do
+[vipin@localhost TCS]$ sudo yum provides buildrpm
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+rhel-7-server-devtools-beta-debug-rpms/x86_64/filelists_ | 132 kB     00:00     
+rhel-7-server-devtools-rpms/x86_64/filelists_db          | 9.7 MB     00:11     
+rhel-7-server-devtools-source-rpms/x86_64/filelists_db   |  92 kB     00:00     
+rhel-7-server-rpms/7Server/x86_64/filelists_db           |  39 MB     00:11     
+No matches found
+[vipin@localhost TCS]$ sudo yum install gcc rpm-build rpm-devel rpmlint make python bash coreutils diffutils patch rpmdevtools
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+Package rpm-build-4.11.3-35.el7.x86_64 already installed and latest version
+Package 1:make-3.82-23.el7.x86_64 already installed and latest version
+Package bash-4.2.46-31.el7.x86_64 already installed and latest version
+Package coreutils-8.22-23.el7.x86_64 already installed and latest version
+Package diffutils-3.3-4.el7.x86_64 already installed and latest version
+Package patch-2.7.1-10.el7_5.x86_64 already installed and latest version
+Resolving Dependencies
+--> Running transaction check
+---> Package gcc.x86_64 0:4.8.5-36.el7 will be updated
+--> Processing Dependency: gcc = 4.8.5-36.el7 for package: gcc-gfortran-4.8.5-36.el7.x86_64
+--> Processing Dependency: gcc = 4.8.5-36.el7 for package: libquadmath-devel-4.8.5-36.el7.x86_64
+--> Processing Dependency: gcc = 4.8.5-36.el7 for package: gcc-c++-4.8.5-36.el7.x86_64
+---> Package gcc.x86_64 0:4.8.5-36.el7_6.2 will be an update
+--> Processing Dependency: cpp = 4.8.5-36.el7_6.2 for package: gcc-4.8.5-36.el7_6.2.x86_64
+--> Processing Dependency: libgomp = 4.8.5-36.el7_6.2 for package: gcc-4.8.5-36.el7_6.2.x86_64
+--> Processing Dependency: libgcc >= 4.8.5-36.el7_6.2 for package: gcc-4.8.5-36.el7_6.2.x86_64
+---> Package python.x86_64 0:2.7.5-76.el7 will be updated
+---> Package python.x86_64 0:2.7.5-79.el7_6 will be an update
+--> Processing Dependency: python-libs(x86-64) = 2.7.5-79.el7_6 for package: python-2.7.5-79.el7_6.x86_64
+---> Package rpm-devel.x86_64 0:4.11.3-35.el7 will be installed
+--> Processing Dependency: popt-devel(x86-64) for package: rpm-devel-4.11.3-35.el7.x86_64
+---> Package rpmdevtools.noarch 0:8.3-5.el7 will be installed
+---> Package rpmlint.noarch 0:1.5-4.el7 will be installed
+--> Running transaction check
+---> Package cpp.x86_64 0:4.8.5-36.el7 will be updated
+---> Package cpp.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package gcc-c++.x86_64 0:4.8.5-36.el7 will be updated
+---> Package gcc-c++.x86_64 0:4.8.5-36.el7_6.2 will be an update
+--> Processing Dependency: libstdc++ = 4.8.5-36.el7_6.2 for package: gcc-c++-4.8.5-36.el7_6.2.x86_64
+--> Processing Dependency: libstdc++-devel = 4.8.5-36.el7_6.2 for package: gcc-c++-4.8.5-36.el7_6.2.x86_64
+---> Package gcc-gfortran.x86_64 0:4.8.5-36.el7 will be updated
+---> Package gcc-gfortran.x86_64 0:4.8.5-36.el7_6.2 will be an update
+--> Processing Dependency: libgfortran = 4.8.5-36.el7_6.2 for package: gcc-gfortran-4.8.5-36.el7_6.2.x86_64
+--> Processing Dependency: libquadmath = 4.8.5-36.el7_6.2 for package: gcc-gfortran-4.8.5-36.el7_6.2.x86_64
+---> Package libgcc.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libgcc.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package libgomp.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libgomp.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package libquadmath-devel.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libquadmath-devel.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package popt-devel.x86_64 0:1.13-16.el7 will be installed
+---> Package python-libs.x86_64 0:2.7.5-76.el7 will be updated
+---> Package python-libs.x86_64 0:2.7.5-79.el7_6 will be an update
+--> Running transaction check
+---> Package libgfortran.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libgfortran.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package libquadmath.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libquadmath.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package libstdc++.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libstdc++.x86_64 0:4.8.5-36.el7_6.2 will be an update
+---> Package libstdc++-devel.x86_64 0:4.8.5-36.el7 will be updated
+---> Package libstdc++-devel.x86_64 0:4.8.5-36.el7_6.2 will be an update
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package              Arch      Version             Repository             Size
+================================================================================
+Installing:
+ rpm-devel            x86_64    4.11.3-35.el7       rhel-7-server-rpms    107 k
+ rpmdevtools          noarch    8.3-5.el7           rhel-7-server-rpms     97 k
+ rpmlint              noarch    1.5-4.el7           rhel-7-server-rpms    229 k
+Updating:
+ gcc                  x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms     16 M
+ python               x86_64    2.7.5-79.el7_6      rhel-7-server-rpms     95 k
+Installing for dependencies:
+ popt-devel           x86_64    1.13-16.el7         rhel-7-server-rpms     22 k
+Updating for dependencies:
+ cpp                  x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    6.0 M
+ gcc-c++              x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    7.2 M
+ gcc-gfortran         x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    6.7 M
+ libgcc               x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    102 k
+ libgfortran          x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    300 k
+ libgomp              x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    158 k
+ libquadmath          x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    189 k
+ libquadmath-devel    x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms     53 k
+ libstdc++            x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    305 k
+ libstdc++-devel      x86_64    4.8.5-36.el7_6.2    rhel-7-server-rpms    1.5 M
+ python-libs          x86_64    2.7.5-79.el7_6      rhel-7-server-rpms    5.6 M
+
+Transaction Summary
+================================================================================
+Install  3 Packages (+ 1 Dependent package)
+Upgrade  2 Packages (+11 Dependent packages)
+
+Total download size: 45 M
+Is this ok [y/d/N]: y
+Downloading packages:
+No Presto metadata available for rhel-7-server-rpms
+warning: /var/cache/yum/x86_64/7Server/rhel-7-server-rpms/packages/gcc-4.8.5-36.el7_6.2.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID fd431d51: NOKEY
+Public key for gcc-4.8.5-36.el7_6.2.x86_64.rpm is not installed
+(1/17): gcc-4.8.5-36.el7_6.2.x86_64.rpm                    |  16 MB   00:10     
+(2/17): cpp-4.8.5-36.el7_6.2.x86_64.rpm                    | 6.0 MB   00:11     
+(3/17): gcc-c++-4.8.5-36.el7_6.2.x86_64.rpm                | 7.2 MB   00:02     
+(4/17): libgcc-4.8.5-36.el7_6.2.x86_64.rpm                 | 102 kB   00:01     
+(5/17): gcc-gfortran-4.8.5-36.el7_6.2.x86_64.rpm           | 6.7 MB   00:04     
+(6/17): libgfortran-4.8.5-36.el7_6.2.x86_64.rpm            | 300 kB   00:01     
+(7/17): libgomp-4.8.5-36.el7_6.2.x86_64.rpm                | 158 kB   00:00     
+(8/17): libquadmath-4.8.5-36.el7_6.2.x86_64.rpm            | 189 kB   00:00     
+(9/17): libquadmath-devel-4.8.5-36.el7_6.2.x86_64.rpm      |  53 kB   00:00     
+(10/17): libstdc++-4.8.5-36.el7_6.2.x86_64.rpm             | 305 kB   00:00     
+(11/17): popt-devel-1.13-16.el7.x86_64.rpm                 |  22 kB   00:00     
+(12/17): libstdc++-devel-4.8.5-36.el7_6.2.x86_64.rpm       | 1.5 MB   00:01     
+(13/17): python-2.7.5-79.el7_6.x86_64.rpm                  |  95 kB   00:00     
+(14/17): rpm-devel-4.11.3-35.el7.x86_64.rpm                | 107 kB   00:01     
+(15/17): python-libs-2.7.5-79.el7_6.x86_64.rpm             | 5.6 MB   00:02     
+(16/17): rpmdevtools-8.3-5.el7.noarch.rpm                  |  97 kB   00:00     
+(17/17): rpmlint-1.5-4.el7.noarch.rpm                      | 229 kB   00:00     
+--------------------------------------------------------------------------------
+Total                                              2.2 MB/s |  45 MB  00:20     
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+Importing GPG key 0xFD431D51:
+ Userid     : "Red Hat, Inc. (release key 2) <security@redhat.com>"
+ Fingerprint: 567e 347a d004 4ade 55ba 8a5f 199e 2f91 fd43 1d51
+ Package    : redhat-release-server-7.6-4.el7.x86_64 (@anaconda/7.6)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+Is this ok [y/N]: y
+Importing GPG key 0x2FA658E0:
+ Userid     : "Red Hat, Inc. (auxiliary key) <security@redhat.com>"
+ Fingerprint: 43a6 e49c 4a38 f4be 9abf 2a53 4568 9c88 2fa6 58e0
+ Package    : redhat-release-server-7.6-4.el7.x86_64 (@anaconda/7.6)
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+Is this ok [y/N]: y
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Updating   : libquadmath-4.8.5-36.el7_6.2.x86_64                         1/30 
+  Updating   : libgcc-4.8.5-36.el7_6.2.x86_64                              2/30 
+  Updating   : libstdc++-4.8.5-36.el7_6.2.x86_64                           3/30 
+  Updating   : libstdc++-devel-4.8.5-36.el7_6.2.x86_64                     4/30 
+  Updating   : libgfortran-4.8.5-36.el7_6.2.x86_64                         5/30 
+  Updating   : cpp-4.8.5-36.el7_6.2.x86_64                                 6/30 
+  Updating   : python-libs-2.7.5-79.el7_6.x86_64                           7/30 
+  Updating   : python-2.7.5-79.el7_6.x86_64                                8/30 
+  Updating   : libgomp-4.8.5-36.el7_6.2.x86_64                             9/30 
+  Updating   : gcc-4.8.5-36.el7_6.2.x86_64                                10/30 
+  Updating   : libquadmath-devel-4.8.5-36.el7_6.2.x86_64                  11/30 
+  Installing : popt-devel-1.13-16.el7.x86_64                              12/30 
+  Installing : rpm-devel-4.11.3-35.el7.x86_64                             13/30 
+  Updating   : gcc-gfortran-4.8.5-36.el7_6.2.x86_64                       14/30 
+  Updating   : gcc-c++-4.8.5-36.el7_6.2.x86_64                            15/30 
+  Installing : rpmdevtools-8.3-5.el7.noarch                               16/30 
+  Installing : rpmlint-1.5-4.el7.noarch                                   17/30 
+  Cleanup    : gcc-gfortran-4.8.5-36.el7.x86_64                           18/30 
+  Cleanup    : gcc-c++-4.8.5-36.el7.x86_64                                19/30 
+  Cleanup    : libquadmath-devel-4.8.5-36.el7.x86_64                      20/30 
+  Cleanup    : gcc-4.8.5-36.el7.x86_64                                    21/30 
+  Cleanup    : libgfortran-4.8.5-36.el7.x86_64                            22/30 
+  Cleanup    : libstdc++-devel-4.8.5-36.el7.x86_64                        23/30 
+  Cleanup    : libstdc++-4.8.5-36.el7.x86_64                              24/30 
+  Cleanup    : python-2.7.5-76.el7.x86_64                                 25/30 
+  Cleanup    : python-libs-2.7.5-76.el7.x86_64                            26/30 
+  Cleanup    : libgcc-4.8.5-36.el7.x86_64                                 27/30 
+  Cleanup    : libquadmath-4.8.5-36.el7.x86_64                            28/30 
+  Cleanup    : cpp-4.8.5-36.el7.x86_64                                    29/30 
+  Cleanup    : libgomp-4.8.5-36.el7.x86_64                                30/30 
+rhel-7-server-devtools-rpms/x86_64/productid             | 2.1 kB     00:00     
+rhel-7-server-rpms/7Server/x86_64/productid              | 2.1 kB     00:00     
+  Verifying  : libgfortran-4.8.5-36.el7_6.2.x86_64                         1/30 
+  Verifying  : gcc-4.8.5-36.el7_6.2.x86_64                                 2/30 
+  Verifying  : rpm-devel-4.11.3-35.el7.x86_64                              3/30 
+  Verifying  : popt-devel-1.13-16.el7.x86_64                               4/30 
+  Verifying  : libgcc-4.8.5-36.el7_6.2.x86_64                              5/30 
+  Verifying  : libgomp-4.8.5-36.el7_6.2.x86_64                             6/30 
+  Verifying  : libstdc++-4.8.5-36.el7_6.2.x86_64                           7/30 
+  Verifying  : libstdc++-devel-4.8.5-36.el7_6.2.x86_64                     8/30 
+  Verifying  : gcc-c++-4.8.5-36.el7_6.2.x86_64                             9/30 
+  Verifying  : gcc-gfortran-4.8.5-36.el7_6.2.x86_64                       10/30 
+  Verifying  : python-2.7.5-79.el7_6.x86_64                               11/30 
+  Verifying  : rpmdevtools-8.3-5.el7.noarch                               12/30 
+  Verifying  : libquadmath-devel-4.8.5-36.el7_6.2.x86_64                  13/30 
+  Verifying  : rpmlint-1.5-4.el7.noarch                                   14/30 
+  Verifying  : libquadmath-4.8.5-36.el7_6.2.x86_64                        15/30 
+  Verifying  : python-libs-2.7.5-79.el7_6.x86_64                          16/30 
+  Verifying  : cpp-4.8.5-36.el7_6.2.x86_64                                17/30 
+  Verifying  : python-2.7.5-76.el7.x86_64                                 18/30 
+  Verifying  : libgcc-4.8.5-36.el7.x86_64                                 19/30 
+  Verifying  : libstdc++-4.8.5-36.el7.x86_64                              20/30 
+  Verifying  : gcc-4.8.5-36.el7.x86_64                                    21/30 
+  Verifying  : gcc-gfortran-4.8.5-36.el7.x86_64                           22/30 
+  Verifying  : gcc-c++-4.8.5-36.el7.x86_64                                23/30 
+  Verifying  : libstdc++-devel-4.8.5-36.el7.x86_64                        24/30 
+  Verifying  : cpp-4.8.5-36.el7.x86_64                                    25/30 
+  Verifying  : libgomp-4.8.5-36.el7.x86_64                                26/30 
+  Verifying  : libquadmath-4.8.5-36.el7.x86_64                            27/30 
+  Verifying  : python-libs-2.7.5-76.el7.x86_64                            28/30 
+  Verifying  : libquadmath-devel-4.8.5-36.el7.x86_64                      29/30 
+  Verifying  : libgfortran-4.8.5-36.el7.x86_64                            30/30 
+
+Installed:
+  rpm-devel.x86_64 0:4.11.3-35.el7        rpmdevtools.noarch 0:8.3-5.el7       
+  rpmlint.noarch 0:1.5-4.el7             
+
+Dependency Installed:
+  popt-devel.x86_64 0:1.13-16.el7                                               
+
+Updated:
+  gcc.x86_64 0:4.8.5-36.el7_6.2          python.x86_64 0:2.7.5-79.el7_6         
+
+Dependency Updated:
+  cpp.x86_64 0:4.8.5-36.el7_6.2                                                 
+  gcc-c++.x86_64 0:4.8.5-36.el7_6.2                                             
+  gcc-gfortran.x86_64 0:4.8.5-36.el7_6.2                                        
+  libgcc.x86_64 0:4.8.5-36.el7_6.2                                              
+  libgfortran.x86_64 0:4.8.5-36.el7_6.2                                         
+  libgomp.x86_64 0:4.8.5-36.el7_6.2                                             
+  libquadmath.x86_64 0:4.8.5-36.el7_6.2                                         
+  libquadmath-devel.x86_64 0:4.8.5-36.el7_6.2                                   
+  libstdc++.x86_64 0:4.8.5-36.el7_6.2                                           
+  libstdc++-devel.x86_64 0:4.8.5-36.el7_6.2                                     
+  python-libs.x86_64 0:2.7.5-79.el7_6                                           
+
+Complete!
+[vipin@localhost TCS]$ ls
+pcsc-lite-1.8.8-8.el7.src.rpm  rpmbuild
+[vipin@localhost TCS]$ rpmdev-setuptree
+[vipin@localhost TCS]$ ls
+pcsc-lite-1.8.8-8.el7.src.rpm  rpmbuild
+[vipin@localhost TCS]$ ls -l rpmbuild/
+total 576
+drwxrwxr-x. 4 vipin vipin     53 Jun  5 02:08 BUILD
+drwxrwxr-x. 2 vipin vipin      6 Jun  5 02:08 BUILDROOT
+-rw-rw-r--. 1 vipin vipin   3208 Jun  5 02:08 pcsc-lite-1.8.8-coverity.patch
+-rw-rw-r--. 1 vipin vipin   1503 Jun  5 02:08 pcsc-lite-1.8.8-man-update.patch
+-rw-rw-r--. 1 vipin vipin   1040 Jun  5 02:08 pcsc-lite-1.8.8-maxreaders.patch
+-rw-rw-r--. 1 vipin vipin    810 Jun  5 02:08 pcsc-lite-1.8.8-no-hang-systemd.patch
+-rw-rw-r--. 1 vipin vipin 551751 Jun  5 02:08 pcsc-lite-1.8.8.tar.bz2
+-rw-rw-r--. 1 vipin vipin  15334 Jun  5 02:08 pcsc-lite.spec
+drwxrwxr-x. 4 vipin vipin     32 Jun  5 02:08 RPMS
+drwxrwxr-x. 4 vipin vipin     37 Jun  5 02:08 SOURCES
+drwxrwxr-x. 2 vipin vipin     95 Jun  5 02:08 SPECS
+drwxrwxr-x. 2 vipin vipin     61 Jun  5 02:08 SRPMS
+-rwxrwxr-x. 1 vipin vipin    760 Jun  5 02:08 testrpm
+[vipin@localhost TCS]$ cd
+[vipin@localhost ~]$ ls
+Deliverables  Documents  Music     Public    TCS        Videos
+Desktop       Downloads  Pictures  rpmbuild  Templates
+[vipin@localhost ~]$ cd rpmbuild/
+[vipin@localhost rpmbuild]$ ls
+BUILD  RPMS  SOURCES  SPECS  SRPMS
+
+vipin@localhost rpmbuild]$ ls
+BUILD  RPMS  SOURCES  SPECS  SRPMS
+**********************************************************************
+[vipin@localhost rpmbuild]$ rpm -ql rpmdevtools | grep bin
+/usr/bin/annotate-output
+/usr/bin/checkbashisms
+/usr/bin/licensecheck
+/usr/bin/manpage-alert
+/usr/bin/rpmdev-bumpspec
+/usr/bin/rpmdev-checksig
+/usr/bin/rpmdev-cksum
+/usr/bin/rpmdev-diff
+/usr/bin/rpmdev-extract
+/usr/bin/rpmdev-md5
+/usr/bin/rpmdev-newinit
+/usr/bin/rpmdev-newspec
+/usr/bin/rpmdev-packager
+/usr/bin/rpmdev-rmdevelrpms
+/usr/bin/rpmdev-setuptree
+/usr/bin/rpmdev-sha1
+/usr/bin/rpmdev-sha224
+/usr/bin/rpmdev-sha256
+/usr/bin/rpmdev-sha384
+/usr/bin/rpmdev-sha512
+/usr/bin/rpmdev-sort
+/usr/bin/rpmdev-sum
+/usr/bin/rpmdev-vercmp
+/usr/bin/rpmdev-wipetree
+/usr/bin/rpminfo
+/usr/bin/rpmls
+/usr/bin/spectool
+[vipin@localhost rpmbuild]$ ls
+BUILD  RPMS  SOURCES  SPECS  SRPMS
+[vipin@localhost rpmbuild]$ ls SPECS/
+pcsc-lite-1.8.8-coverity.patch    pcsc-lite-1.8.8-no-hang-systemd.patch
+pcsc-lite-1.8.8-man-update.patch  pcsc-lite.spec
+pcsc-lite-1.8.8-maxreaders.patch
+
+[vipin@localhost rpmbuild]$ rpmbuild -bb pcsc-lite
+error: failed to stat /home/vipin/rpmbuild/pcsc-lite: No such file or directory
+****************************************************************************
+[vipin@localhost rpmbuild]$ rpmbuild -bb SPECS/pcsc-lite
+error: failed to stat /home/vipin/rpmbuild/SPECS/pcsc-lite: No such file or directory
+[vipin@localhost rpmbuild]$ rpmbuild -bb SPECS/pcsc-lite.spec
+error: Failed build dependencies:
+	graphviz is needed by pcsc-lite-1.8.8-8.el7.x86_64
+	systemd-devel >= 187 is needed by pcsc-lite-1.8.8-8.el7.x86_64
+[vipin@localhost rpmbuild]$ sudo yum install graphviz
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+Resolving Dependencies
+--> Running transaction check
+---> Package graphviz.x86_64 0:2.30.1-21.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package        Arch         Version             Repository                Size
+================================================================================
+Installing:
+ graphviz       x86_64       2.30.1-21.el7       rhel-7-server-rpms       1.3 M
+
+Transaction Summary
+================================================================================
+Install  1 Package
+
+Total download size: 1.3 M
+Installed size: 3.8 M
+Is this ok [y/d/N]: y
+Downloading packages:
+graphviz-2.30.1-21.el7.x86_64.rpm                          | 1.3 MB   00:01     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : graphviz-2.30.1-21.el7.x86_64                                1/1 
+  Verifying  : graphviz-2.30.1-21.el7.x86_64                                1/1 
+
+Installed:
+  graphviz.x86_64 0:2.30.1-21.el7                                               
+
+Complete!
+[vipin@localhost rpmbuild]$ sudo yum install systemd-devel
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-
+              : manager
+Resolving Dependencies
+--> Running transaction check
+---> Package systemd-devel.x86_64 0:219-62.el7_6.7 will be installed
+--> Processing Dependency: systemd = 219-62.el7_6.7 for package: systemd-devel-219-62.el7_6.7.x86_64
+--> Processing Dependency: systemd-libs = 219-62.el7_6.7 for package: systemd-devel-219-62.el7_6.7.x86_64
+--> Running transaction check
+---> Package systemd.x86_64 0:219-62.el7 will be updated
+--> Processing Dependency: systemd = 219-62.el7 for package: systemd-sysv-219-62.el7.x86_64
+--> Processing Dependency: systemd = 219-62.el7 for package: systemd-python-219-62.el7.x86_64
+---> Package systemd.x86_64 0:219-62.el7_6.7 will be an update
+---> Package systemd-libs.x86_64 0:219-62.el7 will be updated
+--> Processing Dependency: systemd-libs = 219-62.el7 for package: libgudev1-219-62.el7.x86_64
+---> Package systemd-libs.x86_64 0:219-62.el7_6.7 will be an update
+--> Running transaction check
+---> Package libgudev1.x86_64 0:219-62.el7 will be updated
+---> Package libgudev1.x86_64 0:219-62.el7_6.7 will be an update
+---> Package systemd-python.x86_64 0:219-62.el7 will be updated
+---> Package systemd-python.x86_64 0:219-62.el7_6.7 will be an update
+---> Package systemd-sysv.x86_64 0:219-62.el7 will be updated
+---> Package systemd-sysv.x86_64 0:219-62.el7_6.7 will be an update
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+================================================================================
+ Package            Arch       Version             Repository              Size
+================================================================================
+Installing:
+ systemd-devel      x86_64     219-62.el7_6.7      rhel-7-server-rpms     200 k
+Updating for dependencies:
+ libgudev1          x86_64     219-62.el7_6.7      rhel-7-server-rpms      97 k
+ systemd            x86_64     219-62.el7_6.7      rhel-7-server-rpms     5.1 M
+ systemd-libs       x86_64     219-62.el7_6.7      rhel-7-server-rpms     407 k
+ systemd-python     x86_64     219-62.el7_6.7      rhel-7-server-rpms     133 k
+ systemd-sysv       x86_64     219-62.el7_6.7      rhel-7-server-rpms      84 k
+
+Transaction Summary
+================================================================================
+Install  1 Package
+Upgrade             ( 5 Dependent packages)
+
+Total download size: 6.0 M
+Is this ok [y/d/N]: y
+Downloading packages:
+No Presto metadata available for rhel-7-server-rpms
+(1/6): libgudev1-219-62.el7_6.7.x86_64.rpm                 |  97 kB   00:01     
+(2/6): systemd-devel-219-62.el7_6.7.x86_64.rpm             | 200 kB   00:00     
+(3/6): systemd-libs-219-62.el7_6.7.x86_64.rpm              | 407 kB   00:01     
+(4/6): systemd-python-219-62.el7_6.7.x86_64.rpm            | 133 kB   00:00     
+(5/6): systemd-sysv-219-62.el7_6.7.x86_64.rpm              |  84 kB   00:00     
+(6/6): systemd-219-62.el7_6.7.x86_64.rpm                   | 5.1 MB   00:05     
+--------------------------------------------------------------------------------
+Total                                              1.2 MB/s | 6.0 MB  00:05     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Updating   : systemd-libs-219-62.el7_6.7.x86_64                          1/11 
+  Updating   : systemd-219-62.el7_6.7.x86_64                               2/11 
+  Updating   : systemd-sysv-219-62.el7_6.7.x86_64                          3/11 
+  Updating   : systemd-python-219-62.el7_6.7.x86_64                        4/11 
+  Installing : systemd-devel-219-62.el7_6.7.x86_64                         5/11 
+  Updating   : libgudev1-219-62.el7_6.7.x86_64                             6/11 
+  Cleanup    : systemd-sysv-219-62.el7.x86_64                              7/11 
+  Cleanup    : systemd-python-219-62.el7.x86_64                            8/11 
+  Cleanup    : systemd-219-62.el7.x86_64                                   9/11 
+  Cleanup    : libgudev1-219-62.el7.x86_64                                10/11 
+  Cleanup    : systemd-libs-219-62.el7.x86_64                             11/11 
+  Verifying  : systemd-libs-219-62.el7_6.7.x86_64                          1/11 
+  Verifying  : systemd-sysv-219-62.el7_6.7.x86_64                          2/11 
+  Verifying  : systemd-219-62.el7_6.7.x86_64                               3/11 
+  Verifying  : systemd-python-219-62.el7_6.7.x86_64                        4/11 
+  Verifying  : libgudev1-219-62.el7_6.7.x86_64                             5/11 
+  Verifying  : systemd-devel-219-62.el7_6.7.x86_64                         6/11 
+  Verifying  : systemd-libs-219-62.el7.x86_64                              7/11 
+  Verifying  : systemd-219-62.el7.x86_64                                   8/11 
+  Verifying  : systemd-sysv-219-62.el7.x86_64                              9/11 
+  Verifying  : systemd-python-219-62.el7.x86_64                           10/11 
+  Verifying  : libgudev1-219-62.el7.x86_64                                11/11 
+
+Installed:
+  systemd-devel.x86_64 0:219-62.el7_6.7                                         
+
+Dependency Updated:
+  libgudev1.x86_64 0:219-62.el7_6.7     systemd.x86_64 0:219-62.el7_6.7        
+  systemd-libs.x86_64 0:219-62.el7_6.7  systemd-python.x86_64 0:219-62.el7_6.7 
+  systemd-sysv.x86_64 0:219-62.el7_6.7 
+
+Complete!
+***************************************************************************************
+[vipin@localhost rpmbuild]$ rpmbuild -bb SPECS/pcsc-lite.spec
+
+Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.KpOu2y
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ cd /home/vipin/rpmbuild/BUILD
++ rm -rf pcsc-lite-1.8.8
++ /usr/bin/bzip2 -dc /home/vipin/rpmbuild/SOURCES/pcsc-lite-1.8.8.tar.bz2
++ /usr/bin/tar -xf -
++ STATUS=0
++ '[' 0 -ne 0 ']'
++ cd pcsc-lite-1.8.8
++ /usr/bin/chmod -Rf a+rX,u+w,g-w,o-w .
++ echo 'Patch #1 (pcsc-lite-1.8.8-man-update.patch):'
+Patch #1 (pcsc-lite-1.8.8-man-update.patch):
++ /usr/bin/patch -p0 -b --suffix .man-update --fuzz=0
++ /usr/bin/cat /home/vipin/rpmbuild/SOURCES/pcsc-lite-1.8.8-man-update.patch
+patching file ./doc/pcscd.8.in
++ echo 'Patch #2 (pcsc-lite-1.8.8-maxreaders.patch):'
+Patch #2 (pcsc-lite-1.8.8-maxreaders.patch):
++ /usr/bin/cat /home/vipin/rpmbuild/SOURCES/pcsc-lite-1.8.8-maxreaders.patch
++ /usr/bin/patch -p0 -b --suffix .maxreaders --fuzz=0
+patching file ./src/PCSC/pcsclite.h.in
+patching file ./src/PCSC/pcsclite.h
++ echo 'Patch #3 (pcsc-lite-1.8.8-no-hang-systemd.patch):'
+Patch #3 (pcsc-lite-1.8.8-no-hang-systemd.patch):
++ /usr/bin/cat /home/vipin/rpmbuild/SOURCES/pcsc-lite-1.8.8-no-hang-systemd.patch
++ /usr/bin/patch -p1 -b --suffix .no-hand-systemd --fuzz=0
+patching file src/winscard_clnt.c
++ echo 'Patch #4 (pcsc-lite-1.8.8-coverity.patch):'
+Patch #4 (pcsc-lite-1.8.8-coverity.patch):
++ /usr/bin/cat /home/vipin/rpmbuild/SOURCES/pcsc-lite-1.8.8-coverity.patch
++ /usr/bin/patch -p0 -b --suffix .coverity --fuzz=0
+patching file ./src/configfile.l
+patching file ./src/sd-daemon.c
+patching file ./src/winscard_clnt.c
+patching file ./src/winscard_svc.c
++ for file in ChangeLog
++ iconv -f ISO-8859-1 -t UTF-8 -o ChangeLog.new ChangeLog
++ touch -r ChangeLog ChangeLog.new
++ mv ChangeLog.new ChangeLog
++ exit 0
+Executing(%build): /bin/sh -e /var/tmp/rpm-tmp.pImkWO
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ cd pcsc-lite-1.8.8
++ export 'LDFLAGS=-Wl,-z,now -Wl,-z,relro -pie'
++ LDFLAGS='-Wl,-z,now -Wl,-z,relro -pie'
++ export 'CFLAGS=-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -fPIE -DPIE'
++ CFLAGS='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -fPIE -DPIE'
++ CFLAGS='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -fPIE -DPIE'
++ export CFLAGS
++ CXXFLAGS='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic'
++ export CXXFLAGS
++ FFLAGS='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -I/usr/lib64/gfortran/modules'
++ export FFLAGS
++ FCFLAGS='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -I/usr/lib64/gfortran/modules'
++ export FCFLAGS
++ LDFLAGS='-Wl,-z,now -Wl,-z,relro -pie'
++ export LDFLAGS
++ '[' 1 == 1 ']'
++ '[' x86_64 == ppc64le ']'
+++ find . -name config.guess -o -name config.sub
++ for i in '$(find . -name config.guess -o -name config.sub)'
+++ basename ./config.sub
++ '[' -f /usr/lib/rpm/redhat/config.sub ']'
++ /usr/bin/rm -f ./config.sub
+++ basename ./config.sub
++ /usr/bin/cp -fv /usr/lib/rpm/redhat/config.sub ./config.sub
+'/usr/lib/rpm/redhat/config.sub' -> './config.sub'
++ for i in '$(find . -name config.guess -o -name config.sub)'
+++ basename ./config.guess
++ '[' -f /usr/lib/rpm/redhat/config.guess ']'
++ /usr/bin/rm -f ./config.guess
+++ basename ./config.guess
++ /usr/bin/cp -fv /usr/lib/rpm/redhat/config.guess ./config.guess
+'/usr/lib/rpm/redhat/config.guess' -> './config.guess'
++ ./configure --build=x86_64-redhat-linux-gnu --host=x86_64-redhat-linux-gnu --program-prefix= --disable-dependency-tracking --prefix=/usr --exec-prefix=/usr --bindir=/usr/bin --sbindir=/usr/sbin --sysconfdir=/etc --datadir=/usr/share --includedir=/usr/include --libdir=/usr/lib64 --libexecdir=/usr/libexec --localstatedir=/var --sharedstatedir=/var/lib --mandir=/usr/share/man --infodir=/usr/share/info --disable-static --enable-usbdropdir=/usr/lib64/pcsc/drivers
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking build system type... x86_64-redhat-linux-gnu
+checking host system type... x86_64-redhat-linux-gnu
+checking for x86_64-redhat-linux-gnu-gcc... no
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for style of include used by make... GNU
+checking dependency style of gcc... none
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking whether byte ordering is bigendian... no
+checking whether to enable maintainer-specific portions of Makefiles... no
+checking how to run the C preprocessor... gcc -E
+checking whether ln -s works... yes
+checking whether make sets $(MAKE)... (cached) yes
+checking for flex... flex
+checking lex output file root... lex.yy
+checking lex library... none needed
+checking whether yytext is a pointer... no
+checking for x86_64-redhat-linux-gnu-pkg-config... no
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking whether gcc and cc understand -c and -o together... yes
+checking for x86_64-redhat-linux-gnu-ar... no
+checking for x86_64-redhat-linux-gnu-lib... no
+checking for x86_64-redhat-linux-gnu-link... no
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for the pthreads library -lpthreads... no
+checking whether pthreads work without any flags... no
+checking whether pthreads work with -Kthread... no
+checking whether pthreads work with -kthread... no
+checking for the pthreads library -llthread... no
+checking whether pthreads work with -pthread... yes
+checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
+checking if more special flags are required for pthreads... no
+checking for PTHREAD_PRIO_INHERIT... yes
+checking for pthread_cancel... yes
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... /usr/bin/nm -B
+checking the name lister (/usr/bin/nm -B) interface... BSD nm
+checking the maximum length of command line arguments... 1572864
+checking whether the shell understands some XSI constructs... yes
+checking whether the shell understands "+="... yes
+checking how to convert x86_64-redhat-linux-gnu file names to x86_64-redhat-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-redhat-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for x86_64-redhat-linux-gnu-objdump... no
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for x86_64-redhat-linux-gnu-dlltool... no
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for x86_64-redhat-linux-gnu-ar... ar
+checking for archiver @FILE support... @
+checking for x86_64-redhat-linux-gnu-strip... no
+checking for strip... strip
+checking for x86_64-redhat-linux-gnu-ranlib... no
+checking for ranlib... ranlib
+checking command to parse /usr/bin/nm -B output from gcc object... ok
+checking for sysroot... no
+checking for x86_64-redhat-linux-gnu-mt... no
+checking for mt... no
+checking if : is a manifest tool... no
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... no
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... no
+checking for ANSI C header files... (cached) yes
+checking for sys/wait.h that is POSIX.1 compatible... yes
+checking getopt.h usability... yes
+checking getopt.h presence... yes
+checking for getopt.h... yes
+checking sys/filio.h usability... no
+checking sys/filio.h presence... no
+checking for sys/filio.h... no
+checking syslog.h usability... yes
+checking syslog.h presence... yes
+checking for syslog.h... yes
+checking dl.h usability... no
+checking dl.h presence... no
+checking for dl.h... no
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking for an ANSI C-conforming const... yes
+checking for uid_t in sys/types.h... yes
+checking for size_t... yes
+checking whether time.h and sys/time.h may both be included... yes
+checking for error_at_line... yes
+checking whether lstat correctly handles trailing slash... yes
+checking whether stat accepts an empty string... no
+checking for vprintf... yes
+checking for _doprnt... no
+checking for daemon... yes
+checking for flock... yes
+checking for getopt_long... yes
+checking for nanosleep... yes
+checking for strerror... yes
+checking for vsnprintf... yes
+checking for strlcpy... no
+checking for strlcat... no
+checking for inline... inline
+checking for -fvisibility=hidden... yes
+checking for dlopen in -ldl... yes
+checking for socket in -lsocket... no
+checking for mq_getattr in -lrt... yes
+checking for LIBUDEV... yes
+checking libudev.h usability... yes
+checking libudev.h presence... yes
+checking for libudev.h... yes
+checking for udev_monitor_unref... yes
+
+PC/SC lite has been configured with following options:
+
+Version:             1.8.8
+System binaries:     /usr/sbin
+Configuration dir:   /etc/reader.conf.d
+
+
+Host:                x86_64-redhat-linux-gnu
+Compiler:            gcc
+Preprocessor flags:  -I${top_srcdir}/src 
+Compiler flags:      -Wall -fno-common -O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches   -m64 -mtune=generic -fPIE -DPIE
+Preprocessor flags:  -I${top_srcdir}/src 
+Linker flags:        -Wl,-z,now -Wl,-z,relro -pie
+Libraries:            -lrt
+
+PTHREAD_CFLAGS:      -pthread
+PTHREAD_LIBS:        
+PCSC_ARCH:           Linux
+
+pcscd binary            /usr/sbin/pcscd
+libudev support:        yes
+libusb support:         no
+USB drop directory:     /usr/lib64/pcsc/drivers
+ATR parsing messages:   false
+ipcdir:                 /var/run/pcscd
+use serial:             yes
+use usb:                yes
+systemd unit directory: /usr/lib/systemd/system
+
+PCSCLITE_FEATURES:       Linux x86_64-redhat-linux-gnu serial usb libudev usbdropdir=/usr/lib64/pcsc/drivers ipcdir=/var/run/pcscd configdir=/etc/reader.conf.d
+
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating doc/Makefile
+config.status: creating doc/doxygen.conf
+config.status: creating doc/pcscd.8
+config.status: creating doc/reader.conf.5
+config.status: creating doc/example/Makefile
+config.status: creating etc/Makefile
+config.status: creating etc/pcscd.service
+config.status: creating etc/pcscd.socket
+config.status: creating src/Makefile
+config.status: creating src/libpcsclite.pc
+config.status: creating src/pcscd.h
+config.status: creating src/PCSC/pcsclite.h
+config.status: creating src/spy/Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
++ make -j3
+make  all-recursive
+make[1]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
+Making all in src
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+Making all in spy
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/spy'
+  CC     libpcscspy.lo
+pod2man \
+	--center="PC/SC lite" \
+	--release="pcsc-lite 1.8.8" \
+	pcsc-spy.pod > pcsc-spy.1
+libpcscspy.c: In function 'spy_line':
+libpcscspy.c:200:7: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+  write(Log_fd, threadid, strlen(threadid));
+       ^
+libpcscspy.c:201:7: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+  write(Log_fd, line, size);
+       ^
+libpcscspy.c:202:7: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+  write(Log_fd, "\n", 1);
+       ^
+libpcscspy.c: In function 'spy_line_direct':
+libpcscspy.c:173:7: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+  write(Log_fd, threadid, strlen(threadid));
+       ^
+libpcscspy.c:174:7: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+  write(Log_fd, line, strlen(line));
+       ^
+libpcscspy.c:175:7: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+  write(Log_fd, "\n", 1);
+       ^
+  CCLD   libpcscspy.la
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/spy'
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+  CC     libpcsclite_la-debug.lo
+  CC     libpcsclite_la-error.lo
+  CC     libpcsclite_la-winscard_clnt.lo
+  CC     libpcsclite_la-simclist.lo
+  CC     libpcsclite_la-strlcat.lo
+  CC     libpcsclite_la-strlcpy.lo
+  CC     libpcsclite_la-sys_unix.lo
+  CC     libpcsclite_la-utils.lo
+  CC     libpcsclite_la-winscard_msg.lo
+  CC     testpcsc.o
+testpcsc.c: In function 'main':
+testpcsc.c:190:4: warning: ignoring return value of 'fgets', declared with attribute warn_unused_result [-Wunused-result]
+    (void)fgets(input, sizeof(input), stdin);
+    ^
+utils.c: In function 'GetDaemonPid':
+utils.c:45:3: warning: ignoring return value of 'read', declared with attribute warn_unused_result [-Wunused-result]
+   (void)read(fd, pid_ascii, PID_ASCII_SIZE);
+   ^
+  CC     pcsc-wirecheck-gen.o
+  CC     pcsc-wirecheck-main.o
+  CC     pcscd-atrhandler.o
+  LEX    configfile.c
+  CC     pcscd-debuglog.o
+atrhandler.c: In function 'ATRDecodeAtr':
+atrhandler.c:88:19: warning: variable 'TCi' set but not used [-Wunused-but-set-variable]
+   short TAi, TBi, TCi, TDi; /* Interface characters */
+                   ^
+atrhandler.c:88:14: warning: variable 'TBi' set but not used [-Wunused-but-set-variable]
+   short TAi, TBi, TCi, TDi; /* Interface characters */
+              ^
+  CC     pcscd-dyn_hpux.o
+  CC     pcscd-dyn_macosx.o
+  CC     pcscd-dyn_unix.o
+  CC     pcscd-eventhandler.o
+  CC     pcscd-hotplug_generic.o
+  CC     pcscd-ifdwrapper.o
+  CC     pcscd-pcscdaemon.o
+  CC     pcscd-powermgt_generic.o
+pcscdaemon.c: In function 'main':
+pcscdaemon.c:401:2: warning: ignoring return value of 'chdir', declared with attribute warn_unused_result [-Wunused-result]
+  (void)chdir("/");
+  ^
+pcscdaemon.c:543:4: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+    (void)write(f, pid, strlen(pid));
+    ^
+pcscdaemon.c:626:8: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+   write(pipefd[1], &buf, 1);
+        ^
+pcscdaemon.c: In function 'at_exit':
+pcscdaemon.c:648:8: warning: ignoring return value of 'write', declared with attribute warn_unused_result [-Wunused-result]
+   write(pipefd[1], &buf, 1);
+        ^
+  CC     pcscd-prothandler.o
+  CC     pcscd-readerfactory.o
+  CC     pcscd-sd-daemon.o
+  CC     pcscd-simclist.o
+  CC     pcscd-strlcat.o
+  CC     pcscd-strlcpy.o
+  CC     pcscd-sys_unix.o
+  CC     pcscd-tokenparser.o
+  CC     pcscd-hotplug_libudev.o
+  CC     pcscd-hotplug_libusb.o
+  CC     pcscd-hotplug_linux.o
+  CC     pcscd-hotplug_macosx.o
+  CC     pcscd-utils.o
+  CC     pcscd-winscard.o
+utils.c: In function 'GetDaemonPid':
+utils.c:45:3: warning: ignoring return value of 'read', declared with attribute warn_unused_result [-Wunused-result]
+   (void)read(fd, pid_ascii, PID_ASCII_SIZE);
+   ^
+  CC     pcscd-winscard_msg.o
+  CC     pcscd-winscard_msg_srv.o
+  CC     pcscd-winscard_svc.o
+  CCLD   libpcsclite.la
+  CCLD   pcsc-wirecheck-gen
+  CC     pcscd-configfile.o
+touch pcsc-wirecheck-dist.c
+  CC     pcsc-wirecheck-dist.o
+  CCLD   testpcsc
+  CCLD   pcsc-wirecheck
+  CCLD   pcscd
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+Making all in etc
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/etc'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/etc'
+Making all in doc
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+Making all in .
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+Making all in example
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc/example'
+  CC     pcsc_demo-pcsc_demo.o
+  CCLD   pcsc_demo
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc/example'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
+make[1]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
++ doxygen doc/doxygen.conf
+Warning: Tag `SYMBOL_CACHE_SIZE' at line 336 of file doc/doxygen.conf has become obsolete.
+To avoid this warning please remove this line from your configuration file or upgrade it using "doxygen -u"
+Warning: doxygen no longer ships with the FreeSans font.
+You may want to clear or change DOT_FONTNAME.
+Otherwise you run the risk that the wrong font is being used for dot generated graphs.
+/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/PCSC/ifdhandler.h:63: warning: Unsupported xml/html tag <string> found
++ rm -f 'doc/api/*.map' 'doc/api/*.md5'
++ exit 0
+Executing(%install): /bin/sh -e /var/tmp/rpm-tmp.UB5WKL
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ '[' /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64 '!=' / ']'
++ rm -rf /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64
+++ dirname /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64
++ mkdir -p /home/vipin/rpmbuild/BUILDROOT
++ mkdir /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64
++ cd pcsc-lite-1.8.8
++ make install DESTDIR=/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64
+Making install in src
+make[1]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+Making install in spy
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/spy'
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/spy'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/bin'
+ /usr/bin/install -c pcsc-spy '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/bin'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64'
+ /bin/sh ../../libtool   --mode=install /usr/bin/install -c   libpcscspy.la '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64'
+libtool: install: /usr/bin/install -c .libs/libpcscspy.so.0.0.0 /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcscspy.so.0.0.0
+libtool: install: (cd /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64 && { ln -s -f libpcscspy.so.0.0.0 libpcscspy.so.0 || { rm -f libpcscspy.so.0 && ln -s libpcscspy.so.0.0.0 libpcscspy.so.0; }; })
+libtool: install: (cd /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64 && { ln -s -f libpcscspy.so.0.0.0 libpcscspy.so || { rm -f libpcscspy.so && ln -s libpcscspy.so.0.0.0 libpcscspy.so; }; })
+libtool: install: /usr/bin/install -c .libs/libpcscspy.lai /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcscspy.la
+libtool: install: warning: remember to run `libtool --finish /usr/lib64'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/man/man1'
+ /usr/bin/install -c -m 644 pcsc-spy.1 '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/man/man1'
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/spy'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src/spy'
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+  LEX    configfile.c
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64'
+ /bin/sh ../libtool   --mode=install /usr/bin/install -c   libpcsclite.la '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64'
+libtool: install: /usr/bin/install -c .libs/libpcsclite.so.1.0.0 /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcsclite.so.1.0.0
+libtool: install: (cd /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64 && { ln -s -f libpcsclite.so.1.0.0 libpcsclite.so.1 || { rm -f libpcsclite.so.1 && ln -s libpcsclite.so.1.0.0 libpcsclite.so.1; }; })
+libtool: install: (cd /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64 && { ln -s -f libpcsclite.so.1.0.0 libpcsclite.so || { rm -f libpcsclite.so && ln -s libpcsclite.so.1.0.0 libpcsclite.so; }; })
+libtool: install: /usr/bin/install -c .libs/libpcsclite.lai /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcsclite.la
+libtool: install: warning: remember to run `libtool --finish /usr/lib64'
+  LEX    configfile.c
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/sbin'
+  /bin/sh ../libtool   --mode=install /usr/bin/install -c pcscd '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/sbin'
+libtool: install: /usr/bin/install -c pcscd /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/sbin/pcscd
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/include'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/include/PCSC'
+ /usr/bin/install -c -m 644  PCSC/debuglog.h PCSC/ifdhandler.h PCSC/reader.h PCSC/winscard.h PCSC/wintypes.h '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/include/PCSC'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/include/PCSC'
+ /usr/bin/install -c -m 644 PCSC/pcsclite.h '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/include/PCSC'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/pkgconfig'
+ /usr/bin/install -c -m 644 libpcsclite.pc '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/pkgconfig'
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+make[1]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/src'
+Making install in etc
+make[1]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/etc'
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/etc'
+make[2]: Nothing to be done for `install-exec-am'.
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib/systemd/system'
+ /usr/bin/install -c -m 644 pcscd.service pcscd.socket '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib/systemd/system'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/etc'
+make[1]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/etc'
+Making install in doc
+make[1]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+Making install in .
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+make[3]: Nothing to be done for `install-exec-am'.
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite'
+ /usr/bin/install -c -m 644 README.DAEMON '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/man/man5'
+ /usr/bin/install -c -m 644 reader.conf.5 '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/man/man5'
+ /usr/bin/mkdir -p '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/man/man8'
+ /usr/bin/install -c -m 644 pcscd.8 '/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/man/man8'
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+Making install in example
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc/example'
+make[3]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc/example'
+make[3]: Nothing to be done for `install-exec-am'.
+make[3]: Nothing to be done for `install-data-am'.
+make[3]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc/example'
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc/example'
+make[1]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8/doc'
+make[1]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
+make[2]: Entering directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
+make[2]: Nothing to be done for `install-exec-am'.
+make[2]: Nothing to be done for `install-data-am'.
+make[2]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
+make[1]: Leaving directory `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8'
++ mkdir -p /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/etc/reader.conf.d
++ mkdir -p /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/pcsc/drivers
++ mkdir -p /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/var/run/pcscd
++ rm /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcsclite.la /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcscspy.la
++ rm /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite/README.DAEMON
++ /usr/lib/rpm/find-debuginfo.sh --strict-build-id -m --run-dwz --dwz-low-mem-die-limit 10000000 --dwz-max-die-limit 110000000 /home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8
+extracting debug info from /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcscspy.so.0.0.0
+extracting debug info from /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/lib64/libpcsclite.so.1.0.0
+extracting debug info from /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/sbin/pcscd
+/usr/lib/rpm/sepdebugcrcfix: Updated 3 CRC32s, 0 CRC32s did match.
+symlinked /usr/lib/debug/usr/lib64/libpcscspy.so.0.0.0.debug to /usr/lib/debug/usr/lib64/libpcscspy.so.0.debug
+symlinked /usr/lib/debug/usr/lib64/libpcscspy.so.0.0.0.debug to /usr/lib/debug/usr/lib64/libpcscspy.so.debug
+symlinked /usr/lib/debug/usr/lib64/libpcsclite.so.1.0.0.debug to /usr/lib/debug/usr/lib64/libpcsclite.so.1.debug
+symlinked /usr/lib/debug/usr/lib64/libpcsclite.so.1.0.0.debug to /usr/lib/debug/usr/lib64/libpcsclite.so.debug
+1230 blocks
++ '[' noarch = noarch ']'
++ case "${QA_CHECK_RPATHS:-}" in
++ /usr/lib/rpm/check-buildroot
++ /usr/lib/rpm/redhat/brp-compress
++ /usr/lib/rpm/redhat/brp-strip-static-archive /usr/bin/strip
++ /usr/lib/rpm/brp-python-bytecompile /usr/bin/python 1
++ /usr/lib/rpm/redhat/brp-python-hardlink
++ /usr/lib/rpm/redhat/brp-java-repack-jars
+Processing files: pcsc-lite-1.8.8-8.el7.x86_64
+Executing(%doc): /bin/sh -e /var/tmp/rpm-tmp.v4kNvM
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ cd pcsc-lite-1.8.8
++ DOCDIR=/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ export DOCDIR
++ /usr/bin/mkdir -p /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr AUTHORS /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr ChangeLog ChangeLog.svn /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr DRIVERS /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr HELP /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr README /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr SECURITY /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ cp -pr TODO /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-1.8.8
++ exit 0
+Provides: pcsc-lite = 1.8.8-8.el7 pcsc-lite(x86-64) = 1.8.8-8.el7
+Requires(interp): /bin/sh /bin/sh /bin/sh
+Requires(rpmlib): rpmlib(CompressedFileNames) <= 3.0.4-1 rpmlib(FileDigests) <= 4.6.0-1 rpmlib(PayloadFilesHavePrefix) <= 4.0-1
+Requires(post): /bin/sh systemd
+Requires(preun): /bin/sh systemd
+Requires(postun): /bin/sh systemd
+Requires: libc.so.6()(64bit) libc.so.6(GLIBC_2.14)(64bit) libc.so.6(GLIBC_2.15)(64bit) libc.so.6(GLIBC_2.17)(64bit) libc.so.6(GLIBC_2.2.5)(64bit) libc.so.6(GLIBC_2.3.4)(64bit) libc.so.6(GLIBC_2.4)(64bit) libc.so.6(GLIBC_2.8)(64bit) libdl.so.2()(64bit) libdl.so.2(GLIBC_2.2.5)(64bit) libpthread.so.0()(64bit) libpthread.so.0(GLIBC_2.2.5)(64bit) librt.so.1()(64bit) librt.so.1(GLIBC_2.3.4)(64bit) libudev.so.1()(64bit) libudev.so.1(LIBUDEV_183)(64bit) rtld(GNU_HASH)
+Processing files: pcsc-lite-libs-1.8.8-8.el7.x86_64
+Executing(%doc): /bin/sh -e /var/tmp/rpm-tmp.invdKN
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ cd pcsc-lite-1.8.8
++ DOCDIR=/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-libs-1.8.8
++ export DOCDIR
++ /usr/bin/mkdir -p /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-libs-1.8.8
++ cp -pr COPYING /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-libs-1.8.8
++ exit 0
+Provides: libpcsclite.so.1()(64bit) pcsc-lite-libs = 1.8.8-8.el7 pcsc-lite-libs(x86-64) = 1.8.8-8.el7
+Requires(interp): /sbin/ldconfig /sbin/ldconfig
+Requires(rpmlib): rpmlib(CompressedFileNames) <= 3.0.4-1 rpmlib(FileDigests) <= 4.6.0-1 rpmlib(PayloadFilesHavePrefix) <= 4.0-1
+Requires(post): /sbin/ldconfig
+Requires(postun): /sbin/ldconfig
+Requires: libc.so.6()(64bit) libc.so.6(GLIBC_2.14)(64bit) libc.so.6(GLIBC_2.15)(64bit) libc.so.6(GLIBC_2.2.5)(64bit) libc.so.6(GLIBC_2.3.2)(64bit) libc.so.6(GLIBC_2.3.4)(64bit) libc.so.6(GLIBC_2.4)(64bit) libpthread.so.0()(64bit) libpthread.so.0(GLIBC_2.2.5)(64bit) librt.so.1()(64bit) rtld(GNU_HASH)
+Processing files: pcsc-lite-devel-1.8.8-8.el7.x86_64
+Provides: libpcscspy.so.0()(64bit) pcsc-lite-devel = 1.8.8-8.el7 pcsc-lite-devel(x86-64) = 1.8.8-8.el7 pkgconfig(libpcsclite) = 1.8.8
+Requires(rpmlib): rpmlib(CompressedFileNames) <= 3.0.4-1 rpmlib(FileDigests) <= 4.6.0-1 rpmlib(PayloadFilesHavePrefix) <= 4.0-1
+Requires: /usr/bin/pkg-config /usr/bin/python libc.so.6()(64bit) libc.so.6(GLIBC_2.2.5)(64bit) libc.so.6(GLIBC_2.3.4)(64bit) libc.so.6(GLIBC_2.4)(64bit) libdl.so.2()(64bit) libdl.so.2(GLIBC_2.2.5)(64bit) libpcsclite.so.1()(64bit) libpcscspy.so.0()(64bit) librt.so.1()(64bit) rtld(GNU_HASH)
+Processing files: pcsc-lite-doc-1.8.8-8.el7.noarch
+Executing(%doc): /bin/sh -e /var/tmp/rpm-tmp.xcCLlP
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ cd pcsc-lite-1.8.8
++ DOCDIR=/home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-doc-1.8.8
++ export DOCDIR
++ /usr/bin/mkdir -p /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-doc-1.8.8
++ cp -pr doc/api/ /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-doc-1.8.8
++ cp -pr doc/example/pcsc_demo.c /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64/usr/share/doc/pcsc-lite-doc-1.8.8
++ exit 0
+Provides: pcsc-lite-doc = 1.8.8-8.el7
+Requires(rpmlib): rpmlib(CompressedFileNames) <= 3.0.4-1 rpmlib(FileDigests) <= 4.6.0-1 rpmlib(PayloadFilesHavePrefix) <= 4.0-1
+Processing files: pcsc-lite-debuginfo-1.8.8-8.el7.x86_64
+Provides: pcsc-lite-debuginfo = 1.8.8-8.el7 pcsc-lite-debuginfo(x86-64) = 1.8.8-8.el7
+Requires(rpmlib): rpmlib(FileDigests) <= 4.6.0-1 rpmlib(PayloadFilesHavePrefix) <= 4.0-1 rpmlib(CompressedFileNames) <= 3.0.4-1
+Checking for unpackaged file(s): /usr/lib/rpm/check-files /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64
+Wrote: /home/vipin/rpmbuild/RPMS/x86_64/pcsc-lite-1.8.8-8.el7.x86_64.rpm
+Wrote: /home/vipin/rpmbuild/RPMS/x86_64/pcsc-lite-libs-1.8.8-8.el7.x86_64.rpm
+Wrote: /home/vipin/rpmbuild/RPMS/x86_64/pcsc-lite-devel-1.8.8-8.el7.x86_64.rpm
+Wrote: /home/vipin/rpmbuild/RPMS/noarch/pcsc-lite-doc-1.8.8-8.el7.noarch.rpm
+Wrote: /home/vipin/rpmbuild/RPMS/x86_64/pcsc-lite-debuginfo-1.8.8-8.el7.x86_64.rpm
+Executing(%clean): /bin/sh -e /var/tmp/rpm-tmp.vcIFmu
++ umask 022
++ cd /home/vipin/rpmbuild/BUILD
++ cd pcsc-lite-1.8.8
++ /usr/bin/rm -rf /home/vipin/rpmbuild/BUILDROOT/pcsc-lite-1.8.8-8.el7.x86_64
++ exit 0
+[vipin@localhost rpmbuild]$ tree RPMS
+RPMS
+|-- noarch
+|   `-- pcsc-lite-doc-1.8.8-8.el7.noarch.rpm
+`-- x86_64
+    |-- pcsc-lite-1.8.8-8.el7.x86_64.rpm
+    |-- pcsc-lite-debuginfo-1.8.8-8.el7.x86_64.rpm
+    |-- pcsc-lite-devel-1.8.8-8.el7.x86_64.rpm
+    `-- pcsc-lite-libs-1.8.8-8.el7.x86_64.rpm
+
+
+[vipin@localhost noarch]$ ls
+pcsc-lite-doc-1.8.8-8.el7.noarch.rpm
+[vipin@localhost noarch]$ sudo rpm -qipl ./pcsc-lite-doc-1.8.8-8.el7.noarch.rpm
+Name        : pcsc-lite-doc
+Version     : 1.8.8
+Release     : 8.el7
+Architecture: noarch
+Install Date: (not installed)
+Group       : Documentation
+Size        : 5962716
+License     : BSD
+Signature   : (none)
+Source RPM  : pcsc-lite-1.8.8-8.el7.src.rpm
+Build Date  : Wednesday 05 June 2019 03:32:48 AM IST
+Build Host  : localhost
+Relocations : (not relocatable)
+URL         : http://pcsclite.alioth.debian.org/
+Summary     : PC/SC Lite developer documentation
+Description :
+PC/SC Lite developer documentation.
+/usr/share/doc/pcsc-lite-doc-1.8.8
+/usr/share/doc/pcsc-lite-doc-1.8.8/api
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/annotated.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/atrhandler_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/atrhandler_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/atrhandler_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/atrhandler_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/bc_s.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/bdwn.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/classes.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/closed.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/configfile_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/configfile_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/debug_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/debug_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/debuglog_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/debuglog_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/debuglog_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/debuglog_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dir_19ab2ef736866f18cbeac227237bb8d6.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dir_68267d1309a1af8e8297ef4c3efbcdba.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dir_80c9a766fae9db87d5c3b75144be22e5.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/doxygen.css
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/doxygen.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__generic_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__generic_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__hpux_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__macosx_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__macosx_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__unix_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dyn__unix_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/dynsections.js
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/error_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/error_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/eventhandler_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/eventhandler_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/eventhandler_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/eventhandler_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/files.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2blank.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2cl.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2doc.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2folderclosed.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2folderopen.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2lastnode.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2link.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2mlastnode.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2mnode.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2mo.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2node.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2ns.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2plastnode.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2pnode.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2splitbar.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ftv2vertline.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/functions.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/functions_vars.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x62.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x63.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x64.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x65.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x66.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x67.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x68.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x69.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x6c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x6d.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x6f.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x70.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x72.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x73.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x74.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_0x79.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x64.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x66.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x68.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x69.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x6d.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x6f.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x70.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x72.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x73.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_defs_0x74.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_enum.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_eval.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_func.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_type.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/globals_vars.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/group__API.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/group__IFDHandler.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__generic_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__generic_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__libudev_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__libudev_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__libusb_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__libusb_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__linux_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__linux_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__macosx_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/hotplug__macosx_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ifdhandler_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ifdhandler_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ifdwrapper_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ifdwrapper_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ifdwrapper_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/ifdwrapper_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/index.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/jquery.js
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/lassert_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/libpcscspy_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/misc_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/modules.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/nav_f.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/nav_g.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/nav_h.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/open.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/parser_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/parser_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcsc-wirecheck-dist_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcsc-wirecheck-gen_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcsc-wirecheck-main_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcscd_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcscd_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcscdaemon_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcscdaemon_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcsclite_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/pcsclite_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/powermgt__generic_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/powermgt__generic_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/powermgt__generic_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/powermgt__generic_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/prothandler_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/prothandler_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/prothandler_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/prothandler_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/reader_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/reader_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/readerfactory_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/readerfactory_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/readerfactory_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/readerfactory_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sd-daemon_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sd-daemon_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/simclist_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/simclist_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/strlcat_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/strlcpy_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/strlcpycat_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/strlcpycat_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structFctMap__V2.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structFctMap__V3.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structPCSC__TLV__STRUCTURE.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structPIN__MODIFY__STRUCTURE.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structPIN__PROPERTIES__STRUCTURE.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structPIN__VERIFY__STRUCTURE.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structRdrCliHandles.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structReaderContext.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structSCARD__IO__REQUEST.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structSCARD__READERSTATE.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structSerialReader.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__DEVICE__CAPABILITIES.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__ICC__STATE.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__PROTOCOL__OPTIONS.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__SCARD__IO__HEADER.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__psChannelMap.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__psContext.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/struct__psContextMap.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structbegin__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structbundleElt.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structcancel__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structclient__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structconnect__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structcontrol__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structdisconnect__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structend__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structestablish__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structgetset__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structlist__attributes__s.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structlist__dump__header__s.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structlist__dump__info__t.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structlist__entry__s.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structlist__t.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structpubReaderStatesList.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structreconnect__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structrelease__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structrxHeader.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structstatus__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structtransmit__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structversion__struct.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structwait__reader__state__change.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structyy__buffer__state.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/structyy__trans__info.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sync_off.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sync_on.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sys__generic_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sys__generic_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sys__unix_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/sys__unix_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tab_a.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tab_b.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tab_h.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tab_s.png
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tabs.css
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/testpcsc_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/testpcsc_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tokenparser_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/tokenparser_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/unionsockaddr__union.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/utils_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/utils_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/utils_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__clnt_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__clnt_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__msg_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__msg_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__msg_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__msg_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__msg__srv_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__msg__srv_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__svc_8c.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__svc_8c_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__svc_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/winscard__svc_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/wintypes_8h.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/api/wintypes_8h_source.html
+/usr/share/doc/pcsc-lite-doc-1.8.8/pcsc_demo.c
+
+*****************************************************************
+[vipin@localhost pcsc-lite-1.8.8]$ ./configure --host=i686-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32"
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for i686-linux-gnu-strip... no
+checking for strip... strip
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking build system type... ^[[Ax86_64-unknown-linux-gnu
+checking host system type... i686-pc-linux-gnu
+checking for i686-linux-gnu-gcc... no
+checking for gcc... gcc
+checking whether the C compiler works... no
+configure: error: in `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8':
+configure: error: C compiler cannot create executables
+See `config.log' for more details
+[vipin@localhost pcsc-lite-1.8.8]$ ./configure --host=i686-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32"
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for i686-linux-gnu-strip... no
+checking for strip... strip
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... i686-pc-linux-gnu
+checking for i686-linux-gnu-gcc... no
+checking for gcc... gcc
+checking whether the C compiler works... no
+configure: error: in `/home/vipin/rpmbuild/BUILD/pcsc-lite-1.8.8':
+configure: error: C compiler cannot create executables
+See `config.log' for more details
+[vipin@localhost pcsc-lite-1.8.8]$ sudo yum install gcc-multilib g++-multilib
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-manager
+No package gcc-multilib available.
+No package g++-multilib available.
+Error: Nothing to do
+[vipin@localhost pcsc-lite-1.8.8]$ sudo yum provides gcc-multilib
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-manager
+No matches found
+[vipin@localhost pcsc-lite-1.8.8]$ sudo yum install glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-devel.i686
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-manager
+Resolving Dependencies
+--> Running transaction check
+---> Package glibc-devel.i686 0:2.17-260.el7_6.6 will be installed
+--> Processing Dependency: glibc = 2.17-260.el7_6.6 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: glibc-headers = 2.17-260.el7_6.6 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libBrokenLocale.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libanl.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libcidn.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libcrypt.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libdl.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libm.so.6 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnsl.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_compat.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_db.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_dns.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_files.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_hesiod.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_nis.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libnss_nisplus.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libresolv.so.2 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: librt.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libthread_db.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+--> Processing Dependency: libutil.so.1 for package: glibc-devel-2.17-260.el7_6.6.i686
+---> Package libgcc.i686 0:4.8.5-36.el7_6.2 will be installed
+---> Package libstdc++-devel.i686 0:4.8.5-36.el7_6.2 will be installed
+--> Processing Dependency: libstdc++(x86-32) = 4.8.5-36.el7_6.2 for package: libstdc++-devel-4.8.5-36.el7_6.2.i686
+--> Processing Dependency: libstdc++.so.6 for package: libstdc++-devel-4.8.5-36.el7_6.2.i686
+---> Package ncurses-devel.i686 0:5.9-14.20130511.el7_4 will be installed
+--> Processing Dependency: ncurses-libs(x86-32) = 5.9-14.20130511.el7_4 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libform.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libformw.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libmenu.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libmenuw.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libncurses++.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libncurses++w.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libpanel.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libpanelw.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libtic.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Processing Dependency: libtinfo.so.5 for package: ncurses-devel-5.9-14.20130511.el7_4.i686
+--> Running transaction check
+---> Package glibc.x86_64 0:2.17-260.el7 will be updated
+--> Processing Dependency: glibc = 2.17-260.el7 for package: glibc-common-2.17-260.el7.x86_64
+--> Processing Dependency: glibc = 2.17-260.el7 for package: glibc-devel-2.17-260.el7.x86_64
+---> Package glibc.i686 0:2.17-260.el7_6.6 will be installed
+--> Processing Dependency: libfreebl3.so for package: glibc-2.17-260.el7_6.6.i686
+--> Processing Dependency: libfreebl3.so(NSSRAWHASH_3.12.3) for package: glibc-2.17-260.el7_6.6.i686
+---> Package glibc.x86_64 0:2.17-260.el7_6.6 will be an update
+---> Package glibc-headers.x86_64 0:2.17-260.el7 will be updated
+---> Package glibc-headers.x86_64 0:2.17-260.el7_6.6 will be an update
+---> Package libstdc++.i686 0:4.8.5-36.el7_6.2 will be installed
+---> Package ncurses-libs.i686 0:5.9-14.20130511.el7_4 will be installed
+--> Running transaction check
+---> Package glibc-common.x86_64 0:2.17-260.el7 will be updated
+---> Package glibc-common.x86_64 0:2.17-260.el7_6.6 will be an update
+---> Package glibc-devel.x86_64 0:2.17-260.el7 will be updated
+---> Package glibc-devel.x86_64 0:2.17-260.el7_6.6 will be an update
+---> Package nss-softokn-freebl.i686 0:3.36.0-5.el7_5 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================
+ Package                   Arch          Version                       Repository                 Size
+=======================================================================================================
+Installing:
+ glibc-devel               i686          2.17-260.el7_6.6              rhel-7-server-rpms        1.1 M
+ libgcc                    i686          4.8.5-36.el7_6.2              rhel-7-server-rpms        110 k
+ libstdc++-devel           i686          4.8.5-36.el7_6.2              rhel-7-server-rpms        1.5 M
+ ncurses-devel             i686          5.9-14.20130511.el7_4         rhel-7-server-rpms        713 k
+Installing for dependencies:
+ glibc                     i686          2.17-260.el7_6.6              rhel-7-server-rpms        4.3 M
+ libstdc++                 i686          4.8.5-36.el7_6.2              rhel-7-server-rpms        318 k
+ ncurses-libs              i686          5.9-14.20130511.el7_4         rhel-7-server-rpms        316 k
+ nss-softokn-freebl        i686          3.36.0-5.el7_5                rhel-7-server-rpms        212 k
+Updating for dependencies:
+ glibc                     x86_64        2.17-260.el7_6.6              rhel-7-server-rpms        3.6 M
+ glibc-common              x86_64        2.17-260.el7_6.6              rhel-7-server-rpms         11 M
+ glibc-devel               x86_64        2.17-260.el7_6.6              rhel-7-server-rpms        1.1 M
+ glibc-headers             x86_64        2.17-260.el7_6.6              rhel-7-server-rpms        684 k
+
+Transaction Summary
+=======================================================================================================
+Install  4 Packages (+4 Dependent packages)
+Upgrade             ( 4 Dependent packages)
+
+Total size: 25 M
+Total download size: 8.5 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/8): glibc-devel-2.17-260.el7_6.6.i686.rpm                                    | 1.1 MB  00:00:02     
+(2/8): libgcc-4.8.5-36.el7_6.2.i686.rpm                                         | 110 kB  00:00:00     
+(3/8): glibc-2.17-260.el7_6.6.i686.rpm                                          | 4.3 MB  00:00:03     
+(4/8): libstdc++-4.8.5-36.el7_6.2.i686.rpm                                      | 318 kB  00:00:00     
+(5/8): ncurses-devel-5.9-14.20130511.el7_4.i686.rpm                             | 713 kB  00:00:02     
+(6/8): libstdc++-devel-4.8.5-36.el7_6.2.i686.rpm                                | 1.5 MB  00:00:03     
+(7/8): nss-softokn-freebl-3.36.0-5.el7_5.i686.rpm                               | 212 kB  00:00:00     
+(8/8): ncurses-libs-5.9-14.20130511.el7_4.i686.rpm                              | 316 kB  00:00:01     
+-------------------------------------------------------------------------------------------------------
+Total                                                                  912 kB/s | 8.5 MB  00:00:09     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+  Installing : libgcc-4.8.5-36.el7_6.2.i686                                                       1/16 
+  Updating   : glibc-common-2.17-260.el7_6.6.x86_64                                               2/16 
+  Updating   : glibc-2.17-260.el7_6.6.x86_64                                                      3/16 
+  Updating   : glibc-headers-2.17-260.el7_6.6.x86_64                                              4/16 
+  Installing : nss-softokn-freebl-3.36.0-5.el7_5.i686                                             5/16 
+  Installing : glibc-2.17-260.el7_6.6.i686                                                        6/16 
+  Installing : glibc-devel-2.17-260.el7_6.6.i686                                                  7/16 
+  Updating   : glibc-devel-2.17-260.el7_6.6.x86_64                                                8/16 
+  Installing : libstdc++-4.8.5-36.el7_6.2.i686                                                    9/16 
+  Installing : ncurses-libs-5.9-14.20130511.el7_4.i686                                           10/16 
+  Installing : ncurses-devel-5.9-14.20130511.el7_4.i686                                          11/16 
+  Installing : libstdc++-devel-4.8.5-36.el7_6.2.i686                                             12/16 
+  Cleanup    : glibc-devel-2.17-260.el7.x86_64                                                   13/16 
+  Cleanup    : glibc-headers-2.17-260.el7.x86_64                                                 14/16 
+  Cleanup    : glibc-common-2.17-260.el7.x86_64                                                  15/16 
+  Cleanup    : glibc-2.17-260.el7.x86_64                                                         16/16 
+  Verifying  : glibc-2.17-260.el7_6.6.i686                                                        1/16 
+  Verifying  : ncurses-devel-5.9-14.20130511.el7_4.i686                                           2/16 
+  Verifying  : glibc-devel-2.17-260.el7_6.6.i686                                                  3/16 
+  Verifying  : libstdc++-4.8.5-36.el7_6.2.i686                                                    4/16 
+  Verifying  : glibc-2.17-260.el7_6.6.x86_64                                                      5/16 
+  Verifying  : glibc-devel-2.17-260.el7_6.6.x86_64                                                6/16 
+  Verifying  : libstdc++-devel-4.8.5-36.el7_6.2.i686                                              7/16 
+  Verifying  : nss-softokn-freebl-3.36.0-5.el7_5.i686                                             8/16 
+  Verifying  : ncurses-libs-5.9-14.20130511.el7_4.i686                                            9/16 
+  Verifying  : glibc-headers-2.17-260.el7_6.6.x86_64                                             10/16 
+  Verifying  : libgcc-4.8.5-36.el7_6.2.i686                                                      11/16 
+  Verifying  : glibc-common-2.17-260.el7_6.6.x86_64                                              12/16 
+  Verifying  : glibc-devel-2.17-260.el7.x86_64                                                   13/16 
+  Verifying  : glibc-2.17-260.el7.x86_64                                                         14/16 
+  Verifying  : glibc-common-2.17-260.el7.x86_64                                                  15/16 
+  Verifying  : glibc-headers-2.17-260.el7.x86_64                                                 16/16 
+
+Installed:
+  glibc-devel.i686 0:2.17-260.el7_6.6              libgcc.i686 0:4.8.5-36.el7_6.2                     
+  libstdc++-devel.i686 0:4.8.5-36.el7_6.2          ncurses-devel.i686 0:5.9-14.20130511.el7_4         
+
+Dependency Installed:
+  glibc.i686 0:2.17-260.el7_6.6                      libstdc++.i686 0:4.8.5-36.el7_6.2                
+  ncurses-libs.i686 0:5.9-14.20130511.el7_4          nss-softokn-freebl.i686 0:3.36.0-5.el7_5         
+
+Dependency Updated:
+  glibc.x86_64 0:2.17-260.el7_6.6                   glibc-common.x86_64 0:2.17-260.el7_6.6             
+  glibc-devel.x86_64 0:2.17-260.el7_6.6             glibc-headers.x86_64 0:2.17-260.el7_6.6            
+
+Complete!
+***********************************************************************************
+[vipin@localhost linux]$ ldd librnboifd.so.1.1.0.8
+	linux-gate.so.1 =>  (0xf7762000)
+	libusb-0.1.so.4 => not found
+	libpthread.so.0 => /lib/libpthread.so.0 (0xf7720000)
+	libc.so.6 => /lib/libc.so.6 (0xf7555000)
+	/lib/ld-linux.so.2 (0xf7763000)
+[vipin@localhost linux]$ sudo yum install libusb-0.1.so.4
+Loaded plugins: langpacks, product-id, search-disabled-repos, subscription-manager
+Resolving Dependencies
+--> Running transaction check
+---> Package libusb.i686 1:0.1.4-3.el7 will be installed
+--> Processing Dependency: libusb-1.0.so.0 for package: 1:libusb-0.1.4-3.el7.i686
+--> Running transaction check
+---> Package libusbx.i686 0:1.0.21-1.el7 will be installed
+--> Processing Dependency: libudev.so.1 for package: libusbx-1.0.21-1.el7.i686
+--> Processing Dependency: libudev.so.1(LIBUDEV_183) for package: libusbx-1.0.21-1.el7.i686
+--> Running transaction check
+---> Package systemd-libs.i686 0:219-62.el7_6.7 will be installed
+--> Processing Dependency: libcap.so.2 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libdw.so.1 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libgcrypt.so.11 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libgcrypt.so.11(GCRYPT_1.2) for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libgpg-error.so.0 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: liblz4.so.1 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: liblzma.so.5 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: liblzma.so.5(XZ_5.0) for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libpam.so.0 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libpam.so.0(LIBPAM_1.0) for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libpam.so.0(LIBPAM_EXTENSION_1.0) for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libpam.so.0(LIBPAM_MODUTIL_1.0) for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libpam_misc.so.0 for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libpam_misc.so.0(LIBPAM_MISC_1.0) for package: systemd-libs-219-62.el7_6.7.i686
+--> Processing Dependency: libselinux.so.1 for package: systemd-libs-219-62.el7_6.7.i686
+--> Running transaction check
+---> Package elfutils-libs.i686 0:0.172-2.el7 will be installed
+--> Processing Dependency: elfutils-libelf(x86-32) = 0.172-2.el7 for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libbz2.so.1 for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1 for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.0) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.1.1) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.3) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.4) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.5) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.6) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libelf.so.1(ELFUTILS_1.7) for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libz.so.1 for package: elfutils-libs-0.172-2.el7.i686
+--> Processing Dependency: libz.so.1(ZLIB_1.2.2.3) for package: elfutils-libs-0.172-2.el7.i686
+---> Package libcap.i686 0:2.22-9.el7 will be installed
+--> Processing Dependency: libattr.so.1 for package: libcap-2.22-9.el7.i686
+--> Processing Dependency: libattr.so.1(ATTR_1.0) for package: libcap-2.22-9.el7.i686
+---> Package libgcrypt.i686 0:1.5.3-14.el7 will be installed
+---> Package libgpg-error.i686 0:1.12-3.el7 will be installed
+---> Package libselinux.i686 0:2.5-14.1.el7 will be installed
+--> Processing Dependency: libsepol(x86-32) >= 2.5-10 for package: libselinux-2.5-14.1.el7.i686
+--> Processing Dependency: libpcre.so.1 for package: libselinux-2.5-14.1.el7.i686
+--> Processing Dependency: libsepol.so.1 for package: libselinux-2.5-14.1.el7.i686
+--> Processing Dependency: libsepol.so.1(LIBSEPOL_1.0) for package: libselinux-2.5-14.1.el7.i686
+---> Package lz4.i686 0:1.7.5-2.el7 will be installed
+---> Package pam.i686 0:1.1.8-22.el7 will be installed
+--> Processing Dependency: libaudit.so.1 for package: pam-1.1.8-22.el7.i686
+--> Processing Dependency: libcrack.so.2 for package: pam-1.1.8-22.el7.i686
+--> Processing Dependency: libdb-5.3.so for package: pam-1.1.8-22.el7.i686
+---> Package xz-libs.i686 0:5.2.2-1.el7 will be installed
+--> Running transaction check
+---> Package audit-libs.i686 0:2.8.4-4.el7 will be installed
+--> Processing Dependency: libcap-ng.so.0 for package: audit-libs-2.8.4-4.el7.i686
+---> Package bzip2-libs.i686 0:1.0.6-13.el7 will be installed
+---> Package cracklib.i686 0:2.9.0-11.el7 will be installed
+---> Package elfutils-libelf.i686 0:0.172-2.el7 will be installed
+---> Package libattr.i686 0:2.4.46-13.el7 will be installed
+---> Package libdb.i686 0:5.3.21-24.el7 will be installed
+---> Package libsepol.i686 0:2.5-10.el7 will be installed
+---> Package pcre.i686 0:8.32-17.el7 will be installed
+---> Package zlib.i686 0:1.2.7-18.el7 will be installed
+--> Running transaction check
+---> Package libcap-ng.i686 0:0.7.5-4.el7 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+=======================================================================================================
+ Package                   Arch           Version                   Repository                    Size
+=======================================================================================================
+Installing:
+ libusb                    i686           1:0.1.4-3.el7             rhel-7-server-rpms            19 k
+Installing for dependencies:
+ audit-libs                i686           2.8.4-4.el7               rhel-7-server-rpms           101 k
+ bzip2-libs                i686           1.0.6-13.el7              rhel-7-server-rpms            40 k
+ cracklib                  i686           2.9.0-11.el7              rhel-7-server-rpms            79 k
+ elfutils-libelf           i686           0.172-2.el7               rhel-7-server-rpms           199 k
+ elfutils-libs             i686           0.172-2.el7               rhel-7-server-rpms           312 k
+ libattr                   i686           2.4.46-13.el7             rhel-7-server-rpms            18 k
+ libcap                    i686           2.22-9.el7                rhel-7-server-rpms            48 k
+ libcap-ng                 i686           0.7.5-4.el7               rhel-7-server-rpms            24 k
+ libdb                     i686           5.3.21-24.el7             rhel-7-server-rpms           731 k
+ libgcrypt                 i686           1.5.3-14.el7              rhel-7-server-rpms           266 k
+ libgpg-error              i686           1.12-3.el7                rhel-7-server-rpms            87 k
+ libselinux                i686           2.5-14.1.el7              rhel-7-server-rpms           166 k
+ libsepol                  i686           2.5-10.el7                rhel-7-server-rpms           294 k
+ libusbx                   i686           1.0.21-1.el7              rhel-7-server-rpms            61 k
+ lz4                       i686           1.7.5-2.el7               rhel-7-server-rpms           111 k
+ pam                       i686           1.1.8-22.el7              rhel-7-server-rpms           719 k
+ pcre                      i686           8.32-17.el7               rhel-7-server-rpms           420 k
+ systemd-libs              i686           219-62.el7_6.7            rhel-7-server-rpms           414 k
+ xz-libs                   i686           5.2.2-1.el7               rhel-7-server-rpms           109 k
+ zlib                      i686           1.2.7-18.el7              rhel-7-server-rpms            91 k
+
+Transaction Summary
+=======================================================================================================
+Install  1 Package (+20 Dependent packages)
+
+Total download size: 4.2 M
+Installed size: 12 M
+Is this ok [y/d/N]: y
+Downloading packages:
+(1/21): bzip2-libs-1.0.6-13.el7.i686.rpm                                        |  40 kB  00:00:01     
+(2/21): audit-libs-2.8.4-4.el7.i686.rpm                                         | 101 kB  00:00:01     
+(3/21): cracklib-2.9.0-11.el7.i686.rpm                                          |  79 kB  00:00:00     
+(4/21): elfutils-libelf-0.172-2.el7.i686.rpm                                    | 199 kB  00:00:00     
+(5/21): libattr-2.4.46-13.el7.i686.rpm                                          |  18 kB  00:00:00     
+(6/21): elfutils-libs-0.172-2.el7.i686.rpm                                      | 312 kB  00:00:01     
+(7/21): libcap-ng-0.7.5-4.el7.i686.rpm                                          |  24 kB  00:00:01     
+(8/21): libcap-2.22-9.el7.i686.rpm                                              |  48 kB  00:00:01     
+(9/21): libgcrypt-1.5.3-14.el7.i686.rpm                                         | 266 kB  00:00:02     
+(10/21): libdb-5.3.21-24.el7.i686.rpm                                           | 731 kB  00:00:03     
+(11/21): libgpg-error-1.12-3.el7.i686.rpm                                       |  87 kB  00:00:03     
+(12/21): libselinux-2.5-14.1.el7.i686.rpm                                       | 166 kB  00:00:03     
+(13/21): libsepol-2.5-10.el7.i686.rpm                                           | 294 kB  00:00:04     
+(14/21): libusb-0.1.4-3.el7.i686.rpm                                            |  19 kB  00:00:05     
+(15/21): lz4-1.7.5-2.el7.i686.rpm                                               | 111 kB  00:00:00     
+(16/21): libusbx-1.0.21-1.el7.i686.rpm                                          |  61 kB  00:00:02     
+(17/21): pcre-8.32-17.el7.i686.rpm                                              | 420 kB  00:00:01     
+(18/21): pam-1.1.8-22.el7.i686.rpm                                              | 719 kB  00:00:01     
+(19/21): systemd-libs-219-62.el7_6.7.i686.rpm                                   | 414 kB  00:00:01     
+(20/21): xz-libs-5.2.2-1.el7.i686.rpm                                           | 109 kB  00:00:00     
+(21/21): zlib-1.2.7-18.el7.i686.rpm                                             |  91 kB  00:00:00     
+-------------------------------------------------------------------------------------------------------
+Total                                                                  194 kB/s | 4.2 MB  00:00:22     
+Running transaction check
+Running transaction test
+Transaction test succeeded
+Running transaction
+Warning: RPMDB altered outside of yum.
+  Installing : zlib-1.2.7-18.el7.i686                                                             1/21 
+  Installing : libgpg-error-1.12-3.el7.i686                                                       2/21 
+  Installing : xz-libs-5.2.2-1.el7.i686                                                           3/21 
+  Installing : libgcrypt-1.5.3-14.el7.i686                                                        4/21 
+  Installing : cracklib-2.9.0-11.el7.i686                                                         5/21 
+  Installing : elfutils-libelf-0.172-2.el7.i686                                                   6/21 
+  Installing : libcap-ng-0.7.5-4.el7.i686                                                         7/21 
+  Installing : audit-libs-2.8.4-4.el7.i686                                                        8/21 
+  Installing : libattr-2.4.46-13.el7.i686                                                         9/21 
+  Installing : libcap-2.22-9.el7.i686                                                            10/21 
+  Installing : pcre-8.32-17.el7.i686                                                             11/21 
+  Installing : bzip2-libs-1.0.6-13.el7.i686                                                      12/21 
+  Installing : elfutils-libs-0.172-2.el7.i686                                                    13/21 
+  Installing : libsepol-2.5-10.el7.i686                                                          14/21 
+  Installing : libselinux-2.5-14.1.el7.i686                                                      15/21 
+  Installing : libdb-5.3.21-24.el7.i686                                                          16/21 
+  Installing : pam-1.1.8-22.el7.i686                                                             17/21 
+  Installing : lz4-1.7.5-2.el7.i686                                                              18/21 
+  Installing : systemd-libs-219-62.el7_6.7.i686                                                  19/21 
+  Installing : libusbx-1.0.21-1.el7.i686                                                         20/21 
+  Installing : 1:libusb-0.1.4-3.el7.i686                                                         21/21 
+  Verifying  : lz4-1.7.5-2.el7.i686                                                               1/21 
+  Verifying  : 1:libusb-0.1.4-3.el7.i686                                                          2/21 
+  Verifying  : pam-1.1.8-22.el7.i686                                                              3/21 
+  Verifying  : libdb-5.3.21-24.el7.i686                                                           4/21 
+  Verifying  : xz-libs-5.2.2-1.el7.i686                                                           5/21 
+  Verifying  : libgcrypt-1.5.3-14.el7.i686                                                        6/21 
+  Verifying  : cracklib-2.9.0-11.el7.i686                                                         7/21 
+  Verifying  : zlib-1.2.7-18.el7.i686                                                             8/21 
+  Verifying  : elfutils-libelf-0.172-2.el7.i686                                                   9/21 
+  Verifying  : libsepol-2.5-10.el7.i686                                                          10/21 
+  Verifying  : bzip2-libs-1.0.6-13.el7.i686                                                      11/21 
+  Verifying  : pcre-8.32-17.el7.i686                                                             12/21 
+  Verifying  : audit-libs-2.8.4-4.el7.i686                                                       13/21 
+  Verifying  : libattr-2.4.46-13.el7.i686                                                        14/21 
+  Verifying  : libselinux-2.5-14.1.el7.i686                                                      15/21 
+  Verifying  : libcap-2.22-9.el7.i686                                                            16/21 
+  Verifying  : libcap-ng-0.7.5-4.el7.i686                                                        17/21 
+  Verifying  : libgpg-error-1.12-3.el7.i686                                                      18/21 
+  Verifying  : libusbx-1.0.21-1.el7.i686                                                         19/21 
+  Verifying  : systemd-libs-219-62.el7_6.7.i686                                                  20/21 
+  Verifying  : elfutils-libs-0.172-2.el7.i686                                                    21/21 
+
+Installed:
+  libusb.i686 1:0.1.4-3.el7                                                                            
+
+Dependency Installed:
+  audit-libs.i686 0:2.8.4-4.el7                     bzip2-libs.i686 0:1.0.6-13.el7                     
+  cracklib.i686 0:2.9.0-11.el7                      elfutils-libelf.i686 0:0.172-2.el7                 
+  elfutils-libs.i686 0:0.172-2.el7                  libattr.i686 0:2.4.46-13.el7                       
+  libcap.i686 0:2.22-9.el7                          libcap-ng.i686 0:0.7.5-4.el7                       
+  libdb.i686 0:5.3.21-24.el7                        libgcrypt.i686 0:1.5.3-14.el7                      
+  libgpg-error.i686 0:1.12-3.el7                    libselinux.i686 0:2.5-14.1.el7                     
+  libsepol.i686 0:2.5-10.el7                        libusbx.i686 0:1.0.21-1.el7                        
+  lz4.i686 0:1.7.5-2.el7                            pam.i686 0:1.1.8-22.el7                            
+  pcre.i686 0:8.32-17.el7                           systemd-libs.i686 0:219-62.el7_6.7                 
+  xz-libs.i686 0:5.2.2-1.el7                        zlib.i686 0:1.2.7-18.el7                           
+
+Complete!
+******************************************************************************
+checking for udev_monitor_unref... configure: error: udev_monitor_unref not found, use ./configure LIBUDEV_LIBS=...
+[vipin@localhost pcsc-lite-1.8.8]$ ./configure --host=i686-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32" LIBUDEV_LIBS=/usr/lib/libudev.so.1.6.2
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for i686-linux-gnu-strip... no
+checking for strip... strip
+checking for a thread-safe mkdir -p... /usr/bin/mkdir -p
+checking for gawk... gawk
+checking whether make sets $(MAKE)... yes
+checking whether make supports nested variables... yes
+checking build system type... x86_64-unknown-linux-gnu
+checking host system type... i686-pc-linux-gnu
+checking for i686-linux-gnu-gcc... no
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables... 
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to accept ISO C89... none needed
+checking for style of include used by make... GNU
+checking dependency style of gcc... gcc3
+checking how to run the C preprocessor... gcc -E
+checking for grep that handles long lines and -e... /usr/bin/grep
+checking for egrep... /usr/bin/grep -E
+checking for ANSI C header files... yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking whether byte ordering is bigendian... no
+checking whether to enable maintainer-specific portions of Makefiles... no
+checking how to run the C preprocessor... gcc -E
+checking whether ln -s works... yes
+checking whether make sets $(MAKE)... (cached) yes
+checking for flex... flex
+checking lex output file root... lex.yy
+checking lex library... none needed
+checking whether yytext is a pointer... no
+checking for i686-linux-gnu-pkg-config... no
+checking for pkg-config... /usr/bin/pkg-config
+checking pkg-config is at least version 0.9.0... yes
+checking whether gcc and cc understand -c and -o together... yes
+checking for i686-linux-gnu-ar... no
+checking for i686-linux-gnu-lib... no
+checking for i686-linux-gnu-link... no
+checking for ar... ar
+checking the archiver (ar) interface... ar
+checking for the pthreads library -lpthreads... no
+checking whether pthreads work without any flags... no
+checking whether pthreads work with -Kthread... no
+checking whether pthreads work with -kthread... no
+checking for the pthreads library -llthread... no
+checking whether pthreads work with -pthread... yes
+checking for joinable pthread attribute... PTHREAD_CREATE_JOINABLE
+checking if more special flags are required for pthreads... no
+checking for PTHREAD_PRIO_INHERIT... yes
+checking for pthread_cancel... yes
+checking how to print strings... printf
+checking for a sed that does not truncate output... /usr/bin/sed
+checking for fgrep... /usr/bin/grep -F
+checking for ld used by gcc... /usr/bin/ld
+checking if the linker (/usr/bin/ld) is GNU ld... yes
+checking for BSD- or MS-compatible name lister (nm)... no
+checking for i686-linux-gnu-dumpbin... no
+checking for i686-linux-gnu-link... no
+checking for dumpbin... no
+checking for link... link -dump
+checking the name lister (nm) interface... BSD nm
+checking the maximum length of command line arguments... 1572864
+checking whether the shell understands some XSI constructs... yes
+checking whether the shell understands "+="... yes
+checking how to convert x86_64-unknown-linux-gnu file names to i686-pc-linux-gnu format... func_convert_file_noop
+checking how to convert x86_64-unknown-linux-gnu file names to toolchain format... func_convert_file_noop
+checking for /usr/bin/ld option to reload object files... -r
+checking for i686-linux-gnu-objdump... no
+checking for objdump... objdump
+checking how to recognize dependent libraries... pass_all
+checking for i686-linux-gnu-dlltool... no
+checking for dlltool... no
+checking how to associate runtime and link libraries... printf %s\n
+checking for i686-linux-gnu-ar... ar
+checking for archiver @FILE support... @
+checking for i686-linux-gnu-strip... strip
+checking for i686-linux-gnu-ranlib... no
+checking for ranlib... ranlib
+checking command to parse nm output from gcc object... ok
+checking for sysroot... no
+checking for i686-linux-gnu-mt... no
+checking for mt... no
+checking if : is a manifest tool... no
+checking for dlfcn.h... yes
+checking for objdir... .libs
+checking if gcc supports -fno-rtti -fno-exceptions... no
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking if gcc PIC flag -fPIC -DPIC works... yes
+checking if gcc static flag -static works... no
+checking if gcc supports -c -o file.o... yes
+checking if gcc supports -c -o file.o... (cached) yes
+checking whether the gcc linker (/usr/bin/ld) supports shared libraries... yes
+checking whether -lc should be explicitly linked in... no
+checking dynamic linker characteristics... GNU/Linux ld.so
+checking how to hardcode library paths into programs... immediate
+checking whether stripping libraries is possible... yes
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+checking whether to build static libraries... no
+checking for ANSI C header files... (cached) yes
+checking for sys/wait.h that is POSIX.1 compatible... yes
+checking getopt.h usability... yes
+checking getopt.h presence... yes
+checking for getopt.h... yes
+checking sys/filio.h usability... no
+checking sys/filio.h presence... no
+checking for sys/filio.h... no
+checking syslog.h usability... yes
+checking syslog.h presence... yes
+checking for syslog.h... yes
+checking dl.h usability... no
+checking dl.h presence... no
+checking for dl.h... no
+checking fcntl.h usability... yes
+checking fcntl.h presence... yes
+checking for fcntl.h... yes
+checking for an ANSI C-conforming const... yes
+checking for uid_t in sys/types.h... yes
+checking for size_t... yes
+checking whether time.h and sys/time.h may both be included... yes
+checking for error_at_line... yes
+checking whether lstat correctly handles trailing slash... yes
+checking whether stat accepts an empty string... no
+checking for vprintf... yes
+checking for _doprnt... no
+checking for daemon... yes
+checking for flock... yes
+checking for getopt_long... yes
+checking for nanosleep... yes
+checking for strerror... yes
+checking for vsnprintf... yes
+checking for strlcpy... no
+checking for strlcat... no
+checking for inline... inline
+checking for -fvisibility=hidden... yes
+checking for dlopen in -ldl... yes
+checking for socket in -lsocket... no
+checking for mq_getattr in -lrt... yes
+checking for LIBUDEV... yes
+checking libudev.h usability... yes
+checking libudev.h presence... yes
+checking for libudev.h... yes
+checking for udev_monitor_unref... yes
+
+PC/SC lite has been configured with following options:
+
+Version:             1.8.8
+System binaries:     /usr/local/sbin
+Configuration dir:   /usr/local/etc/reader.conf.d
+
+
+Host:                i686-pc-linux-gnu
+Compiler:            gcc
+Preprocessor flags:  -I${top_srcdir}/src 
+Compiler flags:      -Wall -fno-common -m32
+Preprocessor flags:  -I${top_srcdir}/src 
+Linker flags:        -m32
+Libraries:            -lrt
+
+PTHREAD_CFLAGS:      -pthread
+PTHREAD_LIBS:        
+PCSC_ARCH:           Linux
+
+pcscd binary            /usr/local/sbin/pcscd
+libudev support:        yes
+libusb support:         no
+USB drop directory:     /usr/local/lib/pcsc/drivers
+ATR parsing messages:   false
+ipcdir:                 /var/run/pcscd
+use serial:             yes
+use usb:                yes
+systemd unit directory: /usr/lib/systemd/system
+
+PCSCLITE_FEATURES:       Linux i686-pc-linux-gnu serial usb libudev usbdropdir=/usr/local/lib/pcsc/drivers ipcdir=/var/run/pcscd configdir=/usr/local/etc/reader.conf.d
+
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating doc/Makefile
+config.status: creating doc/doxygen.conf
+config.status: creating doc/pcscd.8
+config.status: creating doc/reader.conf.5
+config.status: creating doc/example/Makefile
+config.status: creating etc/Makefile
+config.status: creating etc/pcscd.service
+config.status: creating etc/pcscd.socket
+config.status: creating src/Makefile
+config.status: creating src/libpcsclite.pc
+config.status: creating src/pcscd.h
+config.status: creating src/PCSC/pcsclite.h
+config.status: creating src/spy/Makefile
+config.status: creating config.h
+config.status: executing depfiles commands
+config.status: executing libtool commands
+
+***************************************************************************
+
+To rebuild from source rpm  --> but it will remove all existing .spec from SPEC/ and all source,patches from SOURCES
+
+rpmbuild --rebuild --noclean ./SRPMS/pcsc-lite-1.8.8-8.el7.src.rpm
+
+
+I could get all my .spec, source, Patches by this simple command
+
+$ rpmbuild --recompile --noclean ./SRPMS/somerpm.src.rpm
+
+Now one can change spec, src and rebuild RPM or SRPM.
+
+To build RPM for 386 on x86_64 machine
+
+rpmbuild -bb --noclean --target=i686-redhat-linux SPECS/pcsc-lite.spec
+
+RMP MACRO FILES
+
+/usr/lib/rpm/macros
+	Official RPM macros
+/etc/rpm/macros
+	Per-system customizations
+$HOME/.rpmmacros
+	Per-user customizations 
+
+To know any variable value.
+$ rpm --eval %{_bindir}
+/usr/bin
+
+$ rpm --eval %{_libexecdir}
+/usr/libexec
+**********************************************
+if interdependent packages are  creating errors    .
+
+$ rpm -e --nodeps packageA
+
+though obviously be very careful, since if you remove a dependency package and don't put it back that could lead to unexpected results for the packages that still depend on it...
+
+****************************
+
+Had to remove already installed  PCSCLite X86_64, CCIFd X64, and other 2 dependent package
+Installed i686  rpm, 
+It was working fine a seoarate process of /usr/sbin/pcscd -adf.  but whne run as a service was failing 
+Then it had to recompile with -fPIE o r--fPIC options and rpm resinstalled. Still gave errors.
+then setenforce 0 , made it working, so SELINUX was restricting run of pcscd as a service.
+
+****************************************************************
+to remove rpm even if some dependency is there add --nodeps
+sudo rpm -e --nodeps pcsc-lite-libs-1.8.8-8.el7.i686
+
+
+************************************************************************
+
+pcsclite 1.8.25  compiling
+
+./configure --build=i686-pc-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32" LIBUDEV_LIBS=/usr/lib/libudev.so.1 --enable-usbdropdir=/usr/local/pcsc/drivers
+
+ISSUE:
+libtool: You should recreate aclocal.m4 with macros from libtool 2.2
+
+ANSWER
+autoreconf --force --install
+./configure
+mak
+[vipin@localhost pcsc-lite-1.8.25]$ ./configure --build=i686-pc-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32" LIBUDEV_LIBS=/usr/lib/libudev.so.1 --enable-usbdropdir=/usr/local/pcsc/drivers
+
+Following build did not cause  crash of daemon
+ ./configure --build=i686-pc-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32 " LIBS=/usr/lib/libsystemd.so.0 LIBUDEV_LIBS=/usr/lib/libudev.so.1 LIBUSB_LIBS=/usr/lib/libusb-1.0.so.0 --enable-usbdropdir=/usr/local/pcsc/drivers --enable-usb
+make 
+We need to include /usr/lib/libsystemd.so.0  in place of -lsystemd in Makefile   of src 
+
+
+
+
+

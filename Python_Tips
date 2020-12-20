@@ -1,0 +1,27 @@
+to load a file into shell
+
+>>>exec("filename")
+if df['ApplicantIncome'].hist(bins=50) does not plot anything give error
+
+>>> d   raise ImportError, str(msg) + ', please install the python-tk package'
+ImportError: No module named _tkinter, please install the python-tk package
+ INSTALL  python-th first 
+
+python>sudo apt-get install python-tk
+Then also it does not show GUI only a text output like below
+
+>>> df['ApplicantIncome'].hist(bins=50)
+<matplotlib.axes._subplots.AxesSubplot object at 0x7fecdb100450>
+Then do it by matplotlib as below
+
+>>> import matplotlib.pyplot as plt
+>>> plt.show(df['ApplicantIncome'].hist(bins=50))
+
+********************************
+to debug :
+python -m pdb scriptName.py
+ or
+pdb 
+https://stackoverflow.com/questions/4929251/how-to-step-through-python-code-to-help-debug-issues
+
+

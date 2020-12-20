@@ -1,0 +1,302 @@
+to compile in 32 bit on 64 bit machine.
+
+yum install gcc-c++ compat-gcc-32 compat-gcc-32-c++
+sudo yum install glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-devel.i686
+
+to know release of Centos
+ cat /etc/centos-release
+
+install from a local rpm file
+rpm -i package-1.2.3.rpm
+yum localinstall package-1.2.3.rpm     ## CentOS, RHEL systems 
+dnf localinstall package-1.2.3.rpm     ## Fedora systems 
+Check installed
+yum list installed	Lists all packages that are installed on your system.
+yum list available	Lists all packages that are available to be installed in all enabled repositories.
+yum search string	Searches the package descriptions for the specified string.
+
+
+Yum installs dependencies as well,  in rpm way , make a local repository 
+ 
+
+    Create a directory for you local repository, e.g. /home/user/repo.
+    Move the RPMs into that directory.
+
+    Fix some ownership and filesystem permissions:
+
+    # chown -R root.root /home/user/repo
+
+    Install the createrepo package if not installed yet, and run
+
+    # createrepo /home/user/repo
+    # chmod -R o-w+r /home/user/repo
+
+    Create a repository configuration file, e.g. /etc/yum.repos.d/myrepo.repo containing
+
+    [local]
+    name=My Awesome Repo
+    baseurl=file:///home/user/repo
+    enabled=1
+    gpgcheck=0
+
+    Install your package using
+
+    # yum install packagename
+
+
+  MAKE  file  looks for library with .so  extension in -L path , when you have .so.1 or .so.2 etc , make a link to these to .so file  like 
+ln -s libxyz.so.2 libxyz.so
+
+
+https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html
+
+******************************************** GDB *****************************************
+GDB 
+good link https://www.tecmint.com/debug-source-code-in-linux-using-gdb/
+
+gdb 
+
+< frame or f   for current line 
+> list or l  for list
+> set step-mode on  -- to step into function on 
+> s  -- to step into 
+> r   -- run till next 
+> finish to step   out from current function
+>info macro CONST  --> to any defined value
+to Save break points :
+save breakpoints [filename]
+source [filename]  -- to load breakpoints
+sample file 
+break winscard.c:SCardEstablishContext
+break winscard.c:SCardConnect
+break winscard.c:SCardReConnect
+break   pcscdaemon.c:main
+break   winscard_clnt.c:SCardAddHandle
+break   winscard_clnt.c:getReaderStates
+
+>> to set Assembly code debug and show execution for so
+set  disassemble-next-line on
+show disassemble-next-line
+
+set step-mode on  to debug into a function
+
+gdb>>
+To jump to a location, change program counter 
+set $pc = 0x4005a5
+to set a registr eax
+gdb>> $eax=0x0001
+
+To set directory path to source while debugging 
+gdb>set directories <path-list>  --->Set the source path to path-list. ‘$cdir:$cwd’ are added if missing
+
+Basically you can do "until 60" or "until main.c:60" or "advance 60" or similar, depending if you want to limit temporary breakpoint to current frame or not.
+
+ftp://ftp.gnu.org/old-gnu/Manuals/gdb/html_chapter/gdb_9.html
+Use the x command to examine memory. 
+x/nfu addr
+x addr
+x
+    
+
+n, f, and u are all optional parameters that specify how much memory to display and how to format it; addr is an expression giving the address where you want to start displaying memory. If you use defaults for nfu, you need not type the slash `/'. Several commands set convenient defaults for addr.
+
+n, the repeat count
+    The repeat count is a decimal integer; the default is 1. It specifies how much memory (counting by units u) to display. 
+f, the display format
+    The display format is one of the formats used by print, `s' (null-terminated string), or `i' (machine instruction). The default is `x' (hexadecimal) initially. The default changes each time you use either x or print. 
+u, the unit size 
+To set a value to a memory location
+(gdb) set *0xb7fb95e0 = 0x01
+(gdb) x/x 0xb7fb95e0
+0xb7fb95e0 <UsePcSC>:	0x01
+(gdb) set *0xb7fb95e1 = 0x00
+(gdb) x/2xb 0xb7fb95e0 
+0xb7fb95e0 <UsePcSC>:	0x01	0x00
+
+gdb > OUTPUT OPTIMIZED   in gdb 
+It means you compiled with e.g. gcc -O3 and the gcc optimiser found that some of your variables were redundant in some way that allowed them to be optimised away. In this particular case you appear to have three variables a, b, c with the same value and presumably they can all be aliassed to a single variable. Compile with optimisation disabled, e.g. gcc -O0, if you want to see such variables (this is generally a good idea for debug builds in any case).
+
+
+To set and load breakpoints without asking "Y" for future load library
+set breakpoint pending on
+break <source file name>:<line number>
+
+(gdb) apropos pending
+actions -- Specify the actions to be taken at a tracepoint
+set breakpoint -- Breakpoint specific settings
+set breakpoint pending -- Set debugger's behavior regarding pending breakpoints
+show breakpoint -- Breakpoint specific settings
+show breakpoint pending -- Show debugger's behavior regarding pending breakpoints
+
+to set a watch on some memory location
+(gdb) rwatch *0xb7fb95e0                ---->> read watch
+Hardware read watchpoint 2: *0xb7fb95e0
+(gdb) awatch *0xb7fb95e0                ----->> read and write watch
+Hardware access (read/write) watchpoint 3: *0xb7fb95e0
+
+MULTIThread    dbugging
+set pagination off
+set target-async on
+set non-stop on
+set follow-fork-mode child
+set detach-on-fork off
+set step-mode on
+set breakpoint pending on
+
+*********************************** GDB <optimized out > *****************
+t means you compiled with e.g. gcc -O3 and the gcc optimiser found that some of your variables were redundant in some way that allowed them to be optimised away. In this particular case you appear to have three variables a, b, c with the same value and presumably they can all be aliassed to a single variable. Compile with optimisation disabled, e.g. gcc -O0, if you want to see such variables (this is generally a good idea for debug builds in any case).
+*******************************************************************
+to set path to store core dumps
+https://jvns.ca/blog/2018/04/28/debugging-a-segfault-on-linux/
+
+sudo sysctl -w kernel.core_pattern=/tmp/core-%e.%p.%h.%t
+
+// 32 bits :  EAX EBX ECX EDX
+			// 16 bits : AX BX CX DX
+			//  8 bits : AH AL BH BL CH CL DH DL
+
+******************************************** GDB *****************************************
+
+To open an ELF file ( .so) file and correct some text .
+
+https://unix.stackexchange.com/questions/372111/how-to-change-text-in-shared-libraries-so-files-in-linux
+
+    open your library with vi editor.
+        Here, the target is not .so file.
+        As .so is a symbolic link in general, you have to find an original destination file.
+    enter :%!xxd
+        This command changes file display format from binary to hex and ASCII.
+    modify what you want, that is, text.
+        You must modify on the left, Hex code, not right side, ASCII chars.
+        You must not insert or delete characters, only replace them. You can't make a string longer. You can make a string shorter by putting nul characters (press Ctrl+V Ctrl+@) at the end.
+    After modification, enter :%!xxd -r
+        It will recover display format into binary.
+    save your file and exit, by entering :wq.
+************************************
+
+to know the installed files of a package 
+
+To check what modules
+You can see what modules are already loaded into the kernel by running lsmod, which gets its information by reading the file /proc/modules.
+
+repoquery --installed -l <packagename>  // on centos
+
+
+Device 1032 
+
+TO dECOMPILE a CODE (so)
+https://reverseengineering.stackexchange.com/questions/2664/how-to-decompile-linux-so-library-files-from-a-ms-windows-os
+
+https://reverseengineering.stackexchange.com/questions/10924/translate-assembly-to-c
+
+retdec decompiler 
+https://github.com/avast/retdec
+
+TO take a dump of a SO file 
+
+>>objdump -D -m i386 -S -WalL -C /usr/lib/librnboapi.so >RAINBOW_APIso_dump.txt
+
+
+Firmware   1.1
+Serial number : 765800120000002E
+
+sudo yum install -y yum-utils centos-release-scl;
+sudo yum -y --enablerepo=centos-sclo-rh-testing install devtoolset-7-gcc;
+echo "source /opt/rh/devtoolset-7/enable" | sudo tee -a /etc/profile;
+source /opt/rh/devtoolset-7/enable;
+gcc --version;
+
+to get a specific version of a git code
+5
+
+If that version you need to obtain is either a branch or a tag then:
+
+git clone -b branch_or_tag_name repo_address_or_path
+
+To get a remote directory mounte dto local 
+sshfs vipin@192.168.1.6:/home/vipin/PCSC  ./CENTOS_32
+
+IT IS IMPORTANT TO run ldconfig  to make system rebuild its library list
+lconfig -p  --> all library list
+
+
+
+Well, moving to an immediate doesn't mean anything. What that instruction does is move a constant 1 into the memory byte located at 0x804a014. Something like the equivalent C code:
+
+*(unsigned char *)0x804a014 = 1;
+
+You've got opcode c6, as you know. You can look that up as part of the MOV instruction in Volume 2A of the docs.
+
+The 05 is the ModR/M byte. You can decipher that using Table 2-2 of volume 2A, "32-Bit Addressing Forms With the ModR/M Byte". Look for 05 in the "Value of ModR/M Byte (in Hexadecimal)" part of the chart. Trace left from there, and you'll see that the effective address for this ModR/M value is given in 'disp32' form. The footnote there says "The disp32 nomenclature denotes a 32-bit displacement that follows the ModR/M byte". In this case that's the next four bytes of your instruction: 14 a0 04 08.
+
+
+wireshark on Centos  files.
+repoquery -l wireshark-1.10.14-16.el7.i686
+
+/usr/sbin/dftest
+/usr/sbin/dumpcap
+/usr/sbin/editcap
+/usr/sbin/mergecap
+/usr/sbin/randpkt
+/usr/sbin/rawshark
+/usr/sbin/reordercap
+/usr/sbin/text2pcap
+/usr/sbin/tshark
+
+*************************************** Query a RPM wiythout install 
+https://stackoverflow.com/questions/3005889/displaying-information-on-non-installed-rpm-package
+
+When rpm is not-installed then (this will list the complete info, plus the list of contents in the package);
+
+rpm -qipl <rpm_name.rpm> 
+
+When rpm is installed then;
+
+rpm -qi <rpm_name.rpm>
+
+
+
+*********************************  32 bit ELF  on 64 bit OS
+
+/usr/bin/ld -m <emulation>  , emulation supported are elf32_x86_64 elf_i386
+
+https://stackoverflow.com/questions/3261909/build-32bit-on-64-bit-linux-using-an-automake-configure-script
+
+
+Make sure all GCC dev tools for 32 bit are installed
+https://stackoverflow.com/questions/23638271/how-to-compile-32-bit-apps-on-64-bit-rhel
+
+sudo yum install glibc-devel.i686 libgcc.i686 libstdc++-devel.i686 ncurses-devel.i686
+
+install libusb.so.4xx   required for 32 bit rainbow.
+install libudev for 32 bit, while in ./Configure pass this as LIBUDEV path
+
+Passing the following argument to configure script allowed me to build the 32bit library on 64bit Linux
+
+./configure --build=i686-pc-linux-gnu "CFLAGS=-m32" "CXXFLAGS=-m32" "LDFLAGS=-m32"
+
+
+For Patch generation  
+o create a patch containing your changes, cd to %_topdir/BUILD -- one directory above the source tree -- and use diff to create a patchfile in the SOURCES directory. There may be other patches to apply to this source, so give your patchfile a unique name to quickly describe the purpose of the patch. Run diff with "-u" to get the unified diff format that is standard for patches, "-N" to include any new files from your modified source, and "-r" to operate recursively, listing the original first, then your version:
+
+diff -uNr package-1.0/ package-1.0p/ > ../SOURCES/package-1.0-my.patch
+
+macros used in .SPEC  file
+http://ftp.rpm.org/max-rpm/s1-rpm-inside-macros.html
+
+%patch -p0 -b .orig
+-b <name> — Set the backup file extension to <name>
+
+When the patch command is used to apply a patch, unmodified copies of the files patched are renamed to end with the extension .orig. The -b option is used to change the extension used by patch. This is normally done when multiple patches are to be applied to a given file. By doing this, copies of the file as it existed prior to each patch, are readily available. 
+
+****************************** RHEL 7.5  in multiarch mode. 
+
+
+https://access.redhat.com/solutions/3393821
+
+****************************************************************************
+What is MAkefile.am and MAkefile.in   , .ac  autoconfig and am automake  are used for user edit and thet generate Makefile.in , this is used by Configure to make Makefile.
+
+https://stackoverflow.com/questions/2531827/what-are-makefile-am-and-makefile-in
+
+

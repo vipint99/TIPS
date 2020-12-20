@@ -1,0 +1,17 @@
+vipin>java -jar ./plantuml.jar diag1.xml
+vipin>ls
+diag1.png  diag1.xml  plantuml.jar
+
+To view the diagram from commandline  
+
+
+vipin>eog diag1.png
+^C
+vipin>cat diag1.xml
+@startuml
+Alice -> Bob: test
+@enduml
+
+Link:  http://plantuml.com/ditaa
+
+

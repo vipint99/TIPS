@@ -1,0 +1,14 @@
+libvirt 
+
+VM  :
+Add additional disk .  Add H/w from GUI
+then reboot it will show.
+/dev/sdb   by lsblk command
+make it ext3 or ext4 
+mkfs.ext4 /dev/sdb
+and then mount 
+
+mount /dev/sdb  /extra2    
+/extra2 is a created directory.
+
+

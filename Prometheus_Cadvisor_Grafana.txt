@@ -1,0 +1,25 @@
+Varad
+19:54
+https://github.com/kubernetes/kube-state-metrics
+Varad
+19:55
+https://github.com/google/cadvisor
+Gulshan Upadhyay
+19:56
+https://github.com/ManageIQ/manageiq/blob/b8aaf7754995600d7900d8f715e7d65c63eedaac/spec/models/chargeback_container_project_spec.rb
+Gulshan Upadhyay
+19:59
+This ruby script contains all the formulas used by cloudforms to calculate chargeback for openshifr project. 
+
+https://github.com/ManageIQ/manageiq/tree/b8aaf7754995600d7900d8f715e7d65c63eedaac
+https://github.com/google/cadvisor
+https://github.com/google/cadvisor/blob/master/docs/web.md
+https://github.com/google/cadvisor/tree/master/deploy/kubernetes
+https://github.com/kubernetes/kube-state-metrics
+https://github.com/kubernetes-sigs/metrics-server/blob/master/README.md
+https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/monitoring_architecture.md
+https://play.grafana.org/d/000000012/grafana-play-home?orgId=1
+https://prometheus.io/docs/introduction/overview/
+https://github.com/prometheus/prometheus
+https://www.manageiq.org/docs/get-started/basic-configuration
+https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/monitoring_architecture.md

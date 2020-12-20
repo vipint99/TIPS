@@ -1,0 +1,9 @@
+Host Jump
+  HostName 10.248.81.36
+  User root
+
+Host 10.*
+#  HostName 10.249.33.11
+#  ProxyJump Jump
+  ProxyCommand ssh Jump -W %h:%p 
+  User root

@@ -1,0 +1,17 @@
+MININET OPENVSwitch
+
+http://mininet.org/walkthrough/
+mininet 
+mininet-vm login: mininet
+Password: mininet
+
+If you're using OVS, you should use ovs-ofctl instead of dpctl:
+
+# ovs-ofctl dump-flows s1
+
+If you're using the reference switch (--switch user), listenPort is usually 6633 + n where n is the switch number, and you can also dump it from the CLI:
+
+mininet> py s1.listenPort
+
+
+

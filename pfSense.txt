@@ -1,0 +1,18 @@
+office  keen_pf/keen@123. keen_guest/w3lc0me
+
+pfsense   , if ping to local LAN interface from base machine or a lan machine fails then it could be that Captive portal is riunning on LAN iterface and preventing traffic to pfsense LAN interface.
+
+enable sshdd ( option 14)  and enjoyy login from base machine /
+
+all local lan should have gateway as lan interface of pfsense
+
+RHEL:
+After configuring various bridge on base machine and adding all wan and lan interface to it. everything works fine. But when we systemctl restart network 
+all bridge interfaces are removed and I need to re add all.
+in the VM config  of each vm , respectibve br-wan or br-lan is written and it should not get removed from respective bridge.?????????????????????
+
+
+
+
+
+
