@@ -1,0 +1,26 @@
+wordpress 
+https://wordpress.org/plugins/change-wp-admin-login/
+You19:44
+inder 
+Arun Kumar Pal19:46
+https://perfmatters.io/docs/forgot-wordpress-login-url/
+
+API:
+https://developer.wordpress.org/rest-api/
+
+OAuth :
+
+https://oauth.net/code/
+https://oauth.net/2/
+
+
+HtAccess to not open webpage
+https://www.cyberciti.biz/faq/create-update-user-authentication-files/
+
+htpasswd -c /home/pwww/.htpasswd jerry
+This was missing in the article:
+htaccess:
+AuthType Basic
+AuthName “Password Protected Area”
+AuthUserFile /path/to/.htpasswd
+Require valid-user

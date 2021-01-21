@@ -1,0 +1,98 @@
+
+SRIOV  Single Root IO , increase speed of packets IO to VM , directly copy packet to VM memory area  DMA. 
+  -   https://www.youtube.com/watch?v=hRHsk8Nycdg
+
+***************************************************
+Neutron ML2
+The Modular Layer 2 (ml2) plugin is a framework allowing OpenStack Networking to simultaneously utilize the variety of layer 2 networking technologies found in complex real-world data centers. It currently works with the existing openvswitch, linuxbridge, and hyperv L2 agents, and is intended to replace and deprecate the monolithic plugins associated with those L2 agents. The ml2 framework is also intended to greatly simplify adding support for new L2 networking technologies, requiring much less initial and ongoing effort than would be required to add a new monolithic core plugin. A modular agent may be developed as a follow-on effort.
+******************
+RHEL 7, and systemd's Predictable Network Interface 
+
+on-board devices with firmware-provided index numbers (example: eno1)
+add-in devices with firmware-provided PCIe slot index numbers (example: ens1)
+a device named using a physical connector location (example: enp2s0)
+a device name incorporating the interface's MAC address (example: enx78e7d1ea46da)
+finally, the classic, unpredictable kernel-native naming (example: eth0)
+
+system can be  custom configured for unique, non ethX style names using udev rules or the udev properties in the /usr/lib/udev/rules.d/60-net.rules file
+**************************************************
+neigh - Neighbor Discovery, the IPv6 answer to ARP
+ip -6 neigh show device_name	Display known or configured IPv6 neighbors
+
+Identifying device types can be achieved with the ethtool command.
+ethtool -i eth0
+driver: virtio_net
+version:
+firmware-version:
+bus-info: virtio0
+
+/sys/class/net/     has info of all interfaces
+
+Permamnet Routing   
+/etc/sysconfig/network-scripts/route-eth0   , change and  systemctl restart network
+
+to change MTU  , do it in ifcfg-eth0 file ans systemctl restart network
+
+*******************************
+TAP Device
+ip tuntap add dev demo-tap0 mode tap
+A TAP device is added to an OVS bridge as an interface using the ovs-vsctl add-port command.
+
+[root@demo ~]# ovs-vsctl add-port demo-ovsbr0 demo-tap0 \
+-- set interface demo-tap0 type=internal
+A TAP device can be added to a Linux bridge using the brctl addif command.
+
+[root@demo ~]# brctl addif demo-linbr0 demo-tap0
+Assign an IP address to the TAP interface.
+
+[root@demo ~]# ip addr add 172.25.250.150/24 dev demo-tap0
+Activate the TAP device using ip link set command.
+
+[root@demo ~]# ip link set demo-tap0 up
+
+VETH  Device
+[root@demo ~]# ip link add demo-veth0 type veth peer name demo-veth1
+[root@demo ~]# ip link set up dev demo-veth1
+[root@demo ~]# ip link set down dev demo-veth0
+[root@demo ~]# ip link show
+
+OvS Patch
+Open vSwitch can operate entirely in userspace without assistance from a kernel module. Using Open vSwitch in userspace requires the TUN/TAP kernel module driver to be loaded. To use ovs-switchd in userspace mode, create bridges with datapath_type=netdev. To operate using kernel datapaths, set datapath_type=system.
+
+[root@demo ~]# ovs-vsctl add-br demo-ovsbr0
+[root@demo ~]# ovs-vsctl set bridge demo-ovsbr0 datapath_type=netdev
+[root@demo ~]# ovs-vsctl add-port demo-ovsbr0 demo-patch0 \
+-- set interface demo-patch0 type=patch \
+-- set interface demo-patch0 options:peer=demo-patch1
+
+OFLOW  - to dump openflow table
+ovs-ofctl dump-flows br-int
+
+iptables -t <nat|filter>  -L ( list )  -n ( numberic) -v (verbose)
+
+When we create  a new server (vm)   in openstack with commands: 
+[student@workstation ~(architect1-finance)]$ openstack server create \
+--image rhel7 \
+--nic net-id=finance-network1 \
+--key-name example-keypair \
+--flavor default \
+--availability-zone nova:compute0.overcloud.example.com \ 
+--wait finance-server1
+
+It creates  one port xxxxx.yy - openstack port list  
+ It will also create few interface on compute node 
+ qbrxxxxx.yy   - linux bridge  ( iptables rules)
+ qvoxxxxx.yy    - OVS-patch cord on br-int bridge
+ qvbxxxxx.yy    - OVS patch on linux bridge qbrxxxxx.yy
+ tapxxxxx.yy     - on  linux bridge qbrxxxxx.yy,  this tap is connected to internal eth interface of VM.
+
+check  brctl show, ovs-vsctl  and /var/log/neutron/openvswitch-agent.log on compute node 
+ and 
+openstack security group list
+openstack port list
+openstack network list
+openstack subnet list
+openstack server list 
+
+
+

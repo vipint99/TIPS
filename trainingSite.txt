@@ -1,0 +1,21 @@
+Monika Gupta10:34
+https://training.linuxfoundation.org/training/introduction-to-linux/
+Monika Gupta10:36
+https://training.linuxfoundation.org/training/introduction-to-cloud-infrastructure-technologies/
+https://training.linuxfoundation.org/training/beginners-guide-open-source-software-development/
+https://training.linuxfoundation.org/training/open-source-licensing-basics-for-software-developers/
+Monika Gupta10:37
+https://training.linuxfoundation.org/training/secure-software-development-requirements-design-and-reuse-lfd104/
+https://training.linuxfoundation.org/training/secure-software-development-verification-and-more-specialized-topics-lfd106/
+Monika Gupta10:39
+https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/
+https://training.linuxfoundation.org/training/introduction-to-serverless-on-kubernetes-lfs157/
+https://training.linuxfoundation.org/training/introduction-to-jenkins-lfs167/
+
+******************VARAD  Links *********************************************
+compiling and creating own network stack
+https://github.com/saminiir/level-ip
+
+**************** CISCO  Linux links  ****************
+https://www.cisco.com/c/m/en_sg/partners/cisco-networking-academy/index.html
+

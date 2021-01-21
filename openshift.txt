@@ -1,4 +1,13 @@
 
+****************************************
+Openshift   Architecture : 
+https://www.openvirtualization.pro/what-administrators-should-know-about-openshift/
+https://www.youtube.com/watch?v=1i_gGhpL8L4
+
+Openshift  Persistence Volume
+https://docs.openshift.com/container-platform/4.6/storage/understanding-persistent-storage.html#types-of-persistent-volumes_understanding-persistent-storage
+
+********************************************
 To add a policy :
 oc policy add-role-to-user edit system:serviceaccount:vipint-99-ci-cd:jenkins -n vipint-99-simple-pipeline
 
@@ -7,4 +16,137 @@ oc describe rolebinding.rbac
 oc login -u <user> -p <passwd> <server API>  -->>  these can also be configured in client local machine ~/.kube/config  , define server ( API userl and name) , define context - to attach a user automatically to server defined, define users to configure predefines tokens and avoid giving password in command line
 
 So oc login -u admin   -->>> will work picking default server from contect admin and password from user definition
+
+OC apply -  It directly updates in the current live source, only the attributes which are given in the file.
+
+oc create - It first deletes the resources and then creates it from the file provided.
+
+External routes created through  = oc expose service <svc> , and then oc get routes
+It can also be created through oc create route edge --service <svc> --hostname <hostname> --key <key> --cert <api.crt>
+
+Routes security can be  build with TLS  as  Edge , passthrough and re-encryption
+  Edge -  Terminates the TLS traffic at router , Passthrough passes all TLS traffic till Application and termination and certificates should be applied at apps. 
+
+Edge router settings need : TLS certificate and Key. 
+
+to create secret for TLS type. 
+
+oc create secret tls todo-certs \
+>   --cert certs/training.crt \
+>   --key certs/training.key
+
+curl --cacert <cacert.pem> https://<site>   to alllow cA certificate chain as legitimate, else -k to ignore CA cert check/
+
+
+oc get pods -o wide   -->> to get full details of PODS
+
+**********************************************************************
+Kubernetes/Networking Links
+https://sookocheff.com/post/kubernetes/understanding-kubernetes-networking-model/
+
+https://blog.laputa.io/kubernetes-flannel-networking-6a1cb1f8ec7c
+https://morioh.com/p/ecb38c8342ba
+********************
+
+Deepak Kumar
+09:12 (2 hours ago)
+to me
+
+https://www.openshift.com/blog/kubernetes-services-by-example
+https://www.stackrox.com/post/2020/01/kubernetes-networking-demystified/#:~:text=KUBE%2DMARK%2DMASQ%20adds%20a,as%20their%20source%20IP%20address.
+http://containerops.org/2017/01/30/kubernetes-services-and-ingress-under-x-ray/
+https://kubernetes.io/docs/concepts/services-networking/ingress/
+https://www.openshift.com/blog/kubernetes-services-by-example
+https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps
+https://kubernetes.io/docs/concepts/services-networking/service/
+https://www.ovh.com/blog/getting-external-traffic-into-kubernetes-clusterip-nodeport-loadbalancer-and-ingress/
+https://cloud.google.com/kubernetes-engine/docs/concepts/ingress
+
+https://docs.cloud.oracle.com/en-us/iaas/Content/ContEng/Tasks/contengsettingupingresscontroller.htm
+
+
+https://rancher.com/blog/2019/2019-03-21-comparing-kubernetes-cni-providers-flannel-calico-canal-and-weave/#:~:text=The%20idea%20behind%20the%20CNI,with%20plugins%20to%20configure%20networking.
+https://docs.openshift.com/container-platform/3.6/architecture/networking/sdn.html
+https://blog.purestorage.com/purely-technical/kubernetes-cluster-networking-components/
+https://github.com/coreos/flannel/
+https://blog.laputa.io/kubernetes-flannel-networking-6a1cb1f8ec7c#:~:text=Flannel%20is%20one%20of%20the,briefly%20mentioned%20the%20performance%20penalty.
+
+****************************************************************
+OPENSTACK: 
+
+https://www.rdoproject.org/install/
+
+https://github.com/openstack/tripleo-quickstart/tree/2.1.1
+
+
+****************************************************************************
+
+ip -4 -d link show flannel.1
+Varad Gupta08:29
+bridge fdb show dev flannel.1
+
+IPtables rule :
+https://stackoverflow.com/questions/27378389/simple-load-balancing-using-iptables-nth-mode-of-the-statistics-module
+
+******************************* Kubernetes good tutorial from KodeKloud **********
+https://youtu.be/GhZi4DxaxxE
+
+**************kubernetes
+when to check your current namespace
+
+kubectl config view | grep namespace    --  but if you are in default namespace then no output
+
+change namespace by 
+kubectl config set-context --current --namespace <new namespace>
+
+to know current context
+kubectl config  current-context view
+ to set a context from a config file  ( default config file is ~/.kube/config and currentcontext is used)
+kubectl config --kubeconfig=/root/my-kube-config use-context research
+****************** kubectx and kubens
+kubectx to switch context  and kubens to switch ns  , install these tools separately
+Kubescheduler has no control on pods created as "Static pod" ( directly by kubelet running on each node) and on Daemonset pods .
+Static pods are automatically created by kubelet by reading pod definition files in folder defined by --config or staticPodPath = /etc/kubernetes/manifest
+on the kubelet control you can use docker or podman commands to see pods
+************** to create a manifest  for static pod in /etc/kubernetes/manifest ********* 
+kubectl run --restart=Never --image=busybox static-busybox --dry-run=client -o yaml --command -- sleep 1000 > /etc/kubernetes/manifests/static-busybox.yaml
+
+*****************  Role and bindings  
+- Role are created for apiGroups and resources and verbs and then rolebindings are created to bind roles to users.  Roles are bindings are specific to namesapces
+- ClusterRole and ClusterResourceBindings are at cluster level resources like Nodes,PV,storageclass etc  and nopt belong to namespaces, however a clusterrole can bedefined for namespace resources like pods  and they will give access to pods on all namespaces
+
+kubectl api-resources  command give details on resources and their Groups
+
+EXAMPLE: 
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata: 
+   name: storage-admin
+rules:
+   - apiGroups: [""]
+     resources: ["persistentvolumes"]
+     verbs: ["create","list","delete", "get", "watch","patch"]
+
+   - apiGroups: ["storage.k8s.io"]
+     resources: ["storageclasses"]
+     verbs: ["create","list","delete", "get", "watch","patch"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBindings
+metadata: 
+   name: storage-admin-binding
+subjects:
+   - kind: Users
+     name: michelle
+     apiGroup: rbac.authorization.k8s.io
+roleRef:
+    kind: ClusterRole
+    name: storage-admin
+    apiGroup: rbac.authorization.k8s.io
+************************************************************************
+NEtwork Policy:
+  Flannel - does not support network policy 
+Calico and other allow setting of network policy to block certain ingress or egress to a pod.
 

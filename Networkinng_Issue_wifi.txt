@@ -460,3 +460,14 @@ ip link set dev enp0s3.200 up
  2019  ip netns exec green ping 10.50.50.52
  2020  ip netns exec green ping 10.50.50.2
 
+******************************************* IP Forward  ****************
+
+By default linux system doen not forward packets from one interface to other and it should be enabled .
+/etc/sysctl.conf 
+net.ipv4.ip_forward = 1   , by defualt it is 0  means no forward
+to do runtime temporary chage to enable forwrding 
+
+do 
+echo 1 > /proc/sys/net/ipv4/ip_forward
+**********************************************  
+

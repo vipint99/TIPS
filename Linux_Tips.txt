@@ -13,6 +13,12 @@ Ctrl+LeftArrow Jumptothebeginningofthepreviouswordonthecommandline.
 Ctrl+RightArrow Jumptothebeginningofthenextwordonthecommandline.
 Ctrl+r Searchthehistorylistofcommandsforapattern.
 
+
+vi editor: 
+ to search tab :/\t
+To remove the highlighting, simply type :noh which is short for :nohlsearch —no high lighting.
+
+
 Bootable USB
 df -h   [ we might need to umount the usb for running following command]
 

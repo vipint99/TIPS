@@ -220,9 +220,13 @@ openssl x509 -pubkey -noout -in cert.pem  > pubkey.pem
 openssl rsautl -in pass.txt -out pass.enc -pubin -inkey key.pub -encrypt
 
 https://www.czeskis.com/random/openssl-encrypt-file.html
+**************************************************************************
 
+Kerberos  Videos :
+ https://youtu.be/_44CHD3Vx-0
+ https://youtu.be/5N242XcKAsM
 
-
+*************************************************************************
 
 
 

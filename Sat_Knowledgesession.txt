@@ -1,0 +1,4 @@
+CPU PINNING+ NUMA  Research paper :
+   https://arxiv.org/pdf/2006.02055.pdf
+
+
